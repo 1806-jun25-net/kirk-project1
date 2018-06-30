@@ -13,7 +13,7 @@ namespace PizzaShop.Library
         /// If IIngredient is not currently stocked at this location, adds it to stock at given quantity
         /// </summary>
         /// <param name="ing"></param>
-        void AddStock(IIngredient ing)
+        public void AddStock(IIngredient ing)
         {
             //Stock.Add(ing.Name, ing);
         }
@@ -24,7 +24,7 @@ namespace PizzaShop.Library
         /// </summary>
         /// <param name="ing"></param>
         /// <returns>null if successful, Name of IIngredient if removal would make quantity negative</returns>
-        string RemoveStock(IIngredient ing)
+        public string RemoveStock(IIngredient ing)
         {
 
             return "";
@@ -35,7 +35,7 @@ namespace PizzaShop.Library
         /// If any IIngredients are not currently stocked at this location, adds it to stock at given quantity
         /// </summary>
         /// <param name="list"></param>
-        void AddBulkStock(List<IIngredient> list)
+        public void AddBulkStock(List<IIngredient> list)
         {
             
         }
@@ -46,7 +46,7 @@ namespace PizzaShop.Library
         /// </summary>
         /// <param name="list"></param>
         /// <returns>null if successful, Name of first offending IIngredient which would make quantity negative otherwise</returns>
-        string RemoveBulkStock(List<IIngredient> list)
+        public string RemoveBulkStock(List<IIngredient> list)
         {
             return "";
         }
