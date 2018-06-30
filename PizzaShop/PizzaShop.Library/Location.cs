@@ -15,7 +15,10 @@ namespace PizzaShop.Library
         /// <param name="ing"></param>
         public void AddStock(IIngredient ing)
         {
-            //Stock.Add(ing.Name, ing);
+            if (Stock.ContainsKey(ing.Name))
+                  Stock[ing.Name].Quantity += ing.Quantity;
+            else
+                Stock.Add(ing.Name, ing);
         }
 
         /// <summary>
