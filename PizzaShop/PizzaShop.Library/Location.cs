@@ -6,7 +6,7 @@ namespace PizzaShop.Library
 {
     public class Location
     {
-        public Dictionary<string, IIngredient> Stock { get; set; }
+        public Dictionary<string, IIngredient> Stock { get; } = new Dictionary<string, IIngredient>();
 
         /// <summary>
         /// Increases this Location's quantity of given IIngredient by amount specified in parameter's quantity
@@ -15,7 +15,7 @@ namespace PizzaShop.Library
         /// <param name="ing"></param>
         void AddStock(IIngredient ing)
         {
-
+            //Stock.Add(ing.Name, ing);
         }
 
         /// <summary>
