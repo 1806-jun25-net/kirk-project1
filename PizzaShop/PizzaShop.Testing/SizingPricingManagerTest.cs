@@ -137,9 +137,9 @@ namespace PizzaShop.Testing
 
         // GetBasePriceTesting
         [Theory]
-        [InlineData("small", 5.5, .5)]
-        [InlineData("large", 11.1, .75)]
-        public void GetBasePriceShouldReturnNeg1IfNameNotFound(string name, decimal bPrice, decimal tPrice)
+        [InlineData("small")]
+        [InlineData("large")]
+        public void GetBasePriceShouldReturnNeg1IfNameNotFound(string name)
         {
             var mngr = new SizingPricingManager();
 
@@ -163,9 +163,9 @@ namespace PizzaShop.Testing
 
         // GetToppingPriceTesting
         [Theory]
-        [InlineData("small", 5.5, .5)]
-        [InlineData("large", 11.1, .75)]
-        public void GetToppingPriceShouldReturnNeg1IfNameNotFound(string name, decimal bPrice, decimal tPrice)
+        [InlineData("small")]
+        [InlineData("large")]
+        public void GetToppingPriceShouldReturnNeg1IfNameNotFound(string name)
         {
             var mngr = new SizingPricingManager();
 
