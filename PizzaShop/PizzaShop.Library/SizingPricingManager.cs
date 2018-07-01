@@ -9,6 +9,7 @@ namespace PizzaShop.Library
         public HashSet<string> Sizes { get; } = new HashSet<string>();
         private Dictionary<string, decimal> basePrices = new Dictionary<string, decimal>();
         private Dictionary<string, decimal> toppingPrices = new Dictionary<string, decimal>();
+        private Dictionary<string, int> ingredientUsageScalar = new Dictionary<string, int>();
 
         public void AddNewSize(string name, decimal basePrice, decimal toppingPrice)
         {
@@ -40,6 +41,13 @@ namespace PizzaShop.Library
             if (!toppingPrices.ContainsKey(name))
                 return -1;
             return toppingPrices[name];
+        }
+
+        public int GetIngredientUsageScalar(string name)
+        {
+            if (!toppingPrices.ContainsKey(name))
+                return -1;
+            return ingredientUsageScalar[name];
         }
     }
 }
