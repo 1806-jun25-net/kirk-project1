@@ -9,6 +9,6 @@ namespace PizzaShop.Library
         public string Name { get; }
         public int Quantity { get; set; }
 
-        public Topping(string n, int q = 0) { Name = n; Quantity = q;}
+        public Topping(string n, int q) { Name = n; Quantity = q;}
     }
 }

@@ -8,5 +8,7 @@ namespace PizzaShop.Library
     {
         public string Name { get; }
         public int Quantity { get; set; }
+
+        public Sauce(string n, int q) { Name = n; Quantity = q; }
     }
 }
