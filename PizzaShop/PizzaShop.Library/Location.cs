@@ -20,9 +20,13 @@ namespace PizzaShop.Library
         public void AddStock(IIngredient ing)
         {
             if (Stock.ContainsKey(ing.Name))
-                  Stock[ing.Name].Quantity += ing.Quantity;
+                Stock[ing.Name].Quantity += ing.Quantity;
             else
+            {
                 Stock.Add(ing.Name, ing);
+                //also register ingredient in ingredient directory
+                IngredientDirectoryAccessor.ingDir.AddIngredient(ing);
+            }
         }
 
         /// <summary>
