@@ -28,14 +28,14 @@ namespace PizzaShop.Library
             toppingPrices.Remove(name);
         }
 
-        public decimal getBasePrice(string name)
+        public decimal GetBasePrice(string name)
         {
             if (!basePrices.ContainsKey(name))
                 return -1;
             return basePrices[name];
         }
 
-        public decimal getToppingPrice(string name)
+        public decimal GetToppingPrice(string name)
         {
             if (!toppingPrices.ContainsKey(name))
                 return -1;

@@ -30,7 +30,7 @@ namespace PizzaShop.Testing
 
             mngr.AddNewSize(name, bPrice, tPrice);
 
-            Assert.Equal(mngr.getBasePrice(name), bPrice);
+            Assert.Equal(mngr.GetBasePrice(name), bPrice);
         }
 
         [Theory]
@@ -42,7 +42,7 @@ namespace PizzaShop.Testing
 
             mngr.AddNewSize(name, bPrice, tPrice);
 
-            Assert.Equal(mngr.getToppingPrice(name), tPrice);
+            Assert.Equal(mngr.GetToppingPrice(name), tPrice);
         }
 
         [Theory]
@@ -119,7 +119,7 @@ namespace PizzaShop.Testing
 
             mngr.RemoveSize(name);
 
-            Assert.True(mngr.getBasePrice(name) == -1);
+            Assert.True(mngr.GetBasePrice(name) == -1);
         }
 
         [Theory]
@@ -132,8 +132,59 @@ namespace PizzaShop.Testing
 
             mngr.RemoveSize(name);
 
-            Assert.True(mngr.getToppingPrice(name) == -1);
+            Assert.True(mngr.GetToppingPrice(name) == -1);
         }
 
+        // GetBasePriceTesting
+        [Theory]
+        [InlineData("small", 5.5, .5)]
+        [InlineData("large", 11.1, .75)]
+        public void GetBasePriceShouldReturnNeg1IfNameNotFound(string name, decimal bPrice, decimal tPrice)
+        {
+            var mngr = new SizingPricingManager();
+
+            var result = mngr.GetBasePrice(name);
+
+            Assert.True(result == -1);
+        }
+
+        [Theory]
+        [InlineData("small", 5.5, .5)]
+        [InlineData("large", 11.1, .75)]
+        public void GetBasePriceShouldReturnBasePriceWhenItemFound(string name, decimal bPrice, decimal tPrice)
+        {
+            var mngr = new SizingPricingManager();
+            mngr.AddNewSize(name, bPrice, tPrice);
+
+            var result = mngr.GetBasePrice(name);
+
+            Assert.True(result == bPrice);
+        }
+
+        // GetToppingPriceTesting
+        [Theory]
+        [InlineData("small", 5.5, .5)]
+        [InlineData("large", 11.1, .75)]
+        public void GetToppingPriceShouldReturnNeg1IfNameNotFound(string name, decimal bPrice, decimal tPrice)
+        {
+            var mngr = new SizingPricingManager();
+
+            var result = mngr.GetBasePrice(name);
+
+            Assert.True(mngr.GetBasePrice(name) == -1);
+        }
+
+        [Theory]
+        [InlineData("small", 5.5, .5)]
+        [InlineData("large", 11.1, .75)]
+        public void GetToppingPriceShouldReturnToppingPriceWhenItemFound(string name, decimal bPrice, decimal tPrice)
+        {
+            var mngr = new SizingPricingManager();
+            mngr.AddNewSize(name, bPrice, tPrice);
+
+            var result = mngr.GetToppingPrice(name);
+
+            Assert.True(result == tPrice);
+        }
     }
 }
