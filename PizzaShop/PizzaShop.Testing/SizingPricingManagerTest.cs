@@ -10,8 +10,8 @@ namespace PizzaShop.Testing
     {
         //Testing for AddNewSize method
         [Theory]
-        [InlineData("small", 5.5, .5)]
-        [InlineData("large", 11.1, .75)]
+        [InlineData("medium-small", 5.5, .5)]
+        [InlineData("medium-large", 11.1, .75)]
         public void AddNewSizeShouldAddSizeDataToSizes(string name, decimal bPrice, decimal tPrice)
         {
             var mngr = new SizingPricingManager();
@@ -22,9 +22,9 @@ namespace PizzaShop.Testing
         }
 
         [Theory]
-        [InlineData("small", 5.5, .5)]
-        [InlineData("large", 11.1, .75)]
-        public void AddNewSizeShouldAddSizeDataToBasePrioces(string name, decimal bPrice, decimal tPrice)
+        [InlineData("medium-small", 5.5, .5)]
+        [InlineData("medium-large", 11.1, .75)]
+        public void AddNewSizeShouldAddSizeDataToBasePrices(string name, decimal bPrice, decimal tPrice)
         {
             var mngr = new SizingPricingManager();
 
@@ -34,9 +34,9 @@ namespace PizzaShop.Testing
         }
 
         [Theory]
-        [InlineData("small", 5.5, .5)]
-        [InlineData("large", 11.1, .75)]
-        public void AddNewSizeShouldAddSizeDataToToppingPrioces(string name, decimal bPrice, decimal tPrice)
+        [InlineData("medium-small", 5.5, .5)]
+        [InlineData("medium-large", 11.1, .75)]
+        public void AddNewSizeShouldAddSizeDataToToppingPrices(string name, decimal bPrice, decimal tPrice)
         {
             var mngr = new SizingPricingManager();
 
@@ -52,53 +52,57 @@ namespace PizzaShop.Testing
         {
             var mngr = new SizingPricingManager();
             mngr.AddNewSize(name, bPrice, tPrice);
+            var originalSizes = mngr.Sizes;
 
             mngr.AddNewSize(name, bPrice, tPrice);
 
-            Assert.True(mngr.Sizes.Count == 1);
+            Assert.True(mngr.Sizes == originalSizes);
         }
 
         [Theory]
-        [InlineData("small", 0, .5)]
-        [InlineData("large", -1.2, .75)]
+        [InlineData("medium-small", 0, .5)]
+        [InlineData("medium-large", -1.2, .75)]
         public void AddNewSizeShouldDoNothingIfBasePriceIsInvalid(string name, decimal bPrice, decimal tPrice)
         {
             var mngr = new SizingPricingManager();
+            var originalSizes = mngr.Sizes;
 
             mngr.AddNewSize(name, bPrice, tPrice);
 
-            Assert.True(mngr.Sizes.Count == 0);
+            Assert.True(mngr.Sizes == originalSizes);
         }
 
         [Theory]
-        [InlineData("small", 5.5, 0)]
-        [InlineData("large", 11.1, -1.2)]
+        [InlineData("medium-small", 5.5, 0)]
+        [InlineData("medium-large", 11.1, -1.2)]
         public void AddNewSizeShouldDoNothingIfIngredientPriceIsInvalid(string name, decimal bPrice, decimal tPrice)
         {
             var mngr = new SizingPricingManager();
+            var originalSizes = mngr.Sizes;
 
             mngr.AddNewSize(name, bPrice, tPrice);
 
-            Assert.True(mngr.Sizes.Count == 0);
+            Assert.True(mngr.Sizes == originalSizes);
         }
 
         //testing RemoveSize method
         [Theory]
-        [InlineData("small", 5.5, .5)]
-        [InlineData("large", 11.1, .75)]
+        [InlineData("medium-small", 5.5, .5)]
+        [InlineData("medium-large", 11.1, .75)]
         public void RemoveSizeShouldDoNothingIfSizeIsNotInSizes(string name, decimal bPrice, decimal tPrice)
         {
             var mngr = new SizingPricingManager();
-            mngr.AddNewSize("testSize", bPrice, tPrice);
+            var originalSizes = mngr.Sizes;
 
             mngr.RemoveSize(name);
+            var result = mngr.Sizes;
 
-            Assert.True(mngr.Sizes.Count == 1 && mngr.Sizes.Contains("testSize"));
+            Assert.Equal(originalSizes, result);
         }
 
         [Theory]
-        [InlineData("small", 5.5, .5)]
-        [InlineData("large", 11.1, .75)]
+        [InlineData("medium-small", 5.5, .5)]
+        [InlineData("medium-large", 11.1, .75)]
         public void RemoveSizeShouldRemoveFromSizesWhenSizeIsValid(string name, decimal bPrice, decimal tPrice)
         {
             var mngr = new SizingPricingManager();
@@ -137,8 +141,8 @@ namespace PizzaShop.Testing
 
         // GetBasePriceTesting
         [Theory]
-        [InlineData("small")]
-        [InlineData("large")]
+        [InlineData("medium-small")]
+        [InlineData("medium-large")]
         public void GetBasePriceShouldReturnNeg1IfNameNotFound(string name)
         {
             var mngr = new SizingPricingManager();
@@ -149,8 +153,8 @@ namespace PizzaShop.Testing
         }
 
         [Theory]
-        [InlineData("small", 5.5, .5)]
-        [InlineData("large", 11.1, .75)]
+        [InlineData("medium-small", 5.5, .5)]
+        [InlineData("medium-large", 11.1, .75)]
         public void GetBasePriceShouldReturnBasePriceWhenItemFound(string name, decimal bPrice, decimal tPrice)
         {
             var mngr = new SizingPricingManager();
@@ -163,8 +167,8 @@ namespace PizzaShop.Testing
 
         // GetToppingPriceTesting
         [Theory]
-        [InlineData("small")]
-        [InlineData("large")]
+        [InlineData("medium-small")]
+        [InlineData("medium-large")]
         public void GetToppingPriceShouldReturnNeg1IfNameNotFound(string name)
         {
             var mngr = new SizingPricingManager();
@@ -175,8 +179,8 @@ namespace PizzaShop.Testing
         }
 
         [Theory]
-        [InlineData("small", 5.5, .5)]
-        [InlineData("large", 11.1, .75)]
+        [InlineData("medium-small", 5.5, .5)]
+        [InlineData("medium-large", 11.1, .75)]
         public void GetToppingPriceShouldReturnToppingPriceWhenItemFound(string name, decimal bPrice, decimal tPrice)
         {
             var mngr = new SizingPricingManager();

@@ -6,10 +6,11 @@ namespace PizzaShop.Library
 {
     public class SizingPricingManager
     {
-        public HashSet<string> Sizes { get; } = new HashSet<string>();
-        private Dictionary<string, decimal> basePrices = new Dictionary<string, decimal>();
-        private Dictionary<string, decimal> toppingPrices = new Dictionary<string, decimal>();
-        private Dictionary<string, int> ingredientUsageScalar = new Dictionary<string, int>();
+        public HashSet<string> Sizes { get; } = new HashSet<string>() { "small", "medium", "large", "party" };
+        private Dictionary<string, decimal> basePrices = new Dictionary<string, decimal>() { { "small", 5 }, {"medium", 7.5m}, { "large", 9 }, { "party", 20 } };
+        private Dictionary<string, decimal> toppingPrices = new Dictionary<string, decimal>() { { "small", .5m }, { "medium", 1m }, { "large", 1.5m }, { "party", 2m } };
+        private Dictionary<string, int> ingredientUsageScalar = new Dictionary<string, int>() { { "small", 1 }, { "medium", 2 }, { "large", 3 }, { "party", 4 } };
+
 
         public void AddNewSize(string name, decimal basePrice, decimal toppingPrice)
         {
