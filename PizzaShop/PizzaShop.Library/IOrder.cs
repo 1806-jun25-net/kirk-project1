@@ -9,7 +9,8 @@ namespace PizzaShop.Library
         List<IPizza> Pizzas { get; set; }
         DateTime Timestamp { get; set; }
         String Store { get; set; }
-        String UserID { get; set; }
-        int Id { get; }
+        String UserID { get; }
+        string Id { get; set; }
+        decimal Price { get; set; }
     }
 }

@@ -11,26 +11,30 @@ namespace PizzaShop.Library
         public List<IPizza> Pizzas { get; set; }
         public DateTime Timestamp { get; set; }
         public string Store { get; set; }
-        public string UserID { get; set; }
-        public int Id { get; }
+        public string UserID { get;}
+        public string Id { get; set;  }  //for internal use only.  Null on incomplete orders, userID+Store+Timestamp on completed orders at time of completion
+        public decimal Price { get; set; }
 
+        //fresh order from scratch
         public Order(string userParam, string storeParam)
         {
             Pizzas = new List<IPizza>();
             //get unique order number somehow
-            Id = 0;
+            Id = null;
             UserID = userParam;
             Store = storeParam;
         }
 
+        // importing suggested order for user
         public Order(string userParam, string storeParam, List<IPizza> pizzaParam)
         {
             Pizzas = pizzaParam;
             //get unique order number somehow
-            Id = 0;
+            Id = null;
             UserID = userParam;
             Store = storeParam;
         }
+
 
     }
 }
