@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PizzaShop.Library
 {
-    class OrderBuilder
+    public class OrderBuilder
     {
         public IOrder order;
         public IPizza ActivePizza { get; set; }
@@ -20,34 +20,55 @@ namespace PizzaShop.Library
             ActivePizza = o.Pizzas[0];
         }
 
-        public void StartNewPizza()
+        public void StartNewPizza(string size)
         {
-
+            ActivePizza = new BuildYourOwnPizza(size);
         }
 
         public void DuplicatePizza(int i)
         {
-
+            if (i >= 0 && i < order.Pizzas.Count)
+                order.Pizzas.Add(order.Pizzas[i]);
         }
 
-        public void SwitchToPizza(int i)
+        public void AddPizza(IPizza p)
         {
-
+            if (p != null)
+                order.Pizzas.Add(p);
         }
 
-        public void AddToppingToCurrentPizza(string topping)
+        public void SwitchActivePizza(int i)
         {
-            
+            if (i >= 0 && i < order.Pizzas.Count)
+                ActivePizza = order.Pizzas[i];
         }
 
-        public void ChangeSauceOnCurrentPizza(string sauce)
+        public void AddToppingToActivePizza(string topping)
         {
-
+            //TODO: check topping is valid from list of toppings
+            ActivePizza.Toppings.Add(topping);
+            ActivePizza.Price += SizingPricingAccessor.SPM.GetToppingPrice(ActivePizza.Size);
         }
 
-        public void ChangeCrustOnCurrentPizza(string crust)
+        public void RemoveToppingFromActivePizza(string topping)
         {
-            
+            //TODO: check topping is valid from list of toppings
+
+            //TODO: verify topping is already on pizza before removal
+            ActivePizza.Toppings.Remove(topping);
+            ActivePizza.Price -= SizingPricingAccessor.SPM.GetToppingPrice(ActivePizza.Size);
+        }
+
+        public void ChangeSauceOnActivePizza(string sauce)
+        {
+            //TODO: check sauce is valid from list of toppings
+            ActivePizza.SauceType = sauce;
+        }
+
+        public void ChangeCrustOnActivePizza(string crust)
+        {
+            //TODO: check crust is valid from list of 
+            ActivePizza.CrustType = crust;
         }
 
         public bool ChangeLocation(string store)
