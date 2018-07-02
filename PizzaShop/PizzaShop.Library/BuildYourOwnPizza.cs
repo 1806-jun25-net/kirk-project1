@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PizzaShop.Library
 {
-    class BuildYourOwnPizza : IPizza
+    public class BuildYourOwnPizza : IPizza
     {
         public string Size { get; set; }
         public string CrustType { get; set; }

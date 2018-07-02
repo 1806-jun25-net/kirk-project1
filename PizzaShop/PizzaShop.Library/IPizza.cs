@@ -6,10 +6,10 @@ namespace PizzaShop.Library
 {
     public interface IPizza
     {
-        string Size { get; }
-        string CrustType { get; }
-        string SauceType { get; }
+        string Size { get; set; }
+        string CrustType { get; set; }
+        string SauceType { get; set; }
         HashSet<String> Toppings { get; set; }
-        decimal Price { get; }
+        decimal Price { get; set; }
     }
 }
