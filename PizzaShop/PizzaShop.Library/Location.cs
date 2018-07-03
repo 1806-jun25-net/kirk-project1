@@ -11,6 +11,8 @@ namespace PizzaShop.Library
     public class Location
     {
         public Dictionary<string, IIngredient> Stock { get; } = new Dictionary<string, IIngredient>();
+        public List<string> OrderHistory { get; set; } = new List<string>();
+        public String name { get; set; }
 
         /// <summary>
         /// Increases this Location's quantity of given IIngredient by amount specified in parameter's quantity
@@ -25,7 +27,7 @@ namespace PizzaShop.Library
             {
                 Stock.Add(ing.Name, ing);
                 //also register ingredient in ingredient directory
-                IngredientDirectoryAccessor.ingDir.AddIngredient(ing);
+                DataAccessor.DH.ingDir.AddIngredient(ing);
             }
         }
 
