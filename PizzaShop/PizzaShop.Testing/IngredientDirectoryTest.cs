@@ -6,16 +6,8 @@ using Xunit;
 
 namespace PizzaShop.Testing
 {
-    public class IngredientDirectoryAccessorTest
-    {
-
-        
-        [Fact]
-        public void IngredientDirectoryAccessorActuallyMakesAIngredientDirectoryInstance()
-        { 
-
-            Assert.True(!(IngredientDirectoryAccessor.ingDir.Equals(null)));
-        }
+    public class IngredientDirectoryTest
+    { 
         
         [Theory]
         [InlineData("thin crust")]
@@ -24,9 +16,9 @@ namespace PizzaShop.Testing
         {
             Crust c = new Crust(name, 1);
 
-            IngredientDirectoryAccessor.ingDir.AddIngredient(c);
+            DataAccessor.DH.ingDir.AddIngredient(c);
 
-            Assert.Contains(c.Name, IngredientDirectoryAccessor.ingDir.Crusts);
+            Assert.Contains(c.Name, DataAccessor.DH.ingDir.Crusts);
         }
 
         [Theory]
@@ -36,9 +28,9 @@ namespace PizzaShop.Testing
         {
             Sauce s = new Sauce(name, 1);
 
-            IngredientDirectoryAccessor.ingDir.AddIngredient(s);
+            DataAccessor.DH.ingDir.AddIngredient(s);
 
-            Assert.Contains(s.Name, IngredientDirectoryAccessor.ingDir.Sauces);
+            Assert.Contains(s.Name, DataAccessor.DH.ingDir.Sauces);
         }
 
         [Theory]
@@ -48,9 +40,9 @@ namespace PizzaShop.Testing
         {
             Topping t = new Topping(name, 1);
 
-            IngredientDirectoryAccessor.ingDir.AddIngredient(t);
+            DataAccessor.DH.ingDir.AddIngredient(t);
 
-            Assert.Contains(t.Name, IngredientDirectoryAccessor.ingDir.Toppings);
+            Assert.Contains(t.Name, DataAccessor.DH.ingDir.Toppings);
         }
     }
 }

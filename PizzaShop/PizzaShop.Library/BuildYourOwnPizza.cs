@@ -18,16 +18,16 @@ namespace PizzaShop.Library
             CrustType = "classic crust";
             SauceType = "classic sauce";
             Toppings.Add("cheese");
-            Price = SizingPricingAccessor.SPM.GetBasePrice(s) + SizingPricingAccessor.SPM.GetToppingPrice(s);
+            Price = DataAccessor.DH.SPM.GetBasePrice(s) + DataAccessor.DH.SPM.GetToppingPrice(s);
         }
 
         public void AddTopping(string item)
         {
             // Do nothing if topping is already on this pizza, or is not a valid known topping
-            if (Toppings.Contains(item) || !IngredientDirectoryAccessor.ingDir.Toppings.Contains(item))
+            if (Toppings.Contains(item) || !DataAccessor.DH.ingDir.Toppings.Contains(item))
                 return;
             Toppings.Add(item);
-            Price += SizingPricingAccessor.SPM.GetToppingPrice(Size);
+            Price += DataAccessor.DH.SPM.GetToppingPrice(Size);
         }
 
         public void RemoveTopping(string item)
@@ -36,13 +36,13 @@ namespace PizzaShop.Library
             if (!Toppings.Contains(item))
                 return;
             Toppings.Remove(item);
-            Price -= SizingPricingAccessor.SPM.GetToppingPrice(Size);
+            Price -= DataAccessor.DH.SPM.GetToppingPrice(Size);
         }
 
         public void ChangeCrust(string item)
         {
             //Do nothing if given crust is not a valid crust
-            if (!IngredientDirectoryAccessor.ingDir.Crusts.Contains(item))
+            if (!DataAccessor.DH.ingDir.Crusts.Contains(item))
                 return;
             CrustType = item;
         }
@@ -50,7 +50,7 @@ namespace PizzaShop.Library
         public void ChangesSauce(string item)
         {
             //Do nothing if given sauce is not a valid sauce
-            if (!IngredientDirectoryAccessor.ingDir.Sauces.Contains(item))
+            if (!DataAccessor.DH.ingDir.Sauces.Contains(item))
                 return;
             SauceType = item;
         }
@@ -58,10 +58,10 @@ namespace PizzaShop.Library
         public void changeSize(string s)
         {
             //Do nothing if given size is not a valid size
-            if (!SizingPricingAccessor.SPM.Sizes.Contains(s))
+            if (!DataAccessor.DH.SPM.Sizes.Contains(s))
                 return;
             Size = s;
-            Price = SizingPricingAccessor.SPM.GetBasePrice(s) + SizingPricingAccessor.SPM.GetToppingPrice(s) * Toppings.Count;
+            Price = DataAccessor.DH.SPM.GetBasePrice(s) + DataAccessor.DH.SPM.GetToppingPrice(s) * Toppings.Count;
         }
 
     }

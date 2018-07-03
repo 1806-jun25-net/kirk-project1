@@ -54,7 +54,7 @@ namespace PizzaShop.Library
         {
             //TODO: check topping is valid from list of toppings
             ActivePizza.Toppings.Add(topping);
-            ActivePizza.Price += SizingPricingAccessor.SPM.GetToppingPrice(ActivePizza.Size);
+            ActivePizza.Price += DataAccessor.DH.SPM.GetToppingPrice(ActivePizza.Size);
         }
 
         public void RemoveToppingFromActivePizza(string topping)
@@ -65,7 +65,7 @@ namespace PizzaShop.Library
             if (ActivePizza.Toppings.Contains(topping))
             {
                 ActivePizza.Toppings.Remove(topping);
-                ActivePizza.Price -= SizingPricingAccessor.SPM.GetToppingPrice(ActivePizza.Size);
+                ActivePizza.Price -= DataAccessor.DH.SPM.GetToppingPrice(ActivePizza.Size);
             }
         }
 
@@ -155,7 +155,8 @@ namespace PizzaShop.Library
 
         public string DoesLocationHaveAllIngredients()
         {
-
+            // User Remove Stock Bulk from store
+            //maybe add getLocation method??
             return null;
         }
     }
