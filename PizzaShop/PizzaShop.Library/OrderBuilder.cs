@@ -8,6 +8,8 @@ namespace PizzaShop.Library
     {
         public IOrder order;
         public IPizza ActivePizza { get; set; }
+        public const int maxPizzas = 12;
+        public const decimal maxOrderPrice = 500m;
 
         public OrderBuilder(string user, string store, string size)
         {
@@ -37,6 +39,11 @@ namespace PizzaShop.Library
                 order.Pizzas.Add(p);
         }
 
+        public void AddActivePizza()
+        {
+            AddPizza(ActivePizza);
+        }
+
         public void SwitchActivePizza(int i)
         {
             if (i >= 0 && i < order.Pizzas.Count)
@@ -55,30 +62,38 @@ namespace PizzaShop.Library
             //TODO: check topping is valid from list of toppings
 
             //TODO: verify topping is already on pizza before removal
-            ActivePizza.Toppings.Remove(topping);
-            ActivePizza.Price -= SizingPricingAccessor.SPM.GetToppingPrice(ActivePizza.Size);
+            if (ActivePizza.Toppings.Contains(topping))
+            {
+                ActivePizza.Toppings.Remove(topping);
+                ActivePizza.Price -= SizingPricingAccessor.SPM.GetToppingPrice(ActivePizza.Size);
+            }
         }
 
         public void ChangeSauceOnActivePizza(string sauce)
         {
             //TODO: check sauce is valid from list of toppings
-            ActivePizza.SauceType = sauce;
+            if (sauce != null)
+                ActivePizza.SauceType = sauce;
         }
 
         public void ChangeCrustOnActivePizza(string crust)
         {
             //TODO: check crust is valid from list of 
-            ActivePizza.CrustType = crust;
+            if (crust != null)
+                ActivePizza.CrustType = crust;
         }
 
         public bool ChangeLocation(string store)
         {
+            //TODO: check location is valid
+            if (store != null)
+                order.Store = store;
             return false;
         }
 
         public List<IPizza> GetPizzas()
         {
-            return null;
+            return order.Pizzas;
         }
 
 
@@ -88,27 +103,60 @@ namespace PizzaShop.Library
 
         public string FinalizeOrder()
         {
+            //check everything is valid
+            //return with reason if not valid
+            string result;
+            if (!IsOrderSmallEnough())
+                return $"Too many pizzas in this order.  Orders may only have {maxPizzas} pizzas maximum.";
+            if (!IsOrderCheapEnough())
+                return $"Too expenseive.  Maximum order price total is ${maxOrderPrice}.";
+            if (!IsOrderNotEmpty())
+                return "Order must have at least one pizza.";
+            if (!IsOrderTwoHoursLater())
+                return "Order is being placed too soon after a recent order.  You may place one order with each location every two hours.";
+            if ((result = DoesLocationHaveAllIngredients()) != null)
+                return $"Chosen location does not have the necessairy ingredients for all your pizzas.  It is short on {result}";
+
+            //if valid generate timestamp& order ID
+            order.Timestamp = DateTime.Now;
+            order.Id = order.Timestamp.Ticks.ToString();
+
+            //TODO:  add order to order history
             return null;
         }
 
         public bool IsOrderSmallEnough()
         {
-            return false;
+            if (order.Pizzas.Capacity > maxPizzas)
+                return false;
+            return true;
         }
 
         public bool IsOrderCheapEnough()
         {
-            return false;
+            if (order.Price > maxOrderPrice)
+                return false;
+            return true;
         }
 
         public bool IsOrderNotEmpty()
         {
-            return false;
+            if (order.Pizzas.Capacity <= 0)
+                return false;
+            return true;
         }
 
         public bool IsOrderTwoHoursLater()
         {
+            //TODO: actually figure out how to do this
+
             return false;
+        }
+
+        public string DoesLocationHaveAllIngredients()
+        {
+
+            return null;
         }
     }
 }
