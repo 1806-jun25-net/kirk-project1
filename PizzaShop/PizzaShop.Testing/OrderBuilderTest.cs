@@ -12,7 +12,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void StartNewPizzaShouldSetActivePizzaToANonNullPizza()
         {
-            OrderBuilder ob = new OrderBuilder("user", "store", "small");
+            OrderBuilder ob = new OrderBuilder("user", "store");
 
             ob.StartNewPizza("large");
 
@@ -22,7 +22,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void StartNewPizzaShouldSetActivePizzaToAppropiateSize()
         {
-            OrderBuilder ob = new OrderBuilder("user", "store", "small");
+            OrderBuilder ob = new OrderBuilder("user", "store");
 
             ob.StartNewPizza("large");
 
@@ -33,7 +33,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void DuplicatePizzaShouldAddExactlyOneAdditionalPizzaToPizzas()
         {
-            OrderBuilder ob = new OrderBuilder("user", "store", "small");
+            OrderBuilder ob = new OrderBuilder("user", "store");
             ob.order.Pizzas.Add(new BuildYourOwnPizza("small"));
 
             ob.DuplicatePizza(0);
@@ -44,7 +44,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void DuplicatePizzaShouldAddExactPizzaToEndOfPizzas()
         {
-            OrderBuilder ob = new OrderBuilder("user", "store", "small");
+            OrderBuilder ob = new OrderBuilder("user", "store");
             IPizza p = new BuildYourOwnPizza("small");
             ob.order.Pizzas.Add(p);
 
@@ -57,7 +57,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void DuplicatePizzaShouldDoNothingIfIndexIsOutOfBounds()
         {
-            OrderBuilder ob = new OrderBuilder("user", "store", "small");
+            OrderBuilder ob = new OrderBuilder("user", "store");
             IPizza p = new BuildYourOwnPizza("small");
             ob.order.Pizzas.Add(p);
 
@@ -70,7 +70,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void AddPizzaShouldAddExactlyOneAdditionalPizzaToPizzas()
         {
-            OrderBuilder ob = new OrderBuilder("user", "store", "small");
+            OrderBuilder ob = new OrderBuilder("user", "store");
             ob.order.Pizzas.Add(new BuildYourOwnPizza("small"));
 
             ob.AddPizza(new BuildYourOwnPizza("small"));
@@ -81,7 +81,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void AddPizzaShouldAddExactPizzaToEndOfPizzas()
         {
-            OrderBuilder ob = new OrderBuilder("user", "store", "small");
+            OrderBuilder ob = new OrderBuilder("user", "store");
             IPizza p = new BuildYourOwnPizza("small");
             ob.order.Pizzas.Add(new BuildYourOwnPizza("medium"));
 
@@ -94,7 +94,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void AddPizzaShouldDoNothingIfPassedNullIPizza()
         {
-            OrderBuilder ob = new OrderBuilder("user", "store", "small");
+            OrderBuilder ob = new OrderBuilder("user", "store");
             ob.order.Pizzas.Add(new BuildYourOwnPizza("medium"));
 
             ob.AddPizza(null);
@@ -103,9 +103,10 @@ namespace PizzaShop.Testing
         }
 
         //SwitchActivePizza Testing
+        [Fact]
         public void SwitchActivePizzaShouldNotLeaveActivePizzaNull()
         {
-            OrderBuilder ob = new OrderBuilder("user", "store", "small");
+            OrderBuilder ob = new OrderBuilder("user", "store");
 
             ob.SwitchActivePizza(1);
             IPizza result = ob.ActivePizza;
@@ -116,7 +117,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void SwitchActivePizzaShouldCorrectlySetActivePizza()
         {
-            OrderBuilder ob = new OrderBuilder("user", "store", "small");
+            OrderBuilder ob = new OrderBuilder("user", "store");
             IPizza p = new BuildYourOwnPizza("small");
             ob.order.Pizzas.Add(p);
 
@@ -129,7 +130,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void SwitchActivePizzaShouldDoNothingIfIndexIsOutOfBounds()
         {
-            OrderBuilder ob = new OrderBuilder("user", "store", "small");
+            OrderBuilder ob = new OrderBuilder("user", "store");
             IPizza p = ob.ActivePizza;
             ob.order.Pizzas.Add(p);
             

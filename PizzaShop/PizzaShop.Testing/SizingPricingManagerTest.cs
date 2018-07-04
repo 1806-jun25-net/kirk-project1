@@ -87,9 +87,9 @@ namespace PizzaShop.Testing
 
         //testing RemoveSize method
         [Theory]
-        [InlineData("medium-small", 5.5, .5)]
-        [InlineData("medium-large", 11.1, .75)]
-        public void RemoveSizeShouldDoNothingIfSizeIsNotInSizes(string name, decimal bPrice, decimal tPrice)
+        [InlineData("medium-small")]
+        [InlineData("medium-large")]
+        public void RemoveSizeShouldDoNothingIfSizeIsNotInSizes(string name)
         {
             var mngr = new SizingPricingManager();
             var originalSizes = mngr.Sizes;

@@ -12,7 +12,17 @@ namespace PizzaShop.Library
     {
         public Dictionary<string, IIngredient> Stock { get; } = new Dictionary<string, IIngredient>();
         public List<string> OrderHistory { get; set; } = new List<string>();
-        public String name { get; set; }
+        public String Name { get; set; }
+
+        public Location(String name)
+        {
+            Name = name;
+        }
+
+        public Location()
+        {
+
+        }
 
         /// <summary>
         /// Increases this Location's quantity of given IIngredient by amount specified in parameter's quantity

@@ -12,5 +12,8 @@ namespace PizzaShop.Library
         string Phone { get; set; }
         string FavStore { get; set; }
         string Username { get; set; }
+
+
+        List<IPizza> GetRecommendedOrder();
     }
 }

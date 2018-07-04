@@ -7,19 +7,17 @@ namespace PizzaShop.Library
     public class OrderBuilder
     {
         public IOrder order;
-        public IPizza ActivePizza { get; set; }
+        public IPizza ActivePizza { get; set; } = null;
         public const int maxPizzas = 12;
         public const decimal maxOrderPrice = 500m;
 
-        public OrderBuilder(string user, string store, string size)
+        public OrderBuilder(string user, string store)
         {
             order = new Order(user, store);
-            ActivePizza = new BuildYourOwnPizza(size);
         }
-        public OrderBuilder(Order o)
+        public OrderBuilder(string user, string store, List<IPizza> pizzas)
         {
-            order = new Order(o.UserID, o.Store, o.Pizzas);
-            ActivePizza = o.Pizzas[0];
+            order = new Order(user, store, pizzas);
         }
 
         public void StartNewPizza(string size)
@@ -41,7 +39,8 @@ namespace PizzaShop.Library
 
         public void AddActivePizza()
         {
-            AddPizza(ActivePizza);
+            if (ActivePizza != null)
+                AddPizza(ActivePizza);
         }
 
         public void SwitchActivePizza(int i)
