@@ -49,23 +49,29 @@ namespace PizzaShop.Library
                 ActivePizza = order.Pizzas[i];
         }
 
-        public void AddToppingToActivePizza(string topping)
+        public bool AddToppingToActivePizza(string topping)
         {
-            //TODO: check topping is valid from list of toppings
+            // if topping is not in valid list of toppings
+            if (!DataAccessor.DH.ingDir.Toppings.Contains(topping))
+                return false;
+            //if topping already on pizza
+            if (ActivePizza.Toppings.Contains(topping))
+                return false;
             ActivePizza.Toppings.Add(topping);
             ActivePizza.Price += DataAccessor.DH.SPM.GetToppingPrice(ActivePizza.Size);
+            return true;
         }
 
-        public void RemoveToppingFromActivePizza(string topping)
+        public bool RemoveToppingFromActivePizza(string topping)
         {
-            //TODO: check topping is valid from list of toppings
 
-            //TODO: verify topping is already on pizza before removal
             if (ActivePizza.Toppings.Contains(topping))
             {
                 ActivePizza.Toppings.Remove(topping);
                 ActivePizza.Price -= DataAccessor.DH.SPM.GetToppingPrice(ActivePizza.Size);
+                return true;
             }
+            return false;
         }
 
         public void ChangeSauceOnActivePizza(string sauce)
@@ -75,11 +81,14 @@ namespace PizzaShop.Library
                 ActivePizza.SauceType = sauce;
         }
 
-        public void ChangeCrustOnActivePizza(string crust)
+        public bool ChangeCrustOnActivePizza(string crust)
         {
             //TODO: check crust is valid from list of 
-            if (crust != null)
-                ActivePizza.CrustType = crust;
+            // if topping is not in valid list of toppings
+            if (!DataAccessor.DH.ingDir.Toppings.Contains(crust))
+                return false;
+            ActivePizza.CrustType = crust;
+            return true;
         }
 
         public bool ChangeLocation(string store)

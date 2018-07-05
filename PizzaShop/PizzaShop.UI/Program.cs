@@ -349,7 +349,7 @@ namespace PizzaShop.UI
             while (!validInput);
             ob.StartNewPizza(DataAccessor.DH.SPM.Sizes[Int32.Parse(input)-1]);
             //new pizza created, now allow for topping/sauce/crust changes
-            MenuModifyPizza(ob.ActivePizza);
+            MenuModifyPizza(ob);
             ob.AddActivePizza();
 
 
@@ -357,7 +357,7 @@ namespace PizzaShop.UI
 
         }
             
-        public static void MenuModifyPizza(IPizza pizza)
+        public static void MenuModifyPizza(OrderBuilder ob)
         {
             string input = "";
             bool exitMenu = false;
@@ -365,7 +365,7 @@ namespace PizzaShop.UI
 
             do
             {
-                PrintPizza(pizza);
+                PrintPizza(ob.ActivePizza);
                 Console.WriteLine("Please enter the number for your selection");
                 Console.WriteLine("1: Add topping to pizza");
                 Console.WriteLine("2: Remove topping from pizza");
@@ -378,19 +378,19 @@ namespace PizzaShop.UI
                 switch (input)
                 {
                     case "1":  //AddTopping
-                        MenuAddToppings(pizza);
+                        MenuAddToppings(ob);
                         break;
                     case "2":  //RemoveTopping
-                        MenuRemoveToppings(pizza);
+                        MenuRemoveToppings(ob);
                         break;
                     case "3":  //chance crust
-                        MenuChangePizzaCrust(pizza);
+                        MenuChangePizzaCrust(ob);
                         break;
                     case "4":  //change sauce
-                        MenuChangePizzaSauce(pizza);
+                        MenuChangePizzaSauce(ob);
                         break;
                     case "5":  //change size
-                        MenuChangePizzaSize(pizza);
+                        MenuChangePizzaSize(ob);
                         break;
                     case "6":  //add to order
                         exitMenu = true;
@@ -404,13 +404,84 @@ namespace PizzaShop.UI
             while (!exitMenu);
         }
 
-        public static void MenuAddToppings(IPizza pizza)
+        public static void MenuAddToppings(OrderBuilder ob)
         {
-
+            string input = "";
+            bool exitMenu = false;
+            bool result;
+            do
+            {
+                MenuHelperSelectIngredient("add", "topping", DataAccessor.DH.ingDir.Toppings);
+                input = Console.ReadLine();
+                result = ob.AddToppingToActivePizza(input);
+                if (result)
+                {
+                    Console.WriteLine($"The topping '{input}' has been added to your pizza.");
+                    PrintPizza(ob.ActivePizza);
+                }
+                else if (input.Equals("0"))
+                    exitMenu = true;
+                else
+                    Console.WriteLine($"We did not recognize the topping '{input}', or it already is on your pizza.  It could not be added to your pizza.");
+            }
+            while (!exitMenu);
         }
 
+        public static void MenuRemoveToppings(OrderBuilder ob)
+        {
+            string input = "";
+            bool exitMenu = false;
+            bool result;
+            do
+            {
+                MenuHelperSelectIngredient("remove", "topping", ob.ActivePizza.Toppings);
+                input = Console.ReadLine();
+                result = ob.RemoveToppingFromActivePizza(input);
+                if (result)
+                {
+                    Console.WriteLine($"The topping '{input}' has been removed from your pizza.");
+                    PrintPizza(ob.ActivePizza);
+                }
+                else if (input.Equals("0"))
+                    exitMenu = true;
+                else
+                    Console.WriteLine($"We did not recognize the topping '{input}', or it is not currently on your pizza.  It could not be removed from your pizza.");
+            }
+            while (!exitMenu);
+        }
 
-        
+        public static void MenuChangePizzaCrust(OrderBuilder ob)
+        {
+            string input = "";
+            bool exitMenu = false;
+            bool result;
+            do
+            {
+                MenuHelperSelectIngredient("change", "crust", DataAccessor.DH.ingDir.Crusts);
+                input = Console.ReadLine();
+                result = ob.ChangeCrustOnActivePizza(input);
+                if (result)
+                {
+                    Console.WriteLine($"The crust '{input}' has been set for your pizza.");
+                    PrintPizza(ob.ActivePizza);
+                }
+                else if (input.Equals("0"))
+                    exitMenu = true;
+                else
+                    Console.WriteLine($"We did not recognize the crust '{input}'.  The pizza crust has not been changed.");
+            }
+            while (!exitMenu);
+        }
+        public static void MenuChangePizzaSauce(OrderBuilder ob)
+        {
+            //TODO
+        }
+
+        public static void MenuChangePizzaSize(OrderBuilder ob)
+        {
+            //TODO
+        }
+
 
         public static void MenuOrderArchive()
         {
@@ -427,7 +498,12 @@ namespace PizzaShop.UI
         //MenuHelper methods perform tasks for our Methods like prompting for input but do not control menu flow
         public static void MenuHelperSelectIngredient(string action, string type, IEnumerable<IIngredient> ingredients)
         {
-            Console.WriteLine($"Please type the name of the {type} you would like to {action}:");
+            Console.WriteLine($"Please type the name of the {type} you would like to {action}, or 0 to go back:");
+            PrintIngredients(ingredients);
+        }
+        public static void MenuHelperSelectIngredient(string action, string type, IEnumerable<string> ingredients)
+        {
+            Console.WriteLine($"Please type the name of the {type} you would like to {action}, or 0 to go back:");
             PrintIngredients(ingredients);
         }
 
@@ -455,6 +531,7 @@ namespace PizzaShop.UI
             {
                 Console.Write($" {t.Name},");
             }
+            Console.WriteLine();
         }
 
         public static void PrintIngredients(IEnumerable<string> ingredients)
@@ -463,6 +540,7 @@ namespace PizzaShop.UI
             {
                 Console.Write($" {t},");
             }
+            Console.WriteLine();
         }
 
         public static void PrintPizzaSizes()

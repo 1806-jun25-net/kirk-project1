@@ -10,6 +10,17 @@ namespace PizzaShop.Library
         public HashSet<string> Sauces { get; set; } = new HashSet<string>();
         public HashSet<string> Toppings { get; set; } = new HashSet<string>();
 
+        public IngredientDirectory()
+        {
+            Crusts.Add("classic crust");
+            Crusts.Add("thin crust");
+            Sauces.Add("classic sauce");
+            Sauces.Add("garlic white sauce");
+            Toppings.Add("cheese");
+            Toppings.Add("pepperoni");
+            Toppings.Add("sausage");
+        }
+
         public void AddIngredient(IIngredient ing)
         {
             if (ing is Crust)
