@@ -95,7 +95,10 @@ namespace PizzaShop.Library
             return order.Pizzas;
         }
 
-
+        public void ChangeSizeOfActivePizza(string size)
+        {
+            throw new Exception("Yet to implement change size");
+        }
 
 
 

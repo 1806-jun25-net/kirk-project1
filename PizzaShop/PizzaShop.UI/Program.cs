@@ -46,6 +46,8 @@ namespace PizzaShop.UI
             //Run serialization code one final time
         }
 
+
+        //Menu methods to handle each individual menu state
         public static void MenuNewUserCreation()
         {
             String input = "";
@@ -347,6 +349,8 @@ namespace PizzaShop.UI
             while (!validInput);
             ob.StartNewPizza(DataAccessor.DH.SPM.Sizes[Int32.Parse(input)-1]);
             //new pizza created, now allow for topping/sauce/crust changes
+            MenuModifyPizza(ob.ActivePizza);
+            ob.AddActivePizza();
 
 
 
@@ -371,10 +375,42 @@ namespace PizzaShop.UI
                 Console.WriteLine("6: Add pizza to order");
                 Console.Write("->");
                 input = Console.ReadLine();
+                switch (input)
+                {
+                    case "1":  //AddTopping
+                        MenuAddToppings(pizza);
+                        break;
+                    case "2":  //RemoveTopping
+                        MenuRemoveToppings(pizza);
+                        break;
+                    case "3":  //chance crust
+                        MenuChangePizzaCrust(pizza);
+                        break;
+                    case "4":  //change sauce
+                        MenuChangePizzaSauce(pizza);
+                        break;
+                    case "5":  //change size
+                        MenuChangePizzaSize(pizza);
+                        break;
+                    case "6":  //add to order
+                        exitMenu = true;
+                        break;
+                    default:  //Invalid Input
+                        Console.WriteLine("Input invalid.  Please try again.");
+                        break;
+                }
 
             }
             while (!exitMenu);
         }
+
+        public static void MenuAddToppings(IPizza pizza)
+        {
+
+        }
+
+
+        
 
         public static void MenuOrderArchive()
         {
@@ -385,10 +421,18 @@ namespace PizzaShop.UI
         {
             Console.WriteLine("~~~Location, Inventory, & Menu Management~~~");
         }
-        
 
 
 
+        //MenuHelper methods perform tasks for our Methods like prompting for input but do not control menu flow
+        public static void MenuHelperSelectIngredient(string action, string type, IEnumerable<IIngredient> ingredients)
+        {
+            Console.WriteLine($"Please type the name of the {type} you would like to {action}:");
+            PrintIngredients(ingredients);
+        }
+
+
+        // Printing methods to streamline menu method code:
         public static void PrintPizzaList(List<IPizza> pizzas)
         { 
             for(int i = 0; i < pizzas.Count; i++)
@@ -401,8 +445,21 @@ namespace PizzaShop.UI
 
         public static void PrintPizza(IPizza pizza)
         {
-            Console.Write("{pizza.Size} pizza, {pizza.CrustType}, {pizza.SauceType}\n    Toppings:");
-            foreach (string t in pizza.Toppings)
+            Console.Write($"{pizza.Size} pizza, {pizza.CrustType}, {pizza.SauceType}\n    Toppings:");
+            PrintIngredients(pizza.Toppings);
+        }
+
+        public static void PrintIngredients(IEnumerable<IIngredient> ingredients)
+        {
+            foreach (IIngredient t in ingredients)
+            {
+                Console.Write($" {t.Name},");
+            }
+        }
+
+        public static void PrintIngredients(IEnumerable<string> ingredients)
+        {
+            foreach (string t in ingredients)
             {
                 Console.Write($" {t},");
             }
