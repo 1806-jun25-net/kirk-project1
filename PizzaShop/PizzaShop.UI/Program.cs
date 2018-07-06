@@ -335,7 +335,6 @@ namespace PizzaShop.UI
         public static void MenuAddNewPizza(OrderBuilder ob)
         {
             string input = "";
-            bool exitMenu = false;
             bool validInput = true;
 
             Console.WriteLine("Select your pizza's size:");
@@ -384,8 +383,9 @@ namespace PizzaShop.UI
             var targetPizza = ob.order.Pizzas[Int32.Parse(input) - 1];
             var newPizza = new BuildYourOwnPizza(targetPizza.Size);
             newPizza.CrustType = targetPizza.CrustType;
-            newPizza.SauceType = targetPizza.CrustType;
-            newPizza.Toppings = targetPizza.Toppings;
+            newPizza.SauceType = targetPizza.SauceType;
+            foreach (var t in targetPizza.Toppings)
+                newPizza.Toppings.Add(t);
             newPizza.Price = targetPizza.Price;
             ob.AddPizza(newPizza);
         }
@@ -644,22 +644,26 @@ namespace PizzaShop.UI
             {
                 Console.WriteLine("~~~Order Archive~~~");
                 Console.WriteLine("Please enter the number for your selection");
-                Console.WriteLine("1: Order Lookup by ID");
-                Console.WriteLine("2: ");
-                Console.WriteLine("3: ");
+                Console.WriteLine("1: Single Order Lookup by ID");
+                Console.WriteLine("2: User Order History");
+                Console.WriteLine("3: Location Order History");
+                Console.WriteLine("4: All Orders");
                 Console.WriteLine("0: Go Back");
                 Console.Write("->");
                 input = Console.ReadLine();
                 switch (input)
                 {
-                    case "1":  //
-                        
+                    case "1":  // single order by ID
+                        MenuOrdersByID();
                         break;
-                    case "2":  //
-                        
+                    case "2":  // orders by current user
+                        MenuOrdersByUser();
                         break;
-                    case "3":  //
-                        
+                    case "3":  // orders by location
+                        MenuOrdersByLocation();
+                        break;
+                    case "4":  // all orders menu
+                        MenuAllOrdersSorting();
                         break;
                     case "0": // go back
                         exitMenu = true;
@@ -673,9 +677,88 @@ namespace PizzaShop.UI
             while (!exitMenu);
         }
 
+        public static void MenuOrdersByID()
+        {
+            string input = "";
+            Console.WriteLine("Please enter the order ID you wish to view:");
+            Console.Write("->");
+            input = Console.ReadLine();
+            if (!DataAccessor.DH.Orders.ContainsKey(input))
+                Console.WriteLine("OrderID not recognized.");
+            else
+            {
+                PrintOrder(DataAccessor.DH.Orders[input]);
+            }
+        }
+
+        public static void MenuOrdersByUser()            //TODO once SQL is up and running   for now prints all orders
+        {
+            Console.WriteLine("This functionality is under construction. Press enter to proceed with caution");
+            Console.ReadLine();
+
+
+
+            string input = "";
+            Console.WriteLine("Please enter the username who's orders you wish to view:");
+            Console.Write("->");
+            input = Console.ReadLine();
+            //if (!DataAccessor.DH.Orders.ContainsKey(input))
+            //    Console.WriteLine("Input not recognized.");
+
+            //else
+            {
+                foreach (KeyValuePair<string, IOrder> entry in DataAccessor.DH.Orders)
+                {
+                    PrintOrder(entry.Value);
+                }
+            }
+        }
+
+        public static void MenuOrdersByLocation()            //TODO once SQL is up and running
+        {
+            Console.WriteLine("This functionality is under construction. Press enter to proceed with caution");
+            Console.ReadLine();
+
+
+
+            string input = "";
+            bool inputValid = false;
+            do
+            {
+                PrintLocations();
+                Console.WriteLine("Please select the location by number to see its orders, or 0 to go back without viewing:");
+                Console.Write("->");
+                input = Console.ReadLine();
+                inputValid = input.Count(c => !char.IsDigit(c)) == 0
+                    && Int32.Parse(input) >= 1
+                    && Int32.Parse(input) <= DataAccessor.DH.Locations.Count;
+                if (!inputValid)
+                    Console.WriteLine("That selection is invalid.  Enter only the number associated with the store. Please try again.");
+            }
+            while (!inputValid && !input.Equals("0"));
+            if (!input.Equals("0"))
+            {
+
+                {
+                    foreach (KeyValuePair<string, IOrder> entry in DataAccessor.DH.Orders)
+                    {
+                        PrintOrder(entry.Value);
+                    }
+                }
+            }
+        }
+
+        public static void MenuAllOrdersSorting()            //TODO once SQL is up and running
+        {
+            Console.WriteLine("This functionality is under construction. Press enter to proceed with caution");
+            Console.ReadLine();
+        }
+
         public static void MenuLocationInventoryMenuManagement()
         {
             Console.WriteLine("~~~Location, Inventory, & Menu Management~~~");
+            Console.WriteLine("This functionality is under construction. Press enter to proceed with caution");
+            Console.ReadLine();
         }
 
 
@@ -746,6 +829,16 @@ namespace PizzaShop.UI
             Console.WriteLine("Our order locations are:");
             for (int i = 0; i < DataAccessor.DH.Locations.Count; i++)
                 Console.WriteLine($"{i + 1}: {DataAccessor.DH.Locations[i].Name}");
+        }
+
+        public static void PrintOrder(IOrder order)
+        {
+            Console.WriteLine($"Order ID: {order.Id}");
+            Console.WriteLine($"Order Prpared for username: {order.UserID}");
+            Console.WriteLine($"Order location: {order.Store}");
+            PrintPizzaList(order.Pizzas);
+            Console.WriteLine($"---------------------\n   Total Price: ${order.Price}\n");
+            Console.WriteLine($"Order placed on: {order.Timestamp}");
         }
 
     }
