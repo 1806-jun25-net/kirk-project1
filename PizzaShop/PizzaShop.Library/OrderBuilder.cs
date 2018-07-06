@@ -143,16 +143,17 @@ namespace PizzaShop.Library
                 return $"Too expenseive.  Maximum order price total is ${maxOrderPrice}.";
             if (!IsOrderNotEmpty())
                 return "Order must have at least one pizza.";
-            if (!IsOrderTwoHoursLater())
+            if (!IsOrderTwoHoursLater())   //TODO
                 return "Order is being placed too soon after a recent order.  You may place one order with each location every two hours.";
-            if ((result = DoesLocationHaveAllIngredients()) != null)
+            if ((result = DoesLocationHaveAllIngredients()) != null)  //TODO
                 return $"Chosen location does not have the necessairy ingredients for all your pizzas.  It is short on {result}";
 
             //if valid generate timestamp& order ID
             order.Timestamp = DateTime.Now;
             order.Id = order.Timestamp.Ticks.ToString();
 
-            //TODO:  add order to order history
+            //add order to order history
+            DataAccessor.DH.Orders.Add(order.Id, order);
             return null;
         }
 
@@ -181,13 +182,14 @@ namespace PizzaShop.Library
         {
             //TODO: actually figure out how to do this
 
-            return false;
+            return true;
         }
 
         public string DoesLocationHaveAllIngredients()
         {
+            //TODO:
             // User Remove Stock Bulk from store
-            //maybe add getLocation method??
+            
             return null;
         }
     }

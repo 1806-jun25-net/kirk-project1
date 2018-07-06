@@ -268,7 +268,6 @@ namespace PizzaShop.UI
         {
             string input = "";
             bool exitMenu = false;
-
             do
             {
                 if (ob.GetPizzas().Count == 0)
@@ -309,7 +308,8 @@ namespace PizzaShop.UI
                         MenuChangeLocation(ob);
                         break;
                     case "6":  //(attempt to) place order
-                        //TODO
+                        if (MenuFinalizeOrder(ob))
+                            exitMenu = true;
                         break;
                     case "0": //Go back
                         exitMenu = true;
@@ -603,9 +603,21 @@ namespace PizzaShop.UI
             while (!exitMenu);
         }
 
-        public static void MenuFinalizeOrder(OrderBuilder ob)
+        public static bool MenuFinalizeOrder(OrderBuilder ob)
         {
-            //TODO
+            string result;
+            Console.WriteLine("Finalizing Order...");
+            result = ob.FinalizeOrder();
+            if (result == null)
+            {
+                Console.WriteLine("Order successfully placed!");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine(result);
+                return false;
+            }
         }
 
         public static void MenuOrderArchive()
