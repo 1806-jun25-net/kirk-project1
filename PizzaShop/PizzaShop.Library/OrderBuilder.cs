@@ -15,10 +15,12 @@ namespace PizzaShop.Library
         public OrderBuilder(string user, string store)
         {
             order = new Order(user, store);
+            ActivePizza = null;
         }
         public OrderBuilder(string user, string store, List<IPizza> pizzas)
         {
             order = new Order(user, store, pizzas);
+            ActivePizza = null;
         }
 
         public void StartNewPizza(string size)
@@ -46,7 +48,7 @@ namespace PizzaShop.Library
 
         public void SwitchActivePizza(int i)
         {
-            if (i >= 0 && i < order.Pizzas.Count)
+            if (i >= 0 && i < order.Pizzas.Count && order.Pizzas[i] != null)
                 ActivePizza = order.Pizzas[i];
         }
 
@@ -173,14 +175,15 @@ namespace PizzaShop.Library
 
         public bool IsOrderNotEmpty()
         {
-            if (order.Pizzas.Capacity <= 0)
+            if (order.Pizzas.Count <= 0)
                 return false;
             return true;
         }
 
         public bool IsOrderTwoHoursLater()
         {
-            //TODO: actually figure out how to do this
+            //TODO: actually figure out how to do 
+            // Putting off until db is working so I can just use a query
 
             return true;
         }
@@ -189,8 +192,43 @@ namespace PizzaShop.Library
         {
             //TODO:
             // User Remove Stock Bulk from store
-            
-            return null;
+
+            //1: generate -List- of all ingredient types w/ appropiate quantity based on scalar
+            List<IIngredient> allIngredients = BuildIngredientList();
+            Location loc = DataAccessor.DH.Locations.First( l => l.Name.Equals(order.Store));
+            return loc.RemoveBulkStock(allIngredients);
         }
+
+        public List<IIngredient> BuildIngredientList()
+        {
+            List<IIngredient> allIngredients = new List<IIngredient>();
+            int amount;
+            foreach (var p in order.Pizzas)
+            {
+                amount = DataAccessor.DH.SPM.GetIngredientUsageScalar(p.Size);
+                AddToIngredientList(allIngredients, new Crust(p.CrustType, amount));
+                AddToIngredientList(allIngredients, new Sauce(p.SauceType, amount));
+                foreach (var s in p.Toppings)
+                {
+                    AddToIngredientList(allIngredients, new Topping(s, amount));
+                }
+            }
+
+            return allIngredients;
+        }
+
+        public void AddToIngredientList(List<IIngredient> allIngredients, IIngredient ing)
+        {
+            int index = allIngredients.IndexOf(ing);
+            if (index == -1)  //ingredient not yet in list
+            {
+                allIngredients.Add(ing);
+            }
+            else   // increase quantity of ingredient already in list
+            {
+                allIngredients[index].Quantity += ing.Quantity;
+            }
+        }
+
     }
 }

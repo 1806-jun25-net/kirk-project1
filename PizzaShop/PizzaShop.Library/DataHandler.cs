@@ -22,6 +22,7 @@ namespace PizzaShop.Library
             ingDir.AddIngredient(new Sauce("classic sauce", 1));
             ingDir.AddIngredient(new Topping("cheese", 1));
             ingDir.AddIngredient(new Topping("pepperoni", 1));
+
         }
     }
 }

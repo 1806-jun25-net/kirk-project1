@@ -17,11 +17,15 @@ namespace PizzaShop.Library
         public Location(String name)
         {
             Name = name;
+            Stock = new Dictionary<string, IIngredient>();
+            OrderHistory = new List<string>();
         }
 
         public Location()
         {
-
+            Stock = new Dictionary<string, IIngredient>();
+            OrderHistory = new List<string>();
+            Name = "";
         }
 
         /// <summary>
@@ -82,7 +86,7 @@ namespace PizzaShop.Library
         }
 
         /// <summary>
-        /// Edcreases this Location's quantity of all given IIngredients by amount specified in parameter's quantity for each
+        /// Decreases this Location's quantity of all given IIngredients by amount specified in parameter's quantity for each
         /// If any such decrease would put any quantity into the negative, leaves all quantities unchanged.
         /// </summary>
         /// <param name="list"></param>

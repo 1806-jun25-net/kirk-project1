@@ -15,6 +15,15 @@ namespace PizzaShop.UI
             //Start menu
             string input = null;
             bool exitApplication = false;
+            DataAccessor.DH.ToString();  // just to check DH initialization right away
+            //Adding in generic data for testing
+            DataAccessor.DH.Locations[0].AddBulkStock(new List<IIngredient>
+            {   new Crust("classic crust", 20),
+                new Sauce("classic sauce", 20),
+                new Topping("cheese", 100),
+                new Topping("sausage", 50)
+            });
+
             do
             {
                 //first startup, not yet logged in
@@ -45,7 +54,6 @@ namespace PizzaShop.UI
 
             //Run serialization code one final time
         }
-
 
         //Menu methods to handle each individual menu state
         public static void MenuNewUserCreation()
@@ -373,7 +381,13 @@ namespace PizzaShop.UI
                     Console.WriteLine("That selection is invalid.  Enter only the number associated with the pizza you wish to duplicate. Please try again.");
             }
             while (!inputValid && !input.Equals("0"));
-            ob.AddPizza(ob.order.Pizzas[Int32.Parse(input) - 1]);
+            var targetPizza = ob.order.Pizzas[Int32.Parse(input) - 1];
+            var newPizza = new BuildYourOwnPizza(targetPizza.Size);
+            newPizza.CrustType = targetPizza.CrustType;
+            newPizza.SauceType = targetPizza.CrustType;
+            newPizza.Toppings = targetPizza.Toppings;
+            newPizza.Price = targetPizza.Price;
+            ob.AddPizza(newPizza);
         }
 
         public static void MenuModifyExistingPizza(OrderBuilder ob)

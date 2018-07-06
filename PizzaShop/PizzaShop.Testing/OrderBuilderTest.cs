@@ -107,6 +107,7 @@ namespace PizzaShop.Testing
         public void SwitchActivePizzaShouldNotLeaveActivePizzaNull()
         {
             OrderBuilder ob = new OrderBuilder("user", "store");
+            ob.ActivePizza = new BuildYourOwnPizza("small");
 
             ob.SwitchActivePizza(1);
             IPizza result = ob.ActivePizza;
