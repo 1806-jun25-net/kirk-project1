@@ -31,19 +31,28 @@ namespace PizzaShop.Library
         public void DuplicatePizza(int i)
         {
             if (i >= 0 && i < order.Pizzas.Count)
+            {
+                order.Price += order.Pizzas[i].Price;
                 order.Pizzas.Add(order.Pizzas[i]);
+            }
         }
 
         public void AddPizza(IPizza p)
         {
             if (p != null)
+            {
                 order.Pizzas.Add(p);
+                order.Price += p.Price;
+            }
         }
 
         public void AddActivePizza()
         {
             if (ActivePizza != null)
+            {
                 AddPizza(ActivePizza);
+                order.Price += ActivePizza.Price;
+            }
         }
 
         public void SwitchActivePizza(int i)
@@ -120,13 +129,16 @@ namespace PizzaShop.Library
 
         public decimal CalculateTotalPrice()
         {
-            return order.Pizzas.Sum(p => p.Price);
+            decimal total = order.Pizzas.Sum(p => p.Price);
+            order.Price = total;
+            return total;
         }
 
         public Boolean RemovePizza(int i)
         {
             if (i >= 0 && i < order.Pizzas.Count)
             {
+                order.Price -= order.Pizzas[i].Price;
                 order.Pizzas.Remove(order.Pizzas[i]);
                 return true;
             }
@@ -161,7 +173,7 @@ namespace PizzaShop.Library
 
         public bool IsOrderSmallEnough()
         {
-            if (order.Pizzas.Capacity > maxPizzas)
+            if (order.Pizzas.Count > maxPizzas)
                 return false;
             return true;
         }
