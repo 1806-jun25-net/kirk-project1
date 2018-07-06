@@ -624,7 +624,7 @@ namespace PizzaShop.UI
             result = ob.FinalizeOrder();
             if (result == null)
             {
-                Console.WriteLine("Order successfully placed!");
+                Console.WriteLine($"Order successfully placed!  Your order's ID is: {ob.order.Id}");
                 return true;
             }
             else
@@ -636,7 +636,41 @@ namespace PizzaShop.UI
 
         public static void MenuOrderArchive()
         {
-            Console.WriteLine("~~~Order Archive~~~");
+            
+            string input = "";
+            bool exitMenu = false;
+            Console.WriteLine($"Welcome back, {userID}!");
+            do
+            {
+                Console.WriteLine("~~~Order Archive~~~");
+                Console.WriteLine("Please enter the number for your selection");
+                Console.WriteLine("1: Order Lookup by ID");
+                Console.WriteLine("2: ");
+                Console.WriteLine("3: ");
+                Console.WriteLine("0: Go Back");
+                Console.Write("->");
+                input = Console.ReadLine();
+                switch (input)
+                {
+                    case "1":  //
+                        
+                        break;
+                    case "2":  //
+                        
+                        break;
+                    case "3":  //
+                        
+                        break;
+                    case "0": // go back
+                        exitMenu = true;
+                        break;
+                    default:  //Invalid Input
+                        Console.WriteLine("Input invalid.  Please try again.");
+                        break;
+                }
+
+            }
+            while (!exitMenu);
         }
 
         public static void MenuLocationInventoryMenuManagement()
