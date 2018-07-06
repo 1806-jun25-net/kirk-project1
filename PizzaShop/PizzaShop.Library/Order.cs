@@ -12,7 +12,7 @@ namespace PizzaShop.Library
         public DateTime Timestamp { get; set; }
         public string Store { get; set; }
         public string UserID { get;}
-        public string Id { get; set;  }  //for internal use only.  Null on incomplete orders, userID+Store+Timestamp on completed orders at time of completion
+        public string Id { get; set;  }  //for internal use only.  Null on incomplete orders, Timestamp as ticks on completed order until sql gets added
         public decimal Price { get; set; }
 
         //fresh order from scratch
