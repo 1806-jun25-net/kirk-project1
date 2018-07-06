@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PizzaShop.Library
@@ -74,20 +75,31 @@ namespace PizzaShop.Library
             return false;
         }
 
-        public void ChangeSauceOnActivePizza(string sauce)
+        public bool ChangeSauceOnActivePizza(string sauce)
         {
-            //TODO: check sauce is valid from list of toppings
-            if (sauce != null)
-                ActivePizza.SauceType = sauce;
+            //if sauce is not from valid list of toppings
+            if (!DataAccessor.DH.ingDir.Sauces.Contains(sauce))
+                return false;
+            ActivePizza.SauceType = sauce;
+            return true;
         }
 
         public bool ChangeCrustOnActivePizza(string crust)
         {
-            //TODO: check crust is valid from list of 
             // if topping is not in valid list of toppings
-            if (!DataAccessor.DH.ingDir.Toppings.Contains(crust))
+            if (!DataAccessor.DH.ingDir.Crusts.Contains(crust))
                 return false;
             ActivePizza.CrustType = crust;
+            return true;
+        }
+
+        public bool ChangeSizeOfActivePizza(string size)
+        {
+            // if size is not in valid list of sizes
+            if (!DataAccessor.DH.SPM.Sizes.Contains(size))
+                return false;
+            ActivePizza.Size = size;
+            ActivePizza.Price = DataAccessor.DH.SPM.GetBasePrice(size) + DataAccessor.DH.SPM.GetToppingPrice(size) * ActivePizza.Toppings.Count;
             return true;
         }
 
@@ -104,12 +116,20 @@ namespace PizzaShop.Library
             return order.Pizzas;
         }
 
-        public void ChangeSizeOfActivePizza(string size)
+        public decimal CalculateTotalPrice()
         {
-            throw new Exception("Yet to implement change size");
+            return order.Pizzas.Sum(p => p.Price);
         }
 
-
+        public Boolean RemovePizza(int i)
+        {
+            if (i >= 0 && i < order.Pizzas.Count)
+            {
+                order.Pizzas.Remove(order.Pizzas[i]);
+                return true;
+            }
+            return false;
+        }
 
 
         public string FinalizeOrder()

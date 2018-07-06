@@ -130,9 +130,7 @@ namespace PizzaShop.UI
             //get fav store
             do
             {
-                Console.WriteLine("Our order locations are:");
-                for (int i = 0; i < DataAccessor.DH.Locations.Count; i++)
-                    Console.WriteLine($"{i + 1}: {DataAccessor.DH.Locations[i].Name}");
+                PrintLocations();
                 Console.WriteLine("Please select your default store by number:");
                 Console.Write("->");
                 input = Console.ReadLine();
@@ -278,7 +276,9 @@ namespace PizzaShop.UI
                 else
                 {
                     Console.WriteLine("Your current order:");
+                    Console.WriteLine($"Order location: {ob.order.Store}");
                     PrintPizzaList(ob.GetPizzas());
+                    Console.WriteLine($"---------------------\n   Total Price: ${ob.CalculateTotalPrice()}\n");
                 }
 
                 Console.WriteLine("Please enter the number for your selection");
@@ -297,19 +297,19 @@ namespace PizzaShop.UI
                         MenuAddNewPizza(ob);
                         break;
                     case "2":  // duplicate pizza
-                        
+                        MenuDuplicatePizza(ob);
                         break;
                     case "3":  //modify pizza
-
+                        MenuModifyExistingPizza(ob);
                         break;
                     case "4":  //remove pizza from order
-
+                        MenuRemovePizza(ob);
                         break;
                     case "5":  //change location
-
+                        MenuChangeLocation(ob);
                         break;
                     case "6":  //(attempt to) place order
-
+                        //TODO
                         break;
                     case "0": //Go back
                         exitMenu = true;
@@ -357,11 +357,95 @@ namespace PizzaShop.UI
 
         }
             
+        public static void MenuDuplicatePizza(OrderBuilder ob)
+        {
+            string input = "";
+            bool inputValid = false;
+            do
+            {
+                MenuHelperSelectPizza("duplicate", "pizza", ob.order.Pizzas);
+                Console.Write("->");
+                input = Console.ReadLine();
+                inputValid = input.Count(c => !char.IsDigit(c)) == 0
+                    && Int32.Parse(input) >= 1
+                    && Int32.Parse(input) <= ob.order.Pizzas.Count;
+                if (!inputValid)
+                    Console.WriteLine("That selection is invalid.  Enter only the number associated with the pizza you wish to duplicate. Please try again.");
+            }
+            while (!inputValid && !input.Equals("0"));
+            ob.AddPizza(ob.order.Pizzas[Int32.Parse(input) - 1]);
+        }
+
+        public static void MenuModifyExistingPizza(OrderBuilder ob)
+        {
+            string input = "";
+            bool inputValid = false;
+            do
+            {
+                MenuHelperSelectPizza("modify", "pizza", ob.order.Pizzas);
+                Console.Write("->");
+                input = Console.ReadLine();
+                inputValid = input.Count(c => !char.IsDigit(c)) == 0
+                    && Int32.Parse(input) >= 1
+                    && Int32.Parse(input) <= ob.order.Pizzas.Count;
+                if (!inputValid)
+                    Console.WriteLine("That selection is invalid.  Enter only the number associated with the pizza you wish to duplicate. Please try again.");
+            }
+            while (!inputValid && !input.Equals("0"));
+            if (!input.Equals("0"))
+            {
+                ob.SwitchActivePizza(Int32.Parse(input) - 1);
+                MenuModifyPizza(ob);
+            }
+
+        }
+
+        public static void MenuRemovePizza(OrderBuilder ob)
+        {
+            string input = "";
+            bool inputValid = false;
+            do
+            {
+                MenuHelperSelectPizza("remove", "pizza", ob.order.Pizzas);
+                Console.Write("->");
+                input = Console.ReadLine();
+                inputValid = input.Count(c => !char.IsDigit(c)) == 0
+                    && Int32.Parse(input) >= 1
+                    && Int32.Parse(input) <= ob.order.Pizzas.Count;
+                if (!inputValid)
+                    Console.WriteLine("That selection is invalid.  Enter only the number associated with the pizza you wish to remove. Please try again.");
+            }
+            while (!inputValid && !input.Equals("0"));
+            ob.RemovePizza(Int32.Parse(input)-1);
+        }
+
+        public static void MenuChangeLocation(OrderBuilder ob)
+        {
+            string input = "";
+            bool inputValid = false;
+            do
+            {
+                PrintLocations();
+                Console.WriteLine("Please select your default store by number, or 0 to go back without changing:");
+                Console.Write("->");
+                input = Console.ReadLine();
+                inputValid = input.Count(c => !char.IsDigit(c)) == 0
+                    && Int32.Parse(input) >= 1
+                    && Int32.Parse(input) <= DataAccessor.DH.Locations.Count;
+                if (!inputValid)
+                    Console.WriteLine("That selection is invalid.  Enter only the number associated with the store. Please try again.");
+            }
+            while (!inputValid  && !input.Equals("0"));
+            if(!input.Equals("0"))
+            {
+                ob.ChangeLocation(DataAccessor.DH.Locations[Int32.Parse(input)-1].Name);
+            }
+        }
+
         public static void MenuModifyPizza(OrderBuilder ob)
         {
             string input = "";
             bool exitMenu = false;
-            bool validInput = true;
 
             do
             {
@@ -457,7 +541,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("change", "crust", DataAccessor.DH.ingDir.Crusts);
+                MenuHelperSelectIngredient("change to", "crust", DataAccessor.DH.ingDir.Crusts);
                 input = Console.ReadLine();
                 result = ob.ChangeCrustOnActivePizza(input);
                 if (result)
@@ -472,16 +556,57 @@ namespace PizzaShop.UI
             }
             while (!exitMenu);
         }
+
         public static void MenuChangePizzaSauce(OrderBuilder ob)
         {
-            //TODO
+            string input = "";
+            bool exitMenu = false;
+            bool result;
+            do
+            {
+                MenuHelperSelectIngredient("change to", "sauce", DataAccessor.DH.ingDir.Sauces);
+                input = Console.ReadLine();
+                result = ob.ChangeSauceOnActivePizza(input);
+                if (result)
+                {
+                    Console.WriteLine($"The sauce '{input}' has been set for your pizza.");
+                    PrintPizza(ob.ActivePizza);
+                }
+                else if (input.Equals("0"))
+                    exitMenu = true;
+                else
+                    Console.WriteLine($"We did not recognize the sauce '{input}'.  The pizza sauce has not been changed.");
+            }
+            while (!exitMenu);
         }
 
         public static void MenuChangePizzaSize(OrderBuilder ob)
         {
-            //TODO
+            string input = "";
+            bool exitMenu = false;
+            bool result;
+            do
+            {
+                MenuHelperSelectIngredient("change to", "size", DataAccessor.DH.SPM.Sizes);
+                input = Console.ReadLine();
+                result = ob.ChangeSizeOfActivePizza(input);
+                if (result)
+                {
+                    Console.WriteLine($"The size '{input}' has been set for your pizza.");
+                    PrintPizza(ob.ActivePizza);
+                }
+                else if (input.Equals("0"))
+                    exitMenu = true;
+                else
+                    Console.WriteLine($"We did not recognize the size '{input}'.  The pizza size has not been changed.");
+            }
+            while (!exitMenu);
         }
 
+        public static void MenuFinalizeOrder(OrderBuilder ob)
+        {
+            //TODO
+        }
 
         public static void MenuOrderArchive()
         {
@@ -506,6 +631,11 @@ namespace PizzaShop.UI
             Console.WriteLine($"Please type the name of the {type} you would like to {action}, or 0 to go back:");
             PrintIngredients(ingredients);
         }
+        public static void MenuHelperSelectPizza(string action, string type, List<IPizza> ingredients)
+        {
+            Console.WriteLine($"Please type the number of the {type} you would like to {action}, or 0 to go back:");
+            PrintPizzaList(ingredients);
+        }
 
 
         // Printing methods to streamline menu method code:
@@ -523,6 +653,7 @@ namespace PizzaShop.UI
         {
             Console.Write($"{pizza.Size} pizza, {pizza.CrustType}, {pizza.SauceType}\n    Toppings:");
             PrintIngredients(pizza.Toppings);
+            Console.WriteLine($"    Price: ${pizza.Price}");
         }
 
         public static void PrintIngredients(IEnumerable<IIngredient> ingredients)
@@ -531,7 +662,6 @@ namespace PizzaShop.UI
             {
                 Console.Write($" {t.Name},");
             }
-            Console.WriteLine();
         }
 
         public static void PrintIngredients(IEnumerable<string> ingredients)
@@ -551,6 +681,12 @@ namespace PizzaShop.UI
             }
         }
 
+        public static void PrintLocations()
+        {
+            Console.WriteLine("Our order locations are:");
+            for (int i = 0; i < DataAccessor.DH.Locations.Count; i++)
+                Console.WriteLine($"{i + 1}: {DataAccessor.DH.Locations[i].Name}");
+        }
 
     }
 }
