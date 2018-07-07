@@ -7,9 +7,9 @@ namespace PizzaShop.Library
     public class SizingPricingManager
     {
         public List<string> Sizes { get; } = new List<string>() { "small", "medium", "large", "party" };
-        private Dictionary<string, decimal> basePrices = new Dictionary<string, decimal>() { { "small", 5 }, {"medium", 7.5m}, { "large", 10 }, { "party", 40 } };
-        private Dictionary<string, decimal> toppingPrices = new Dictionary<string, decimal>() { { "small", .5m }, { "medium", .75m }, { "large", 1m }, { "party", 4m } };
-        private Dictionary<string, int> ingredientUsageScalar = new Dictionary<string, int>() { { "small", 1 }, { "medium", 2 }, { "large", 3 }, { "party", 4 } };
+        private List<decimal> basePrices = new List<decimal>() {  5m, 7.5m, 10m, 40m };
+        private List<decimal> toppingPrices = new List<decimal>() { .5m, .75m, 1m, 4m };
+        private List<int> ingredientUsageScalar = new List<int>() { 1, 2, 3, 4 };
 
 
         public void AddNewSize(string name, decimal basePrice, decimal toppingPrice)
@@ -17,38 +17,39 @@ namespace PizzaShop.Library
             if (Sizes.Contains(name) || basePrice <= 0m || toppingPrice <= 0m)
                 return;
             Sizes.Add(name);
-            basePrices.Add(name, basePrice);
-            toppingPrices.Add(name, toppingPrice);
+            basePrices.Add(basePrice);
+            toppingPrices.Add(toppingPrice);
         }
 
         public void RemoveSize(string name)
         {
             if (!Sizes.Contains(name))
                 return;
-            Sizes.Remove(name);
-            basePrices.Remove(name);
-            toppingPrices.Remove(name);
+            int loc = Sizes.IndexOf(name);
+            Sizes.RemoveAt(loc);
+            basePrices.RemoveAt(loc);
+            toppingPrices.RemoveAt(loc);
         }
 
         public decimal GetBasePrice(string name)
         {
-            if (!basePrices.ContainsKey(name))
+            if (!Sizes.Contains(name))
                 return -1;
-            return basePrices[name];
+            return basePrices[Sizes.IndexOf(name)];
         }
 
         public decimal GetToppingPrice(string name)
         {
-            if (!toppingPrices.ContainsKey(name))
+            if (!Sizes.Contains(name))
                 return -1;
-            return toppingPrices[name];
+            return toppingPrices[Sizes.IndexOf(name)];
         }
 
         public int GetIngredientUsageScalar(string name)
         {
-            if (!toppingPrices.ContainsKey(name))
+            if (!Sizes.Contains(name))
                 return -1;
-            return ingredientUsageScalar[name];
+            return ingredientUsageScalar[Sizes.IndexOf(name)];
         }
     }
 }
