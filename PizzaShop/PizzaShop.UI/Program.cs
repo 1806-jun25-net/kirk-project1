@@ -1,28 +1,38 @@
 ﻿using PizzaShop.Library;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace PizzaShop.UI
 {
     class Program
     {
         private static string userID;
+        private static readonly bool readFromXML = false;
+
         public static void Main(string[] args)
         {
-            //Run deserialization code
+            //Get data ready
+            DataAccessor.Setup(readFromXML);
 
-            //Start menu
+            //Begin at first screen of the menu system
+            MenuStart();
+
+            //Run serialization code to back up all changes upon menu termination
+            //DataAccessor.SerializeToFile();
+
+        }
+
+
+
+        //Menu methods to handle each individual menu state
+        public static void MenuStart()
+        {
             string input = null;
             bool exitApplication = false;
-            DataAccessor.DH.ToString();  // just to check DH initialization right away
-            //Adding in generic data for testing
-            DataAccessor.DH.Locations[0].AddBulkStock(new List<IIngredient>
-            {   new Crust("classic crust", 20),
-                new Sauce("classic sauce", 20),
-                new Topping("cheese", 100),
-                new Topping("sausage", 50)
-            });
 
             do
             {
@@ -51,11 +61,8 @@ namespace PizzaShop.UI
                 }
             }
             while (exitApplication == false);
-
-            //Run serialization code one final time
         }
 
-        //Menu methods to handle each individual menu state
         public static void MenuNewUserCreation()
         {
             String input = "";

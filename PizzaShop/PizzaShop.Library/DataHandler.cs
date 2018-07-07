@@ -4,6 +4,7 @@ using System.Text;
 
 namespace PizzaShop.Library
 {
+    [Serializable()]
     public class DataHandler
     {
         public List<Location> Locations { get; set; } = new List<Location>();
