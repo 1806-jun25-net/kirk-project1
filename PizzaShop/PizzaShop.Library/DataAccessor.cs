@@ -42,6 +42,17 @@ namespace PizzaShop.Library
                 DH = new DataHandler();
                 DH.ToString();  // just to check DH initialization right away
                 //Adding in generic data for testing
+                //Default fake data used for testing before actual data is added from 
+                DH.Locations.Add(new Location("Placeholder"));
+                DH.Locations.Add(new Location("Alternate Placeholder"));
+                DH.Users.Add("test", new User("test", "a", "b", "a@a.com", "1234567980", "Placeholder"));
+                DH.ingDir.AddIngredient(new Crust("classic crust", 1));
+                DH.ingDir.AddIngredient(new Crust("thin crust", 1));
+                DH.ingDir.AddIngredient(new Sauce("classic sauce", 1));
+                DH.ingDir.AddIngredient(new Sauce("garlic white sauce", 1));
+                DH.ingDir.AddIngredient(new Topping("cheese", 1));
+                DH.ingDir.AddIngredient(new Topping("pepperoni", 1));
+                DH.ingDir.AddIngredient(new Topping("sausage", 1));
                 DH.Locations[0].AddBulkStock(new List<IIngredient>
                 {   new Crust("classic crust", 20),
                     new Sauce("classic sauce", 20),
