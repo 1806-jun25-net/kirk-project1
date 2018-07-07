@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
 
 namespace PizzaShop.UI
 {
@@ -23,6 +21,11 @@ namespace PizzaShop.UI
 
             //Run serialization code to back up all changes upon menu termination
             //DataAccessor.SerializeToFile();
+
+
+            //List<Order> testList = new List<Order>();
+            //testList.Any(t=> t.Id.Equals(t.Id));
+            //testList.First(t => t.Id.Equals(t.Id));
 
         }
 
@@ -76,7 +79,7 @@ namespace PizzaShop.UI
                 Console.WriteLine("Please create a new username:");
                 Console.Write("->");
                 input = Console.ReadLine();
-                inputValid = !DataAccessor.DH.Users.ContainsKey(input)
+                inputValid = !DataAccessor.DH.Users.Any(t => t.Username.Equals(input))
                     && input.Any(c => char.IsLetter(c));
                 if (!inputValid)
                     Console.WriteLine("That username is already taken or is invalid.  Please try again.");
@@ -162,7 +165,7 @@ namespace PizzaShop.UI
             Console.WriteLine($"Username: {newUser.Username}\nFirst Name: {newUser.FirstName}\nLast Name: {newUser.LastName}\nEmail: {newUser.Email}\nPhone: {newUser.Phone}\nDefault Location: {newUser.FavStore}");
 
             //add new user to user list
-            DataAccessor.DH.Users.Add(newUser.Username, newUser);
+            DataAccessor.DH.Users.Add(newUser);
         }
 
         public static void MenuExistingUserLogin()
@@ -174,7 +177,7 @@ namespace PizzaShop.UI
                 Console.WriteLine("Please enter your username:");
                 Console.Write("->");
                 input = Console.ReadLine();
-                if (!DataAccessor.DH.Users.ContainsKey(input))
+                if (!DataAccessor.DH.Users.Any(t => t.Username.Equals(input)))
                 {
                     do
                     {
@@ -245,7 +248,7 @@ namespace PizzaShop.UI
         {
             string input = "";
             bool invalidInput = true;
-            List<IPizza> recommendedOrder = DataAccessor.DH.Users[userID].GetRecommendedOrder();
+            List<IPizza> recommendedOrder = DataAccessor.DH.Users.First(t => t.Username.Equals(userID)).GetRecommendedOrder();
             //OrderBuilder ob;
             Console.WriteLine("~~~New Order Creation~~~");
             Console.WriteLine("Check out this recommended order, just for you!");
@@ -261,11 +264,11 @@ namespace PizzaShop.UI
                 switch (input)
                 {
                     case "1":  //recommended order
-                        MenuBuildOrder(new OrderBuilder(userID, DataAccessor.DH.Users[userID].FavStore, recommendedOrder));
+                        MenuBuildOrder(new OrderBuilder(userID, DataAccessor.DH.Users.First(t => t.Username == userID).FavStore, recommendedOrder));
                         invalidInput = false;
                         break;
                     case "2":  //new empty order
-                        MenuBuildOrder(new OrderBuilder(userID, DataAccessor.DH.Users[userID].FavStore));
+                        MenuBuildOrder(new OrderBuilder(userID, DataAccessor.DH.Users.First(t => t.Username == userID).FavStore));
                         invalidInput = false;
                         break;
                     case "0": //Go back
@@ -690,11 +693,11 @@ namespace PizzaShop.UI
             Console.WriteLine("Please enter the order ID you wish to view:");
             Console.Write("->");
             input = Console.ReadLine();
-            if (!DataAccessor.DH.Orders.ContainsKey(input))
+            if (!DataAccessor.DH.Orders.Any(t => t.Id.Equals(input)))
                 Console.WriteLine("OrderID not recognized.");
             else
             {
-                PrintOrder(DataAccessor.DH.Orders[input]);
+                PrintOrder(DataAccessor.DH.Orders.First(t => t.Id.Equals(input)));
             }
         }
 
@@ -714,9 +717,9 @@ namespace PizzaShop.UI
 
             //else
             {
-                foreach (KeyValuePair<string, IOrder> entry in DataAccessor.DH.Orders)
+                foreach (IOrder o in DataAccessor.DH.Orders)
                 {
-                    PrintOrder(entry.Value);
+                    PrintOrder(o);
                 }
             }
         }
@@ -747,9 +750,9 @@ namespace PizzaShop.UI
             {
 
                 {
-                    foreach (KeyValuePair<string, IOrder> entry in DataAccessor.DH.Orders)
+                    foreach (IOrder o in DataAccessor.DH.Orders)
                     {
-                        PrintOrder(entry.Value);
+                        PrintOrder(o);
                     }
                 }
             }

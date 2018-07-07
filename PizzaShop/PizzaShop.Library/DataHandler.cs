@@ -8,8 +8,8 @@ namespace PizzaShop.Library
     public class DataHandler
     {
         public List<Location> Locations { get; set; } = new List<Location>();
-        public Dictionary<string, IOrder> Orders { get; set; } = new Dictionary<string, IOrder>();
-        public Dictionary<string, IUser> Users { get; set; } = new Dictionary<string, IUser>();
+        public List<IOrder> Orders { get; set; } = new List<IOrder>();
+        public List<IUser> Users { get; set; } = new List<IUser>();
 
         public IngredientDirectory ingDir = new IngredientDirectory();
         public SizingPricingManager SPM { get; set; } = new SizingPricingManager();

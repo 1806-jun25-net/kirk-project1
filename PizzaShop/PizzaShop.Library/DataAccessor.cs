@@ -26,7 +26,7 @@ namespace PizzaShop.Library
                 }
                 catch (AggregateException ex)
                 {
-                    Console.WriteLine($"Serialization file '{serializationFilepath}' not found.");
+                    Console.WriteLine($"Serialization file '{serializationFilepath}' not found.  Full error: {ex}");
                 }
                 if (result != null)
                 {
@@ -45,7 +45,7 @@ namespace PizzaShop.Library
                 //Default fake data used for testing before actual data is added from 
                 DH.Locations.Add(new Location("Placeholder"));
                 DH.Locations.Add(new Location("Alternate Placeholder"));
-                DH.Users.Add("test", new User("test", "a", "b", "a@a.com", "1234567980", "Placeholder"));
+                DH.Users.Add(new User("test", "a", "b", "a@a.com", "1234567980", "Placeholder"));
                 DH.ingDir.AddIngredient(new Crust("classic crust", 1));
                 DH.ingDir.AddIngredient(new Crust("thin crust", 1));
                 DH.ingDir.AddIngredient(new Sauce("classic sauce", 1));

@@ -167,7 +167,7 @@ namespace PizzaShop.Library
             order.Id = order.Timestamp.Ticks.ToString();
 
             //add order to order history
-            DataAccessor.DH.Orders.Add(order.Id, order);
+            DataAccessor.DH.Orders.Add(order);
             return null;
         }
 
