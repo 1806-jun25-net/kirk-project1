@@ -11,7 +11,7 @@ namespace PizzaShop.Library
         public List<Pizza> Pizzas { get; set; }
         public DateTime Timestamp { get; set; }
         public string Store { get; set; }
-        public string UserID { get;}
+        public string UserID { get; set; }
         public string Id { get; set;  }  //for internal use only.  Null on incomplete orders, Timestamp as ticks on completed order until sql gets added
         public decimal Price { get; set; }
 

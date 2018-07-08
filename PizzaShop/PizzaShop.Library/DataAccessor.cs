@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -116,6 +117,70 @@ namespace PizzaShop.Library
                     fileStream.Dispose();
                 }
             }
+        }
+
+        //overload for user OrderHistory and location OrderHistory
+        public static List<Order> CreateSortedOrderList(List<string> OrderIds, int orderingType)
+        {
+            //ordering Types:
+            // 1= newst first
+            // 2= oldest first
+            // 3= cheapest first
+            // 4= priciest first
+
+            List<Order> sortedOrders = new List<Order>();
+
+            foreach (var o in OrderIds)
+                sortedOrders.Add(DH.Orders.First(d => d.Id.Equals(o)));
+
+            switch (orderingType)
+            {
+                case 1:
+                    sortedOrders = (sortedOrders.OrderByDescending(a=> a.Timestamp)).ToList();
+                    break;
+                case 2:
+                    sortedOrders = (sortedOrders.OrderBy(a => a.Timestamp)).ToList();
+                    break;
+                case 3:
+                    sortedOrders = (sortedOrders.OrderBy(a => a.Price)).ToList();
+                    break;
+                case 4:
+                    sortedOrders = (sortedOrders.OrderByDescending(a => a.Price)).ToList();
+                    break;
+            }
+
+            return sortedOrders;
+        }
+
+        //overload for all orders
+        public static List<Order> CreateSortedOrderList(int orderingType)
+        {
+            //ordering Types:
+            // 1= newst first
+            // 2= oldest first
+            // 3= cheapest first
+            // 4= priciest first
+
+            List<Order> sortedOrders = new List<Order>();
+            foreach (var o in DH.Orders)
+                sortedOrders.Add(o);
+
+            switch (orderingType)
+            {
+                case 1:
+                    sortedOrders = (sortedOrders.OrderByDescending(a => a.Timestamp)).ToList();
+                    break;
+                case 2:
+                    sortedOrders = (sortedOrders.OrderBy(a => a.Timestamp)).ToList();
+                    break;
+                case 3:
+                    sortedOrders = (sortedOrders.OrderBy(a => a.Price)).ToList();
+                    break;
+                case 4:
+                    sortedOrders = (sortedOrders.OrderByDescending(a => a.Price)).ToList();
+                    break;
+            }
+            return sortedOrders;
         }
     }
 }

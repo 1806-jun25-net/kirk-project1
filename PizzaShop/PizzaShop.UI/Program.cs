@@ -250,7 +250,6 @@ namespace PizzaShop.UI
             string input = "";
             bool invalidInput = true;
             List<Pizza> recommendedOrder = DataAccessor.DH.Users.First(t => t.Username.Equals(userID)).GetRecommendedOrder();
-            //OrderBuilder ob;
             Console.WriteLine("~~~New Order Creation~~~");
             Console.WriteLine("Check out this recommended order, just for you!");
             PrintPizzaList(recommendedOrder);
@@ -674,7 +673,7 @@ namespace PizzaShop.UI
                         MenuOrdersByLocation();
                         break;
                     case "4":  // all orders menu
-                        MenuAllOrdersSorting();
+                        MenuAllOrders();
                         break;
                     case "0": // go back
                         exitMenu = true;
@@ -707,6 +706,8 @@ namespace PizzaShop.UI
             string input = "";
             string input2 = "";
             User orderUser;
+            bool exitMenu = false;
+            List<Order> sortedOrders = new List<Order>();
 
             Console.WriteLine("~~~User Order History Lookup~~~");
 
@@ -729,10 +730,44 @@ namespace PizzaShop.UI
                 else
                 {
                     orderUser = DataAccessor.DH.Users.First(t => t.Username.Equals(input));
-                    Console.WriteLine($"Order history for username \"{input}\" - {orderUser.OrderHistory.Count} records found:");
-                    foreach (var o in orderUser.OrderHistory)
+                    Console.WriteLine($"Order history for username \"{orderUser}\" - {orderUser.OrderHistory.Count} records found:");
+
+                    do
                     {
-                        PrintOrder(DataAccessor.DH.Orders.First( s => s.Id.Equals(o)));
+                        Console.WriteLine("Sort orders by what?:");
+                        Console.WriteLine("1: Newest");
+                        Console.WriteLine("2: Oldest");
+                        Console.WriteLine("3: Cheapest");
+                        Console.WriteLine("4: Most Expensive");
+                        exitMenu = true;
+                        Console.Write("->");
+                        input = Console.ReadLine();
+                        switch (input)
+                        {
+                            case "1":  // newest
+                                sortedOrders = DataAccessor.CreateSortedOrderList(orderUser.OrderHistory, 1);
+                                break;
+                            case "2":  // oldest
+                                sortedOrders = DataAccessor.CreateSortedOrderList(orderUser.OrderHistory, 2);
+                                break;
+                            case "3":  // cheapest
+                                sortedOrders = DataAccessor.CreateSortedOrderList(orderUser.OrderHistory, 3);
+                                break;
+                            case "4":  // priciest
+                                sortedOrders = DataAccessor.CreateSortedOrderList(orderUser.OrderHistory, 4);
+                                break;
+                            default:  //Invalid Input
+                                Console.WriteLine("Input invalid.  Please try again.");
+                                exitMenu = false;
+                                break;
+                        }
+                    } while (!exitMenu);
+
+
+
+                    foreach (var o in sortedOrders)
+                    {
+                        PrintOrder(o);
                     }
                     input2 = "2";
                     
@@ -748,6 +783,9 @@ namespace PizzaShop.UI
             Location loc;
             string input = "";
             bool inputValid = false;
+            bool exitMenu = false;
+            List<Order> sortedOrders = new List<Order>();
+
             do
             {
                 PrintLocations();
@@ -761,21 +799,90 @@ namespace PizzaShop.UI
                     Console.WriteLine("That selection is invalid.  Enter only the number associated with the store. Please try again.");
             }
             while (!inputValid && !input.Equals("0"));
+
             if (!input.Equals("0"))
             {
                 loc = DataAccessor.DH.Locations.ElementAt(Int32.Parse(input)-1);
                 Console.WriteLine($"Order history for location \"{loc.Name}\" - {loc.OrderHistory.Count} records found:");
-                foreach (var o in loc.OrderHistory)
+
+                do
                 {
-                    PrintOrder(DataAccessor.DH.Orders.First(s => s.Id.Equals(o)));
+                    Console.WriteLine("Sort orders by what?:");
+                    Console.WriteLine("1: Newest");
+                    Console.WriteLine("2: Oldest");
+                    Console.WriteLine("3: Cheapest");
+                    Console.WriteLine("4: Most Expensive");
+                    exitMenu = true;
+                    Console.Write("->");
+                    input = Console.ReadLine();
+                    switch (input)
+                    {
+                        case "1":  // newest
+                            sortedOrders = DataAccessor.CreateSortedOrderList(loc.OrderHistory, 1);
+                            break;
+                        case "2":  // oldest
+                            sortedOrders = DataAccessor.CreateSortedOrderList(loc.OrderHistory, 2);
+                            break;
+                        case "3":  // cheapest
+                            sortedOrders = DataAccessor.CreateSortedOrderList(loc.OrderHistory, 3);
+                            break;
+                        case "4":  // priciest
+                            sortedOrders = DataAccessor.CreateSortedOrderList(loc.OrderHistory, 4);
+                            break;
+                        default:  //Invalid Input
+                            Console.WriteLine("Input invalid.  Please try again.");
+                            exitMenu = false;
+                            break;
+                    }
+                } while (!exitMenu);
+
+                foreach (var o in sortedOrders)
+                {
+                    PrintOrder(o);
                 }
             }
         }
 
-        public static void MenuAllOrdersSorting()            //TODO once SQL is up and running
+        public static void MenuAllOrders()
         {
-            Console.WriteLine("This functionality is under construction. Press enter to proceed with caution");
-            Console.ReadLine();
+            string input = "";
+            bool exitMenu = false;
+            List<Order> sortedOrders = new List<Order>();
+            Console.WriteLine("All Orders:");
+            do
+            {
+                Console.WriteLine("Sort orders by what?:");
+                Console.WriteLine("1: Newest");
+                Console.WriteLine("2: Oldest");
+                Console.WriteLine("3: Cheapest");
+                Console.WriteLine("4: Most Expensive");
+
+                exitMenu = true;
+                Console.Write("->");
+                input = Console.ReadLine();
+                switch (input)
+                {
+                    case "1":  // newest
+                        sortedOrders = DataAccessor.CreateSortedOrderList(1);
+                        break;
+                    case "2":  // oldest
+                        sortedOrders = DataAccessor.CreateSortedOrderList(2);
+                        break;
+                    case "3":  // cheapest
+                        sortedOrders = DataAccessor.CreateSortedOrderList(3);
+                        break;
+                    case "4":  // priciest
+                        sortedOrders = DataAccessor.CreateSortedOrderList(4);
+                        break;
+                    default:  //Invalid Input
+                        Console.WriteLine("Input invalid.  Please try again.");
+                        exitMenu = false;
+                        break;
+                }
+            } while (!exitMenu);
+
+            foreach (var o in sortedOrders)
+                PrintOrder(o);
         }
 
         public static void MenuLocationInventoryMenuManagement()

@@ -30,18 +30,19 @@
         </Ingredient>
         <Ingredient>
           <Name>cheese</Name>
-          <Quantity>93</Quantity>
+          <Quantity>95</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>sausage</Name>
-          <Quantity>50</Quantity>
+          <Quantity>46</Quantity>
           <Type>topping</Type>
         </Ingredient>
       </Stock>
       <OrderHistory>
-        <string>636666114872632430</string>
-        <string>636666114922657510</string>
+        <string>636666669219840355</string>
+        <string>636666669578339245</string>
+        <string>636666670760381971</string>
       </OrderHistory>
       <Name>Placeholder</Name>
     </Location>
@@ -63,54 +64,49 @@
           </Toppings>
           <Price>5.5</Price>
         </Pizza>
+      </Pizzas>
+      <Timestamp>2018-07-08T14:15:21.9840355-04:00</Timestamp>
+      <Store>Placeholder</Store>
+      <UserID>test</UserID>
+      <Id>636666669219840355</Id>
+      <Price>5.5</Price>
+    </Order>
+    <Order>
+      <Pizzas>
         <Pizza>
           <Size>party-sized</Size>
           <CrustType>classic crust</CrustType>
           <SauceType>classic sauce</SauceType>
           <Toppings>
             <string>cheese</string>
+            <string>sausage</string>
           </Toppings>
-          <Price>44</Price>
+          <Price>48</Price>
         </Pizza>
       </Pizzas>
-      <Timestamp>2018-07-08T01:04:33.4250779-04:00</Timestamp>
+      <Timestamp>2018-07-08T17:15:57.8339245-04:00</Timestamp>
       <Store>Placeholder</Store>
-      <Id>636666086734250779</Id>
-      <Price>49.5</Price>
+      <UserID>test2</UserID>
+      <Id>636666669578339245</Id>
+      <Price>48</Price>
     </Order>
     <Order>
       <Pizzas>
         <Pizza>
-          <Size>small</Size>
+          <Size>medium</Size>
           <CrustType>classic crust</CrustType>
           <SauceType>classic sauce</SauceType>
           <Toppings>
             <string>cheese</string>
           </Toppings>
-          <Price>5.5</Price>
+          <Price>7.50</Price>
         </Pizza>
       </Pizzas>
-      <Timestamp>2018-07-08T01:51:27.263243-04:00</Timestamp>
+      <Timestamp>2018-07-08T17:17:56.0381971-04:00</Timestamp>
       <Store>Placeholder</Store>
-      <Id>636666114872632430</Id>
-      <Price>5.5</Price>
-    </Order>
-    <Order>
-      <Pizzas>
-        <Pizza>
-          <Size>small</Size>
-          <CrustType>classic crust</CrustType>
-          <SauceType>classic sauce</SauceType>
-          <Toppings>
-            <string>cheese</string>
-          </Toppings>
-          <Price>5.5</Price>
-        </Pizza>
-      </Pizzas>
-      <Timestamp>2018-07-08T01:51:32.265751-04:00</Timestamp>
-      <Store>Placeholder</Store>
-      <Id>636666114922657510</Id>
-      <Price>5.5</Price>
+      <UserID>test</UserID>
+      <Id>636666670760381971</Id>
+      <Price>7.50</Price>
     </Order>
   </Orders>
   <Users>
@@ -122,8 +118,19 @@
       <Phone>1234567980</Phone>
       <FavStore>Placeholder</FavStore>
       <OrderHistory>
-        <string>636666114872632430</string>
-        <string>636666114922657510</string>
+        <string>636666669219840355</string>
+        <string>636666670760381971</string>
+      </OrderHistory>
+    </User>
+    <User>
+      <Username>test2</Username>
+      <FirstName>Tess</FirstName>
+      <LastName>Est</LastName>
+      <Email>1@2.gov</Email>
+      <Phone>1234567890</Phone>
+      <FavStore>Placeholder</FavStore>
+      <OrderHistory>
+        <string>636666669578339245</string>
       </OrderHistory>
     </User>
   </Users>
