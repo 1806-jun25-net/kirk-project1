@@ -128,7 +128,7 @@ namespace PizzaShop.UI
                 inputValid = input != ""
                     && char.IsLetterOrDigit(input[0]) 
                     && input.Count( c => c=='@')==1 
-                    && (input.EndsWith(".com") || input.EndsWith(".gov") || input.EndsWith(".edu") || input.EndsWith(".edu") || input.EndsWith(".net"));
+                    && (input.EndsWith(".com") || input.EndsWith(".gov") || input.EndsWith(".edu") || input.EndsWith(".org") || input.EndsWith(".net"));
                 if (!inputValid)
                     Console.WriteLine("That email is invalid. Please try again.");
             }
@@ -217,6 +217,7 @@ namespace PizzaShop.UI
                 Console.WriteLine("1: Start a New Order");
                 Console.WriteLine("2: Order Archive");
                 Console.WriteLine("3: Location, Inventory, & Menu Management");
+                Console.WriteLine("4: Search Users");
                 Console.WriteLine("0: Logout");
                 Console.Write("->");
                 input = Console.ReadLine();
@@ -230,6 +231,9 @@ namespace PizzaShop.UI
                         break;
                     case "3":  //Location, Inventory, & Menu Management
                         MenuLocationInventoryMenuManagement();
+                        break;
+                    case "4":  //Search Users
+                        MenuSearchUsers();
                         break;
                     case "0": //Logout
                         exitMenu = true;
@@ -892,6 +896,41 @@ namespace PizzaShop.UI
             Console.ReadLine();
         }
 
+        public static void MenuSearchUsers()
+        {
+            Console.WriteLine("~~~User search~~~");
+            string input = "";
+            string input2 = "";
+            User uSearch;
+            do
+            {
+                Console.WriteLine("Please enter the username to look up:");
+                Console.Write("->");
+                input = Console.ReadLine();
+                if (!DataAccessor.DH.Users.Any(t => t.Username.Equals(input)))  //if user not found, prompt to try again
+                {
+                    do
+                    {
+                        Console.WriteLine($"User \"{input}\"not recognized!");
+                        Console.WriteLine("1: Try again");
+                        Console.WriteLine("2: Go back");
+                        input2 = Console.ReadLine();
+                    }
+                    while (!(input2.Equals("1") || input2.Equals("2")));
+                }
+                else  // If User found print info
+                {
+                    input2 = "2";
+                    uSearch = DataAccessor.DH.Users.First(u => u.Username.Equals(input));
+                    Console.WriteLine($"First name: {uSearch.FirstName}");
+                    Console.WriteLine($"Last name: {uSearch.LastName}");
+                    Console.WriteLine($"Email: {uSearch.Email}");
+                    Console.WriteLine($"Phone: {uSearch.Phone}");
+                    Console.WriteLine($"Default location: {uSearch.FavStore}");
+                }
+            }
+            while (!input2.Equals("2"));
+        }
 
 
         //MenuHelper methods perform tasks for our Methods like prompting for input but do not control menu flow
