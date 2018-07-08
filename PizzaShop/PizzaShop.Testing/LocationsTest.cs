@@ -1,6 +1,7 @@
 ﻿using PizzaShop.Library;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -14,6 +15,7 @@ namespace PizzaShop.Testing
         public void AddStockShouldAddNewItemToDictionaryWhenNotAlreadyInside()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             var peppers = new Topping("peppers", 1);
 
@@ -21,13 +23,14 @@ namespace PizzaShop.Testing
             location.AddStock(peppers);
             
             //Assert
-            Assert.True(location.Stock["peppers"].Equals(peppers));
+            Assert.True(location.Stock.First(t => t.Name.Equals("peppers")).Equals(peppers));
         }
 
         [Fact]
         public void AddStockShouldNotAddNewItemForOneAlreadyExistingInDictionary()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             var peppers1 = new Topping("peppers", 1);
             var peppers2 = new Topping("peppers", 2);
@@ -45,6 +48,7 @@ namespace PizzaShop.Testing
         public void AddStockShouldIncrementQuantityOfExistingItemInDictionary()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             var peppers1 = new Topping("peppers", 1);
             var peppers2 = new Topping("peppers", 2);
@@ -54,7 +58,7 @@ namespace PizzaShop.Testing
             location.AddStock(peppers2);
 
             //Assert
-            Assert.True(location.Stock["peppers"].Quantity == 3);
+            Assert.True(location.Stock.First(t => t.Name.Equals("peppers")).Quantity == 3);
         }
 
 
@@ -64,6 +68,7 @@ namespace PizzaShop.Testing
         public void RemoveStockShouldNotCauseExceptionIfAttemptingToRemoveFromEmptyStock()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             var peppers = new Topping("peppers", 1);
 
@@ -78,6 +83,7 @@ namespace PizzaShop.Testing
         public void RemoveStockShouldNotCauseKeyNotFoundExceptionIfAttemptingToRemoveStockOfMissingItem()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             var peppers = new Topping("peppers", 1);
             var onions = new Topping("onions", 7);
@@ -93,6 +99,7 @@ namespace PizzaShop.Testing
         public void RemoveStockShouldReturnIngredientNameWhenItDoesNotExistInStock()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             var peppers = new Topping("peppers", 1);
 
@@ -107,6 +114,7 @@ namespace PizzaShop.Testing
         public void RemoveStockShouldReturnIngredientNameWhenSufficientQuantityDoesNotExist()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             var peppers1 = new Topping("peppers", 1);
             var peppers2 = new Topping("peppers", 2);
@@ -122,6 +130,7 @@ namespace PizzaShop.Testing
         public void RemoveStockShouldNotChangeIngredientQuantityWhenSufficientQuantityDoesNotExist()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             var peppers1 = new Topping("peppers", 1);
             var peppers2 = new Topping("peppers", 2);
@@ -131,13 +140,14 @@ namespace PizzaShop.Testing
             location.RemoveStock(peppers2);
 
             //Assert
-            Assert.True(location.Stock["peppers"].Quantity == peppers1.Quantity);
+            Assert.True(location.Stock.First(t => t.Name.Equals("peppers")).Quantity == peppers1.Quantity);
         }
 
         [Fact]
         public void RemoveStockShouldDecrementIngredientQuantityWhenSufficientQuantityExists()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             var peppers1 = new Topping("peppers", 1);
             var peppers2 = new Topping("peppers", 2);
@@ -147,13 +157,14 @@ namespace PizzaShop.Testing
             location.RemoveStock(peppers1);
 
             //Assert
-            Assert.True(location.Stock["peppers"].Quantity == 1);
+            Assert.True(location.Stock.First(t => t.Name.Equals("peppers")).Quantity == 1);
         }
 
         [Fact]
         public void RemoveStockShouldRemoveIngredientFromStockDictionaryWhenQuantityReachesZero()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             var peppers = new Topping("peppers", 1);
             location.AddStock(peppers);
@@ -162,7 +173,7 @@ namespace PizzaShop.Testing
             location.RemoveStock(peppers);
 
             //Assert
-            Assert.True(!(location.Stock.ContainsKey(peppers.Name)));
+            Assert.True(!(location.Stock.Any(t => t.Name.Equals(peppers.Name))));
         }
 
 
@@ -172,6 +183,7 @@ namespace PizzaShop.Testing
         public void AddBulkStockShouldAddAllItemsToInitiallyEmptyDictionary()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             var ingredients = new List<IIngredient>
             {
@@ -192,6 +204,7 @@ namespace PizzaShop.Testing
         public void AddBulkStockShouldOnlyAddNewItemsToDictionaryForHoweverManyAreNew()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             IIngredient peppers = new Topping("peppers", 1);
             var ingredients = new List<IIngredient>
@@ -214,6 +227,7 @@ namespace PizzaShop.Testing
         public void AddBulkStockShouldIncrementQuantityOfExistingItemInDictionary()
         {
             // Arrange
+            DataAccessor.Setup(false);
             var location = new Location();
             var ingredients = new List<IIngredient>
             {
@@ -228,7 +242,7 @@ namespace PizzaShop.Testing
             location.AddBulkStock(ingredients);
 
             //Assert
-            Assert.True(location.Stock["peppers"].Quantity==2 &&location.Stock["onions"].Quantity ==3);
+            Assert.True(location.Stock.First(t => t.Name.Equals("peppers")).Quantity==2 &&location.Stock.First(t => t.Name.Equals("onions")).Quantity ==3);
         }
 
 
@@ -236,6 +250,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void RemoveBulkStockShouldNotReturnNullIfDictionaryIsEmpty()
         {
+            DataAccessor.Setup(false);
             var location = new Location();
             var ingredients = new List<IIngredient>
             {
@@ -254,6 +269,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void RemoveBulkStockShouldReturnNameOfIngredientNotPresent()
         {
+            DataAccessor.Setup(false);
             var location = new Location();
             var ingredients = new List<IIngredient>
             {
@@ -275,6 +291,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void RemoveBulkStockShouldReturnNameOfIngredientLackingSufficientQuantity()
         {
+            DataAccessor.Setup(false);
             var location = new Location();
             var ingredients = new List<IIngredient>
             {
@@ -296,6 +313,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void RemoveBulkStockShouldNotChangeAnyQuantityIfSomeIngredientIsMissingFromDictionary()
         {
+            DataAccessor.Setup(false);
             var location = new Location();
             var ingredients = new List<IIngredient>
             {
@@ -310,12 +328,13 @@ namespace PizzaShop.Testing
 
             String result = location.RemoveBulkStock(ingredients);
 
-            Assert.True(location.Stock["peppers"].Quantity == 2 && location.Stock["onions"].Quantity == 2 && location.Stock["pepperoni"].Quantity == 2);
+            Assert.True(location.Stock.First(t => t.Name.Equals("peppers")).Quantity == 2 && location.Stock.First(t => t.Name.Equals("onions")).Quantity == 2 && location.Stock.First(t => t.Name.Equals("pepperoni")).Quantity == 2);
         }
 
         [Fact]
         public void RemoveBulkStockShouldNotChangeAnyQuantityIfSomeIngredientIsLackingSufficientQuantity()
         {
+            DataAccessor.Setup(false);
             var location = new Location();
             var ingredients = new List<IIngredient>
             {
@@ -331,7 +350,7 @@ namespace PizzaShop.Testing
 
             String result = location.RemoveBulkStock(ingredients);
 
-            Assert.True(location.Stock["peppers"].Quantity == 2 && location.Stock["onions"].Quantity == 2 && location.Stock["beef"].Quantity == 2 && location.Stock["pepperoni"].Quantity == 2);
+            Assert.True(location.Stock.First(t => t.Name.Equals("peppers")).Quantity == 2 && location.Stock.First(t => t.Name.Equals("onions")).Quantity == 2 && location.Stock.First(t => t.Name.Equals("beef")).Quantity == 2 && location.Stock.First(t => t.Name.Equals("pepperoni")).Quantity == 2);
         }
 
      }

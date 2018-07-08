@@ -12,6 +12,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void StartNewPizzaShouldSetActivePizzaToANonNullPizza()
         {
+            DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
 
             ob.StartNewPizza("large");
@@ -22,6 +23,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void StartNewPizzaShouldSetActivePizzaToAppropiateSize()
         {
+            DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
 
             ob.StartNewPizza("large");
@@ -33,6 +35,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void DuplicatePizzaShouldAddExactlyOneAdditionalPizzaToPizzas()
         {
+            DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
             ob.order.Pizzas.Add(new BuildYourOwnPizza("small"));
 
@@ -44,6 +47,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void DuplicatePizzaShouldAddExactPizzaToEndOfPizzas()
         {
+            DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
             IPizza p = new BuildYourOwnPizza("small");
             ob.order.Pizzas.Add(p);
@@ -57,6 +61,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void DuplicatePizzaShouldDoNothingIfIndexIsOutOfBounds()
         {
+            DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
             IPizza p = new BuildYourOwnPizza("small");
             ob.order.Pizzas.Add(p);
@@ -70,6 +75,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void AddPizzaShouldAddExactlyOneAdditionalPizzaToPizzas()
         {
+            DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
             ob.order.Pizzas.Add(new BuildYourOwnPizza("small"));
 
@@ -81,6 +87,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void AddPizzaShouldAddExactPizzaToEndOfPizzas()
         {
+            DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
             IPizza p = new BuildYourOwnPizza("small");
             ob.order.Pizzas.Add(new BuildYourOwnPizza("medium"));
@@ -94,6 +101,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void AddPizzaShouldDoNothingIfPassedNullIPizza()
         {
+            DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
             ob.order.Pizzas.Add(new BuildYourOwnPizza("medium"));
 
@@ -106,6 +114,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void SwitchActivePizzaShouldNotLeaveActivePizzaNull()
         {
+            DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
             ob.ActivePizza = new BuildYourOwnPizza("small");
 
@@ -118,6 +127,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void SwitchActivePizzaShouldCorrectlySetActivePizza()
         {
+            DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
             IPizza p = new BuildYourOwnPizza("small");
             ob.order.Pizzas.Add(p);
@@ -131,6 +141,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void SwitchActivePizzaShouldDoNothingIfIndexIsOutOfBounds()
         {
+            DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
             IPizza p = ob.ActivePizza;
             ob.order.Pizzas.Add(p);
