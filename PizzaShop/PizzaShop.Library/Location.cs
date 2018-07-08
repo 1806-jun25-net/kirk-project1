@@ -4,26 +4,27 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PizzaShop.Library
 {
     public class Location
     {
-        public Dictionary<string, IIngredient> Stock { get; } = new Dictionary<string, IIngredient>();
+        public List<IIngredient> Stock { get; } = new List<IIngredient>();
         public List<string> OrderHistory { get; set; } = new List<string>();
         public String Name { get; set; }
 
         public Location(String name)
         {
             Name = name;
-            Stock = new Dictionary<string, IIngredient>();
+            Stock = new List<IIngredient>();
             OrderHistory = new List<string>();
         }
 
         public Location()
         {
-            Stock = new Dictionary<string, IIngredient>();
+            Stock = new List<IIngredient>();
             OrderHistory = new List<string>();
             Name = "";
         }
@@ -35,11 +36,11 @@ namespace PizzaShop.Library
         /// <param name="ing"></param>
         public void AddStock(IIngredient ing)
         {
-            if (Stock.ContainsKey(ing.Name))
-                Stock[ing.Name].Quantity += ing.Quantity;
+            if (Stock.Any(t => t.Name.Equals(ing.Name)))
+                Stock.First(t => t.Name.Equals(ing.Name)).Quantity += ing.Quantity;
             else
             {
-                Stock.Add(ing.Name, ing);
+                Stock.Add(ing);
                 //also register ingredient in ingredient directory
                 DataAccessor.DH.ingDir.AddIngredient(ing);
             }
@@ -55,19 +56,19 @@ namespace PizzaShop.Library
         public string RemoveStock(IIngredient ing)
         {
             //1st - is the ingredient in our dictionary?
-            if (!Stock.ContainsKey(ing.Name))
+            if (!Stock.Any(t => t.Name.Equals(ing.Name)))
                 return ing.Name;
 
             //2nd - does ingredient have sufficient quantity?
-            if (Stock[ing.Name].Quantity < ing.Quantity)
+            if (Stock.First(t => t.Name.Equals(ing.Name)).Quantity < ing.Quantity)
                 return ing.Name;
 
             //3rd - decrease quantity
-            Stock[ing.Name].Quantity -= ing.Quantity;
+            Stock.First(t => t.Name.Equals(ing.Name)).Quantity -= ing.Quantity;
 
             //4th - check if quantity is now 0
-            if (Stock[ing.Name].Quantity == 0)
-                Stock.Remove(ing.Name);
+            if (Stock.First(t => t.Name.Equals(ing.Name)).Quantity == 0)
+                Stock.Remove(Stock.First(t => t.Name.Equals(ing.Name)));
 
             return null;
         }
@@ -97,20 +98,20 @@ namespace PizzaShop.Library
             //2nd - Do all ingredients have sufficient quantity?
             foreach (var item in list)
             {
-                if ( (!Stock.ContainsKey(item.Name)) || Stock[item.Name].Quantity < item.Quantity)
+                if(!Stock.Any(t => t.Name.Equals(item.Name)) || Stock.First(t => t.Name.Equals(item.Name)).Quantity < item.Quantity)
                     return item.Name;
             }
 
             //3rd - decrease quantity for all ingredients
             foreach (var item in list)
             {
-                Stock[item.Name].Quantity -= item.Quantity;
+                Stock.First(t => t.Name.Equals(item.Name)).Quantity -= item.Quantity;
             }
             //4th - check if quantity is now 0, remove if so
             foreach (var item in list)
             {
-                if (Stock[item.Name].Quantity == 0)
-                    Stock.Remove(item.Name);
+                if (Stock.First(t => t.Name.Equals(item.Name)).Quantity == 0)
+                    Stock.Remove(Stock.First(t => t.Name.Equals(item.Name)));
             }
             return null;
         }
