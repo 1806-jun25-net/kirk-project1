@@ -131,7 +131,7 @@ namespace PizzaShop.Library
             List<Order> sortedOrders = new List<Order>();
 
             foreach (var o in OrderIds)
-                sortedOrders.Add(DH.Orders.First(d => d.Id.Equals(o)));
+                sortedOrders.Add(GetOrderByID(o));
 
             switch (orderingType)
             {
@@ -182,5 +182,40 @@ namespace PizzaShop.Library
             }
             return sortedOrders;
         }
+
+
+        //LINQ based methods used to aid in replacing dictionares with lists
+        //get element with specified key
+        public static User GetUserByUsername(string username)
+        {
+            return DH.Users.First(u => u.Username.Equals(username));
+        }
+
+        public static Location GetLocationByName(string name)
+        {
+            return DH.Locations.First(l => l.Name.Equals(name));
+        }
+
+        public static Order GetOrderByID(string id)
+        {
+            return DH.Orders.First(o => o.Id.Equals(id));
+        }
+
+        //check if list contains specified key
+        public static bool UsersContainsUsername(string username)
+        {
+            return DH.Users.Any(t => t.Username.Equals(username));
+        }
+
+        public static bool LocationsContainsName(string name)
+        {
+            return DH.Locations.Any(t => t.Name.Equals(name));
+        }
+
+        public static bool OrdersContainsID(string id)
+        {
+            return DH.Orders.Any(t => t.Id.Equals(id));
+        }
+
     }
 }

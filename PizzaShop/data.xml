@@ -20,22 +20,22 @@
       <Stock>
         <Ingredient>
           <Name>classic crust</Name>
-          <Quantity>13</Quantity>
+          <Quantity>10</Quantity>
           <Type>crust</Type>
         </Ingredient>
         <Ingredient>
           <Name>classic sauce</Name>
-          <Quantity>13</Quantity>
+          <Quantity>10</Quantity>
           <Type>sauce</Type>
         </Ingredient>
         <Ingredient>
           <Name>cheese</Name>
-          <Quantity>95</Quantity>
+          <Quantity>92</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>sausage</Name>
-          <Quantity>46</Quantity>
+          <Quantity>43</Quantity>
           <Type>topping</Type>
         </Ingredient>
       </Stock>
@@ -43,6 +43,7 @@
         <string>636666669219840355</string>
         <string>636666669578339245</string>
         <string>636666670760381971</string>
+        <string>636666719618371658</string>
       </OrderHistory>
       <Name>Placeholder</Name>
     </Location>
@@ -101,12 +102,41 @@
           </Toppings>
           <Price>7.50</Price>
         </Pizza>
+        <Pizza>
+          <Size>large</Size>
+          <CrustType>classic crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings>
+            <string>cheese</string>
+            <string>sausage</string>
+          </Toppings>
+          <Price>12</Price>
+        </Pizza>
       </Pizzas>
       <Timestamp>2018-07-08T17:17:56.0381971-04:00</Timestamp>
       <Store>Placeholder</Store>
       <UserID>test</UserID>
       <Id>636666670760381971</Id>
       <Price>7.50</Price>
+    </Order>
+    <Order>
+      <Pizzas>
+        <Pizza>
+          <Size>large</Size>
+          <CrustType>classic crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings>
+            <string>cheese</string>
+            <string>sausage</string>
+          </Toppings>
+          <Price>12</Price>
+        </Pizza>
+      </Pizzas>
+      <Timestamp>2018-07-08T18:39:21.8371658-04:00</Timestamp>
+      <Store>Placeholder</Store>
+      <UserID>bb</UserID>
+      <Id>636666719618371658</Id>
+      <Price>12</Price>
     </Order>
   </Orders>
   <Users>
@@ -131,6 +161,17 @@
       <FavStore>Placeholder</FavStore>
       <OrderHistory>
         <string>636666669578339245</string>
+      </OrderHistory>
+    </User>
+    <User>
+      <Username>bb</Username>
+      <FirstName>Billy</FirstName>
+      <LastName>Bob</LastName>
+      <Email>bb@b.com</Email>
+      <Phone>2222222222</Phone>
+      <FavStore>Alternate Placeholder</FavStore>
+      <OrderHistory>
+        <string>636666719618371658</string>
       </OrderHistory>
     </User>
   </Users>
