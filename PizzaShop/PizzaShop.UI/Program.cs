@@ -11,6 +11,11 @@ namespace PizzaShop.UI
         private static string userID;
         private static readonly bool readFromXML = true;
 
+        //TODO:
+        //Move all data accessing functionality you can to back end
+        //Write additional test cases for new methods
+        //Implement all order menu functionality & sorting
+
         public static void Main(string[] args)
         {
             //Get data ready
@@ -177,7 +182,7 @@ namespace PizzaShop.UI
                 Console.WriteLine("Please enter your username:");
                 Console.Write("->");
                 input = Console.ReadLine();
-                if (!DataAccessor.DH.Users.Any(t => t.Username.Equals(input)))
+                if (!DataAccessor.DH.Users.Any(t => t.Username.Equals(input)))  //if user not found, prompt to try again
                 {
                     do
                     {
@@ -188,7 +193,7 @@ namespace PizzaShop.UI
                     }
                     while (!(input2.Equals("1") || input2.Equals("2")));
                 }
-                else
+                else  // If User found, set user and proceed to menu
                 {
                     userID = input;
                     input2 = "2";
@@ -196,11 +201,7 @@ namespace PizzaShop.UI
                 }
             }
             while (userID == null && !input2.Equals("2"));
-            //SEARCH FOR USER IN USER TABLE
-            // If User found, set user and proceed to menu
-            //?????Session object??????? for current user & menu state
-
-            //Else, user not found, prompt to try again
+            
 
         }
 
@@ -701,36 +702,50 @@ namespace PizzaShop.UI
             }
         }
 
-        public static void MenuOrdersByUser()            //TODO once SQL is up and running   for now prints all orders
+        public static void MenuOrdersByUser()
         {
-            Console.WriteLine("This functionality is under construction. Press enter to proceed with caution");
-            Console.ReadLine();
-
-
-
             string input = "";
-            Console.WriteLine("Please enter the username who's orders you wish to view:");
-            Console.Write("->");
-            input = Console.ReadLine();
-            //if (!DataAccessor.DH.Orders.ContainsKey(input))
-            //    Console.WriteLine("Input not recognized.");
+            string input2 = "";
+            User orderUser;
 
-            //else
+            Console.WriteLine("~~~User Order History Lookup~~~");
+
+            do
             {
-                foreach (Order o in DataAccessor.DH.Orders)
+                Console.WriteLine("Please enter the username who's orders you wish to view:");
+                Console.Write("->");
+                input = Console.ReadLine();
+                if (!DataAccessor.DH.Users.Any(t => t.Username.Equals(input)))
                 {
-                    PrintOrder(o);
+                    do
+                    {
+                        Console.WriteLine($"User \"{input}\"not recognized!");
+                        Console.WriteLine("1: Try again");
+                        Console.WriteLine("2: Go back");
+                        input2 = Console.ReadLine();
+                    }
+                    while (!(input2.Equals("1") || input2.Equals("2")));
+                }
+                else
+                {
+                    orderUser = DataAccessor.DH.Users.First(t => t.Username.Equals(input));
+                    Console.WriteLine($"Order history for username \"{input}\" - {orderUser.OrderHistory.Count} records found:");
+                    foreach (var o in orderUser.OrderHistory)
+                    {
+                        PrintOrder(DataAccessor.DH.Orders.First( s => s.Id.Equals(o)));
+                    }
+                    input2 = "2";
+                    
                 }
             }
+            while (userID == null && !input2.Equals("2"));
+
+                
         }
 
-        public static void MenuOrdersByLocation()            //TODO once SQL is up and running
+        public static void MenuOrdersByLocation()
         {
-            Console.WriteLine("This functionality is under construction. Press enter to proceed with caution");
-            Console.ReadLine();
-
-
-
+            Location loc;
             string input = "";
             bool inputValid = false;
             do
@@ -748,12 +763,11 @@ namespace PizzaShop.UI
             while (!inputValid && !input.Equals("0"));
             if (!input.Equals("0"))
             {
-
+                loc = DataAccessor.DH.Locations.ElementAt(Int32.Parse(input)-1);
+                Console.WriteLine($"Order history for location \"{loc.Name}\" - {loc.OrderHistory.Count} records found:");
+                foreach (var o in loc.OrderHistory)
                 {
-                    foreach (Order o in DataAccessor.DH.Orders)
-                    {
-                        PrintOrder(o);
-                    }
+                    PrintOrder(DataAccessor.DH.Orders.First(s => s.Id.Equals(o)));
                 }
             }
         }
@@ -844,11 +858,11 @@ namespace PizzaShop.UI
         public static void PrintOrder(Order order)
         {
             Console.WriteLine($"Order ID: {order.Id}");
+            Console.WriteLine($"Order placed on: {order.Timestamp}");
             Console.WriteLine($"Order Prpared for username: {order.UserID}");
             Console.WriteLine($"Order location: {order.Store}");
             PrintPizzaList(order.Pizzas);
             Console.WriteLine($"---------------------\n   Total Price: ${order.Price}\n");
-            Console.WriteLine($"Order placed on: {order.Timestamp}");
         }
 
     }
