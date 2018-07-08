@@ -9,7 +9,7 @@ namespace PizzaShop.UI
     class Program
     {
         private static string userID;
-        private static readonly bool readFromXML = false;
+        private static readonly bool readFromXML = true;
 
         public static void Main(string[] args)
         {
@@ -20,7 +20,7 @@ namespace PizzaShop.UI
             MenuStart();
 
             //Run serialization code to back up all changes upon menu termination
-            //DataAccessor.SerializeToFile();
+            DataAccessor.SerializeToFile();
 
 
             //List<Order> testList = new List<Order>();
@@ -248,7 +248,7 @@ namespace PizzaShop.UI
         {
             string input = "";
             bool invalidInput = true;
-            List<IPizza> recommendedOrder = DataAccessor.DH.Users.First(t => t.Username.Equals(userID)).GetRecommendedOrder();
+            List<Pizza> recommendedOrder = DataAccessor.DH.Users.First(t => t.Username.Equals(userID)).GetRecommendedOrder();
             //OrderBuilder ob;
             Console.WriteLine("~~~New Order Creation~~~");
             Console.WriteLine("Check out this recommended order, just for you!");
@@ -391,7 +391,7 @@ namespace PizzaShop.UI
             }
             while (!inputValid && !input.Equals("0"));
             var targetPizza = ob.order.Pizzas[Int32.Parse(input) - 1];
-            var newPizza = new BuildYourOwnPizza(targetPizza.Size);
+            var newPizza = new Pizza(targetPizza.Size);
             newPizza.CrustType = targetPizza.CrustType;
             newPizza.SauceType = targetPizza.SauceType;
             foreach (var t in targetPizza.Toppings)
@@ -717,7 +717,7 @@ namespace PizzaShop.UI
 
             //else
             {
-                foreach (IOrder o in DataAccessor.DH.Orders)
+                foreach (Order o in DataAccessor.DH.Orders)
                 {
                     PrintOrder(o);
                 }
@@ -750,7 +750,7 @@ namespace PizzaShop.UI
             {
 
                 {
-                    foreach (IOrder o in DataAccessor.DH.Orders)
+                    foreach (Order o in DataAccessor.DH.Orders)
                     {
                         PrintOrder(o);
                     }
@@ -774,7 +774,7 @@ namespace PizzaShop.UI
 
 
         //MenuHelper methods perform tasks for our Methods like prompting for input but do not control menu flow
-        public static void MenuHelperSelectIngredient(string action, string type, IEnumerable<IIngredient> ingredients)
+        public static void MenuHelperSelectIngredient(string action, string type, IEnumerable<Ingredient> ingredients)
         {
             Console.WriteLine($"Please type the name of the {type} you would like to {action}, or 0 to go back:");
             PrintIngredients(ingredients);
@@ -784,7 +784,7 @@ namespace PizzaShop.UI
             Console.WriteLine($"Please type the name of the {type} you would like to {action}, or 0 to go back:");
             PrintIngredients(ingredients);
         }
-        public static void MenuHelperSelectPizza(string action, string type, List<IPizza> ingredients)
+        public static void MenuHelperSelectPizza(string action, string type, List<Pizza> ingredients)
         {
             Console.WriteLine($"Please type the number of the {type} you would like to {action}, or 0 to go back:");
             PrintPizzaList(ingredients);
@@ -792,7 +792,7 @@ namespace PizzaShop.UI
 
 
         // Printing methods to streamline menu method code:
-        public static void PrintPizzaList(List<IPizza> pizzas)
+        public static void PrintPizzaList(List<Pizza> pizzas)
         { 
             for(int i = 0; i < pizzas.Count; i++)
             {
@@ -802,16 +802,16 @@ namespace PizzaShop.UI
             }
         }
 
-        public static void PrintPizza(IPizza pizza)
+        public static void PrintPizza(Pizza pizza)
         {
             Console.Write($"{pizza.Size} pizza, {pizza.CrustType}, {pizza.SauceType}\n    Toppings:");
             PrintIngredients(pizza.Toppings);
             Console.WriteLine($"    Price: ${pizza.Price}");
         }
 
-        public static void PrintIngredients(IEnumerable<IIngredient> ingredients)
+        public static void PrintIngredients(IEnumerable<Ingredient> ingredients)
         {
-            foreach (IIngredient t in ingredients)
+            foreach (Ingredient t in ingredients)
             {
                 Console.Write($" {t.Name},");
             }
@@ -841,7 +841,7 @@ namespace PizzaShop.UI
                 Console.WriteLine($"{i + 1}: {DataAccessor.DH.Locations[i].Name}");
         }
 
-        public static void PrintOrder(IOrder order)
+        public static void PrintOrder(Order order)
         {
             Console.WriteLine($"Order ID: {order.Id}");
             Console.WriteLine($"Order Prpared for username: {order.UserID}");

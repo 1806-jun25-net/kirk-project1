@@ -11,20 +11,20 @@ namespace PizzaShop.Library
 {
     public class Location
     {
-        public List<IIngredient> Stock { get; } = new List<IIngredient>();
+        public List<Ingredient> Stock { get; } = new List<Ingredient>();
         public List<string> OrderHistory { get; set; } = new List<string>();
         public String Name { get; set; }
 
         public Location(String name)
         {
             Name = name;
-            Stock = new List<IIngredient>();
+            Stock = new List<Ingredient>();
             OrderHistory = new List<string>();
         }
 
         public Location()
         {
-            Stock = new List<IIngredient>();
+            Stock = new List<Ingredient>();
             OrderHistory = new List<string>();
             Name = "";
         }
@@ -34,7 +34,7 @@ namespace PizzaShop.Library
         /// If IIngredient is not currently stocked at this location, adds it to stock at given quantity
         /// </summary>
         /// <param name="ing"></param>
-        public void AddStock(IIngredient ing)
+        public void AddStock(Ingredient ing)
         {
             if (Stock.Any(t => t.Name.Equals(ing.Name)))
                 Stock.First(t => t.Name.Equals(ing.Name)).Quantity += ing.Quantity;
@@ -53,7 +53,7 @@ namespace PizzaShop.Library
         /// </summary>
         /// <param name="ing"></param>
         /// <returns>null if successful, Name of IIngredient if removal would make quantity negative</returns>
-        public string RemoveStock(IIngredient ing)
+        public string RemoveStock(Ingredient ing)
         {
             //1st - is the ingredient in our dictionary?
             if (!Stock.Any(t => t.Name.Equals(ing.Name)))
@@ -78,7 +78,7 @@ namespace PizzaShop.Library
         /// If any IIngredients are not currently stocked at this location, adds it to stock at given quantity
         /// </summary>
         /// <param name="list"></param>
-        public void AddBulkStock(List<IIngredient> list)
+        public void AddBulkStock(List<Ingredient> list)
         {
             foreach (var item in list)
             {
@@ -92,7 +92,7 @@ namespace PizzaShop.Library
         /// </summary>
         /// <param name="list"></param>
         /// <returns>null if successful, Name of first offending IIngredient which would make quantity negative otherwise</returns>
-        public string RemoveBulkStock(List<IIngredient> list)
+        public string RemoveBulkStock(List<Ingredient> list)
         {
             //1st - Are all ingredients in dictionary?
             //2nd - Do all ingredients have sufficient quantity?

@@ -6,9 +6,9 @@ namespace PizzaShop.Library
 {
 
 
-    public class Order : IOrder
+    public class Order
     {
-        public List<IPizza> Pizzas { get; set; }
+        public List<Pizza> Pizzas { get; set; }
         public DateTime Timestamp { get; set; }
         public string Store { get; set; }
         public string UserID { get;}
@@ -18,7 +18,7 @@ namespace PizzaShop.Library
         //fresh order from scratch
         public Order(string userParam, string storeParam)
         {
-            Pizzas = new List<IPizza>();
+            Pizzas = new List<Pizza>();
             //get unique order number somehow
             Id = null;
             UserID = userParam;
@@ -26,7 +26,7 @@ namespace PizzaShop.Library
         }
 
         // importing suggested order for user
-        public Order(string userParam, string storeParam, List<IPizza> pizzaParam)
+        public Order(string userParam, string storeParam, List<Pizza> pizzaParam)
         {
             Pizzas = pizzaParam;
             //get unique order number somehow
@@ -35,6 +35,7 @@ namespace PizzaShop.Library
             Store = storeParam;
         }
 
+        public Order() { }
 
     }
 }

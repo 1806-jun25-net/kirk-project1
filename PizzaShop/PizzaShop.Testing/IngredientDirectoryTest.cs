@@ -15,7 +15,7 @@ namespace PizzaShop.Testing
         public void AddIngredientShouldAddCrustUnderProperSet(string name)
         {
             DataAccessor.Setup(false);
-            Crust c = new Crust(name, 1);
+            Ingredient c = new Ingredient(name, 1, "crust");
 
             DataAccessor.DH.ingDir.AddIngredient(c);
 
@@ -28,7 +28,7 @@ namespace PizzaShop.Testing
         public void AddIngredientShouldAddSauceUnderProperSet(string name)
         {
             DataAccessor.Setup(false);
-            Sauce s = new Sauce(name, 1);
+            Ingredient s = new Ingredient(name, 1, "sauce");
 
             DataAccessor.DH.ingDir.AddIngredient(s);
 
@@ -41,7 +41,7 @@ namespace PizzaShop.Testing
         public void AddIngredientShouldAddToppingUnderProperSet(string name)
         {
             DataAccessor.Setup(false);
-            Topping t = new Topping(name, 1);
+            Ingredient t = new Ingredient(name, 1, "topping");
 
             DataAccessor.DH.ingDir.AddIngredient(t);
 

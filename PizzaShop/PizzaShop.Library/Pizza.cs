@@ -4,14 +4,14 @@ using System.Text;
 
 namespace PizzaShop.Library
 {
-    public class BuildYourOwnPizza : IPizza
+    public class Pizza
     {
         public string Size { get; set; }
         public string CrustType { get; set; }
         public string SauceType { get; set; }
         public HashSet<string> Toppings { get; set; }
         public decimal Price { get; set; }
-        public BuildYourOwnPizza (String s)
+        public Pizza (String s)
         {
             Toppings = new HashSet<String>();
             Size = s;
@@ -19,6 +19,16 @@ namespace PizzaShop.Library
             SauceType = "classic sauce";
             Toppings.Add("cheese");
             Price = DataAccessor.DH.SPM.GetBasePrice(s) + DataAccessor.DH.SPM.GetToppingPrice(s);
+        }
+
+        public Pizza ()
+        {
+            Toppings = new HashSet<String>();
+            Size = null;
+            CrustType = "classic crust";
+            SauceType = "classic sauce";
+            Toppings.Add("cheese");
+            Price = 0;
         }
 
         public void AddTopping(string item)

@@ -37,7 +37,7 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
-            ob.order.Pizzas.Add(new BuildYourOwnPizza("small"));
+            ob.order.Pizzas.Add(new Pizza("small"));
 
             ob.DuplicatePizza(0);
 
@@ -49,11 +49,11 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
-            IPizza p = new BuildYourOwnPizza("small");
+            Pizza p = new Pizza("small");
             ob.order.Pizzas.Add(p);
 
             ob.DuplicatePizza(0);
-            IPizza result = ob.order.Pizzas[ob.order.Pizzas.Count - 1];
+            Pizza result = ob.order.Pizzas[ob.order.Pizzas.Count - 1];
 
             Assert.Equal(p, result);
         }
@@ -63,7 +63,7 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
-            IPizza p = new BuildYourOwnPizza("small");
+            Pizza p = new Pizza("small");
             ob.order.Pizzas.Add(p);
 
             ob.DuplicatePizza(7);
@@ -77,9 +77,9 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
-            ob.order.Pizzas.Add(new BuildYourOwnPizza("small"));
+            ob.order.Pizzas.Add(new Pizza("small"));
 
-            ob.AddPizza(new BuildYourOwnPizza("small"));
+            ob.AddPizza(new Pizza("small"));
 
             Assert.True(ob.order.Pizzas.Count == 2);
         }
@@ -89,11 +89,11 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
-            IPizza p = new BuildYourOwnPizza("small");
-            ob.order.Pizzas.Add(new BuildYourOwnPizza("medium"));
+            Pizza p = new Pizza("small");
+            ob.order.Pizzas.Add(new Pizza("medium"));
 
             ob.AddPizza(p);
-            IPizza result = ob.order.Pizzas[ob.order.Pizzas.Count - 1];
+            Pizza result = ob.order.Pizzas[ob.order.Pizzas.Count - 1];
 
             Assert.Equal(result, p);
         }
@@ -103,7 +103,7 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
-            ob.order.Pizzas.Add(new BuildYourOwnPizza("medium"));
+            ob.order.Pizzas.Add(new Pizza("medium"));
 
             ob.AddPizza(null);
 
@@ -116,10 +116,10 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
-            ob.ActivePizza = new BuildYourOwnPizza("small");
+            ob.ActivePizza = new Pizza("small");
 
             ob.SwitchActivePizza(1);
-            IPizza result = ob.ActivePizza;
+            Pizza result = ob.ActivePizza;
             
             Assert.True(result != null);
         }
@@ -129,11 +129,11 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
-            IPizza p = new BuildYourOwnPizza("small");
+            Pizza p = new Pizza("small");
             ob.order.Pizzas.Add(p);
 
             ob.SwitchActivePizza(0);
-            IPizza result = ob.ActivePizza;
+            Pizza result = ob.ActivePizza;
 
             Assert.Equal(p, result);
         }
@@ -143,7 +143,7 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             OrderBuilder ob = new OrderBuilder("user", "store");
-            IPizza p = ob.ActivePizza;
+            Pizza p = ob.ActivePizza;
             ob.order.Pizzas.Add(p);
             
             ob.SwitchActivePizza(7);

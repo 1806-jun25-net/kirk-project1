@@ -34,34 +34,43 @@ namespace PizzaShop.Library
                 }
                 else
                 {
-                    throw new Exception("Error deserializing object.  Result == null");
+                    //Throw new Exception("Error deserializing object.  Result == null");
+                    InitializeDummyData();
                 }
             }
             else
             {
-                DH = new DataHandler();
-                DH.ToString();  // just to check DH initialization right away
-                //Adding in generic data for testing
-                //Default fake data used for testing before actual data is added from 
-                DH.Locations.Add(new Location("Placeholder"));
-                DH.Locations.Add(new Location("Alternate Placeholder"));
-                DH.Users.Add(new User("test", "a", "b", "a@a.com", "1234567980", "Placeholder"));
-                DH.ingDir.AddIngredient(new Crust("classic crust", 1));
-                DH.ingDir.AddIngredient(new Crust("thin crust", 1));
-                DH.ingDir.AddIngredient(new Sauce("classic sauce", 1));
-                DH.ingDir.AddIngredient(new Sauce("garlic white sauce", 1));
-                DH.ingDir.AddIngredient(new Topping("cheese", 1));
-                DH.ingDir.AddIngredient(new Topping("pepperoni", 1));
-                DH.ingDir.AddIngredient(new Topping("sausage", 1));
-                DH.Locations[0].AddBulkStock(new List<IIngredient>
-                {   new Crust("classic crust", 20),
-                    new Sauce("classic sauce", 20),
-                    new Topping("cheese", 100),
-                    new Topping("sausage", 50)
-                });
+                InitializeDummyData();
             }
         }
 
+        private static void InitializeDummyData()
+        {
+            DH = new DataHandler();
+            DH.ToString();  // just to check DH initialization right away
+                            //Adding in generic data for testing
+                            //Default fake data used for testing before actual data is added from 
+            DH.Locations.Add(new Location("Placeholder"));
+            DH.Locations.Add(new Location("Alternate Placeholder"));
+            DH.Users.Add(new User("test", "a", "b", "a@a.com", "1234567980", "Placeholder"));
+            DH.ingDir.AddIngredient(new Ingredient("classic crust", 1, "crust"));
+            DH.ingDir.AddIngredient(new Ingredient("thin crust", 1, "crust"));
+            DH.ingDir.AddIngredient(new Ingredient("classic sauce", 1, "sauce"));
+            DH.ingDir.AddIngredient(new Ingredient("garlic white sauce", 1, "sauce"));
+            DH.ingDir.AddIngredient(new Ingredient("cheese", 1, "topping"));
+            DH.ingDir.AddIngredient(new Ingredient("pepperoni", 1, "topping"));
+            DH.ingDir.AddIngredient(new Ingredient("sausage", 1, "topping"));
+            DH.SPM.AddNewSize("small", 5, .5m, 1);
+            DH.SPM.AddNewSize("medium", 7.5m, .75m, 2);
+            DH.SPM.AddNewSize("large", 10m, 1m, 3);
+            DH.SPM.AddNewSize("party-sized", 40m, 4m, 4);
+            DH.Locations[0].AddBulkStock(new List<Ingredient>
+                {   new Ingredient("classic crust", 20, "crust"),
+                    new Ingredient("classic sauce", 20, "sauce"),
+                    new Ingredient("cheese", 100, "topping"),
+                    new Ingredient("sausage", 50, "topping")
+                });
+        }
         private async static Task<DataHandler> DeserializeFromFileAsync(string fileName)
         {
             var serializer = new XmlSerializer(typeof(DataHandler));

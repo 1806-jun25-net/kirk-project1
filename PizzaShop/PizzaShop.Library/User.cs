@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PizzaShop.Library
 {
-    public class User : IUser
+    public class User
     {
         public string Username { get; set; }
         public string FirstName { get; set; }
@@ -26,12 +26,12 @@ namespace PizzaShop.Library
 
         public User() { }
 
-        public List<IPizza> GetRecommendedOrder()
+        public List<Pizza> GetRecommendedOrder()
         {
             //?? majority element??
             //otherwise, use most recent order
-            var recommendation = new List<IPizza>();
-            recommendation.Add(new BuildYourOwnPizza("small"));
+            var recommendation = new List<Pizza>();
+            recommendation.Add(new Pizza("small"));
             return recommendation;
         }
     }

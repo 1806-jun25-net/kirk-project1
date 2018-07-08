@@ -7,8 +7,8 @@ namespace PizzaShop.Library
 {
     public class OrderBuilder
     {
-        public IOrder order;
-        public IPizza ActivePizza { get; set; } = null;
+        public Order order;
+        public Pizza ActivePizza { get; set; } = null;
         public const int maxPizzas = 12;
         public const decimal maxOrderPrice = 500m;
 
@@ -17,7 +17,7 @@ namespace PizzaShop.Library
             order = new Order(user, store);
             ActivePizza = null;
         }
-        public OrderBuilder(string user, string store, List<IPizza> pizzas)
+        public OrderBuilder(string user, string store, List<Pizza> pizzas)
         {
             order = new Order(user, store, pizzas);
             ActivePizza = null;
@@ -25,7 +25,7 @@ namespace PizzaShop.Library
 
         public void StartNewPizza(string size)
         {
-            ActivePizza = new BuildYourOwnPizza(size);
+            ActivePizza = new Pizza(size);
         }
 
         public void DuplicatePizza(int i)
@@ -37,7 +37,7 @@ namespace PizzaShop.Library
             }
         }
 
-        public void AddPizza(IPizza p)
+        public void AddPizza(Pizza p)
         {
             if (p != null)
             {
@@ -122,7 +122,7 @@ namespace PizzaShop.Library
             return false;
         }
 
-        public List<IPizza> GetPizzas()
+        public List<Pizza> GetPizzas()
         {
             return order.Pizzas;
         }
@@ -206,30 +206,30 @@ namespace PizzaShop.Library
             // User Remove Stock Bulk from store
 
             //1: generate -List- of all ingredient types w/ appropiate quantity based on scalar
-            List<IIngredient> allIngredients = BuildIngredientList();
+            List<Ingredient> allIngredients = BuildIngredientList();
             Location loc = DataAccessor.DH.Locations.First( l => l.Name.Equals(order.Store));
             return loc.RemoveBulkStock(allIngredients);
         }
 
-        public List<IIngredient> BuildIngredientList()
+        public List<Ingredient> BuildIngredientList()
         {
-            List<IIngredient> allIngredients = new List<IIngredient>();
+            List<Ingredient> allIngredients = new List<Ingredient>();
             int amount;
             foreach (var p in order.Pizzas)
             {
                 amount = DataAccessor.DH.SPM.GetIngredientUsageScalar(p.Size);
-                AddToIngredientList(allIngredients, new Crust(p.CrustType, amount));
-                AddToIngredientList(allIngredients, new Sauce(p.SauceType, amount));
+                AddToIngredientList(allIngredients, new Ingredient(p.CrustType, amount, "crust"));
+                AddToIngredientList(allIngredients, new Ingredient(p.SauceType, amount, "sauce"));
                 foreach (var s in p.Toppings)
                 {
-                    AddToIngredientList(allIngredients, new Topping(s, amount));
+                    AddToIngredientList(allIngredients, new Ingredient(s, amount, "topping"));
                 }
             }
 
             return allIngredients;
         }
 
-        public void AddToIngredientList(List<IIngredient> allIngredients, IIngredient ing)
+        public void AddToIngredientList(List<Ingredient> allIngredients, Ingredient ing)
         {
             int index = allIngredients.IndexOf(ing);
             if (index == -1)  //ingredient not yet in list

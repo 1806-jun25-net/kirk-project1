@@ -17,7 +17,7 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            var peppers = new Topping("peppers", 1);
+            var peppers = new Ingredient("peppers", 1, "topping");
 
             //Act
             location.AddStock(peppers);
@@ -32,8 +32,8 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            var peppers1 = new Topping("peppers", 1);
-            var peppers2 = new Topping("peppers", 2);
+            var peppers1 = new Ingredient("peppers", 1, "topping");
+            var peppers2 = new Ingredient("peppers", 2, "topping");
             location.AddStock(peppers1);
 
             //Act
@@ -50,8 +50,8 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            var peppers1 = new Topping("peppers", 1);
-            var peppers2 = new Topping("peppers", 2);
+            var peppers1 = new Ingredient("peppers", 1, "topping");
+            var peppers2 = new Ingredient("peppers", 2, "topping");
             location.AddStock(peppers1);
 
             //Act
@@ -70,7 +70,7 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            var peppers = new Topping("peppers", 1);
+            var peppers = new Ingredient("peppers", 1, "topping");
 
             //Act
             location.RemoveStock(peppers);
@@ -85,8 +85,8 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            var peppers = new Topping("peppers", 1);
-            var onions = new Topping("onions", 7);
+            var peppers = new Ingredient("peppers", 1, "topping");
+            var onions = new Ingredient("onions", 7, "topping");
 
             //Act
             location.RemoveStock(peppers);
@@ -101,7 +101,7 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            var peppers = new Topping("peppers", 1);
+            var peppers = new Ingredient("peppers", 1, "topping");
 
             //Act
             string name = location.RemoveStock(peppers);
@@ -116,8 +116,8 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            var peppers1 = new Topping("peppers", 1);
-            var peppers2 = new Topping("peppers", 2);
+            var peppers1 = new Ingredient("peppers", 1, "topping");
+            var peppers2 = new Ingredient("peppers", 2, "topping");
 
             //Act
             string name = location.RemoveStock(peppers2);
@@ -132,8 +132,8 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            var peppers1 = new Topping("peppers", 1);
-            var peppers2 = new Topping("peppers", 2);
+            var peppers1 = new Ingredient("peppers", 1, "topping");
+            var peppers2 = new Ingredient("peppers", 2, "topping");
             location.AddStock(peppers1);
 
             //Act
@@ -149,8 +149,8 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            var peppers1 = new Topping("peppers", 1);
-            var peppers2 = new Topping("peppers", 2);
+            var peppers1 = new Ingredient("peppers", 1, "topping");
+            var peppers2 = new Ingredient("peppers", 2, "topping");
             location.AddStock(peppers2);
 
             //Act
@@ -166,7 +166,7 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            var peppers = new Topping("peppers", 1);
+            var peppers = new Ingredient("peppers", 1, "topping");
             location.AddStock(peppers);
 
             //Act
@@ -185,12 +185,12 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            var ingredients = new List<IIngredient>
+            var ingredients = new List<Ingredient>
             {
-                new Topping("peppers", 1),
-                new Topping("onions", 2),
-                new Topping("beef", 7),
-                new Topping("pepperoni", 50)
+                new Ingredient("peppers", 1, "topping"),
+                new Ingredient("onions", 2, "topping"),
+                new Ingredient("beef", 7, "topping"),
+                new Ingredient("pepperoni", 50, "topping")
             };
 
             //Act
@@ -206,13 +206,13 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            IIngredient peppers = new Topping("peppers", 1);
-            var ingredients = new List<IIngredient>
+            Ingredient peppers = new Ingredient("peppers", 1, "topping");
+            var ingredients = new List<Ingredient>
             {
                 peppers,
-                new Topping("onions", 2),
-                new Topping("beef", 7),
-                new Topping("pepperoni", 50)
+                new Ingredient("onions", 2, "topping"),
+                new Ingredient("beef", 7, "topping"),
+                new Ingredient("pepperoni", 50, "topping")
             };
             location.AddStock(peppers);
 
@@ -229,15 +229,15 @@ namespace PizzaShop.Testing
             // Arrange
             DataAccessor.Setup(false);
             var location = new Location();
-            var ingredients = new List<IIngredient>
+            var ingredients = new List<Ingredient>
             {
-                new Topping("peppers", 1),
-                new Topping("onions", 2),
-                new Topping("beef", 7),
-                new Topping("pepperoni", 50)
+                new Ingredient("peppers", 1, "topping"),
+                new Ingredient("onions", 2, "topping"),
+                new Ingredient("beef", 7, "topping"),
+                new Ingredient("pepperoni", 50, "topping")
             };
-            location.AddStock(new Topping("peppers", 1));
-            location.AddStock(new Topping("onions", 1));
+            location.AddStock(new Ingredient("peppers", 1, "topping"));
+            location.AddStock(new Ingredient("onions", 1, "topping"));
             //Act
             location.AddBulkStock(ingredients);
 
@@ -252,12 +252,12 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             var location = new Location();
-            var ingredients = new List<IIngredient>
+            var ingredients = new List<Ingredient>
             {
-                new Topping("peppers", 1),
-                new Topping("onions", 2),
-                new Topping("beef", 7),
-                new Topping("pepperoni", 50)
+                new Ingredient("peppers", 1, "topping"),
+                new Ingredient("onions", 2, "topping"),
+                new Ingredient("beef", 7, "topping"),
+                new Ingredient("pepperoni", 50, "topping")
             };
 
             string result = location.RemoveBulkStock(ingredients);
@@ -271,16 +271,16 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             var location = new Location();
-            var ingredients = new List<IIngredient>
+            var ingredients = new List<Ingredient>
             {
-                new Topping("peppers", 1),
-                new Topping("onions", 1),
-                new Topping("beef", 1),
-                new Topping("pepperoni", 10)
+                new Ingredient("peppers", 1, "topping"),
+                new Ingredient("onions", 1, "topping"),
+                new Ingredient("beef", 1, "topping"),
+                new Ingredient("pepperoni", 10, "topping")
             };
-            location.AddStock(new Topping("peppers", 2));
-            location.AddStock(new Topping("onions", 2));
-            location.AddStock(new Topping("pepperoni",2));
+            location.AddStock(new Ingredient("peppers", 2, "topping"));
+            location.AddStock(new Ingredient("onions", 2, "topping"));
+            location.AddStock(new Ingredient("pepperoni",2, "topping"));
 
             String result = location.RemoveBulkStock(ingredients);
 
@@ -293,17 +293,17 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             var location = new Location();
-            var ingredients = new List<IIngredient>
+            var ingredients = new List<Ingredient>
             {
-                new Topping("peppers", 1),
-                new Topping("onions", 1),
-                new Topping("beef", 1),
-                new Topping("pepperoni", 10)
+                new Ingredient("peppers", 1, "topping"),
+                new Ingredient("onions", 1, "topping"),
+                new Ingredient("beef", 1, "topping"),
+                new Ingredient("pepperoni", 10, "topping")
             };
-            location.AddStock(new Topping("peppers", 2));
-            location.AddStock(new Topping("onions", 2));
-            location.AddStock(new Topping("pepperoni", 2));
-            location.AddStock(new Topping("beef", 2));
+            location.AddStock(new Ingredient("peppers", 2, "topping"));
+            location.AddStock(new Ingredient("onions", 2, "topping"));
+            location.AddStock(new Ingredient("pepperoni", 2, "topping"));
+            location.AddStock(new Ingredient("beef", 2, "topping"));
 
             String result = location.RemoveBulkStock(ingredients);
 
@@ -315,16 +315,16 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             var location = new Location();
-            var ingredients = new List<IIngredient>
+            var ingredients = new List<Ingredient>
             {
-                new Topping("peppers", 1),
-                new Topping("onions", 1),
-                new Topping("beef", 1),
-                new Topping("pepperoni", 10)
+                new Ingredient("peppers", 1, "topping"),
+                new Ingredient("onions", 1, "topping"),
+                new Ingredient("beef", 1, "topping"),
+                new Ingredient("pepperoni", 10, "topping")
             };
-            location.AddStock(new Topping("peppers", 2));
-            location.AddStock(new Topping("onions", 2));
-            location.AddStock(new Topping("pepperoni", 2));
+            location.AddStock(new Ingredient("peppers", 2, "topping"));
+            location.AddStock(new Ingredient("onions", 2, "topping"));
+            location.AddStock(new Ingredient("pepperoni", 2, "topping"));
 
             String result = location.RemoveBulkStock(ingredients);
 
@@ -336,17 +336,17 @@ namespace PizzaShop.Testing
         {
             DataAccessor.Setup(false);
             var location = new Location();
-            var ingredients = new List<IIngredient>
+            var ingredients = new List<Ingredient>
             {
-                new Topping("peppers", 1),
-                new Topping("onions", 1),
-                new Topping("beef", 1),
-                new Topping("pepperoni", 10)
+                new Ingredient("peppers", 1, "topping"),
+                new Ingredient("onions", 1, "topping"),
+                new Ingredient("beef", 1, "topping"),
+                new Ingredient("pepperoni", 10, "topping")
             };
-            location.AddStock(new Topping("peppers", 2));
-            location.AddStock(new Topping("onions", 2));
-            location.AddStock(new Topping("pepperoni", 2));
-            location.AddStock(new Topping("beef", 2));
+            location.AddStock(new Ingredient("peppers", 2, "topping"));
+            location.AddStock(new Ingredient("onions", 2, "topping"));
+            location.AddStock(new Ingredient("pepperoni", 2, "topping"));
+            location.AddStock(new Ingredient("beef", 2, "topping"));
 
             String result = location.RemoveBulkStock(ingredients);
 

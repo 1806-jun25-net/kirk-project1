@@ -11,13 +11,13 @@ namespace PizzaShop.Library
         public HashSet<string> Toppings { get; set; } = new HashSet<string>();
 
 
-        public void AddIngredient(IIngredient ing)
+        public void AddIngredient(Ingredient ing)
         {
-            if (ing is Crust)
+            if (ing.Type.ToLower().Equals("crust"))
                 Crusts.Add(ing.Name);
-            else if (ing is Sauce)
+            else if (ing.Type.ToLower().Equals("sauce"))
                 Sauces.Add(ing.Name);
-            else if (ing is Topping)
+            else if (ing.Type.ToLower().Equals("topping"))
                 Toppings.Add(ing.Name);
         }
     }

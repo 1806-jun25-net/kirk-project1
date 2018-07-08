@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<DataHandler xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ingDir>
+    <Crusts>
+      <string>classic crust</string>
+      <string>thin crust</string>
+    </Crusts>
+    <Sauces>
+      <string>classic sauce</string>
+      <string>garlic white sauce</string>
+    </Sauces>
+    <Toppings>
+      <string>cheese</string>
+      <string>pepperoni</string>
+      <string>sausage</string>
+    </Toppings>
+  </ingDir>
+  <Locations>
+    <Location>
+      <Stock>
+        <Ingredient>
+          <Name>classic crust</Name>
+          <Quantity>15</Quantity>
+          <Type>crust</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>classic sauce</Name>
+          <Quantity>15</Quantity>
+          <Type>sauce</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>cheese</Name>
+          <Quantity>95</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>sausage</Name>
+          <Quantity>50</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+      </Stock>
+      <OrderHistory />
+      <Name>Placeholder</Name>
+    </Location>
+    <Location>
+      <Stock />
+      <OrderHistory />
+      <Name>Alternate Placeholder</Name>
+    </Location>
+  </Locations>
+  <Orders>
+    <Order>
+      <Pizzas>
+        <Pizza>
+          <Size>small</Size>
+          <CrustType>classic crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings>
+            <string>cheese</string>
+          </Toppings>
+          <Price>5.5</Price>
+        </Pizza>
+        <Pizza>
+          <Size>party-sized</Size>
+          <CrustType>classic crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings>
+            <string>cheese</string>
+          </Toppings>
+          <Price>44</Price>
+        </Pizza>
+      </Pizzas>
+      <Timestamp>2018-07-08T01:04:33.4250779-04:00</Timestamp>
+      <Store>Placeholder</Store>
+      <Id>636666086734250779</Id>
+      <Price>49.5</Price>
+    </Order>
+  </Orders>
+  <Users>
+    <User>
+      <Username>test</Username>
+      <FirstName>a</FirstName>
+      <LastName>b</LastName>
+      <Email>a@a.com</Email>
+      <Phone>1234567980</Phone>
+      <FavStore>Placeholder</FavStore>
+    </User>
+  </Users>
+  <SPM>
+    <Sizes>
+      <string>small</string>
+      <string>medium</string>
+      <string>large</string>
+      <string>party-sized</string>
+    </Sizes>
+    <BasePrices>
+      <decimal>5</decimal>
+      <decimal>7.5</decimal>
+      <decimal>10</decimal>
+      <decimal>40</decimal>
+    </BasePrices>
+    <ToppingPrices>
+      <decimal>0.5</decimal>
+      <decimal>0.75</decimal>
+      <decimal>1</decimal>
+      <decimal>4</decimal>
+    </ToppingPrices>
+    <IngredientUsageScalar>
+      <int>1</int>
+      <int>2</int>
+      <int>3</int>
+      <int>4</int>
+    </IngredientUsageScalar>
+  </SPM>
+</DataHandler>
