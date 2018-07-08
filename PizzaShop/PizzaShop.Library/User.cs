@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PizzaShop.Library
@@ -29,11 +30,17 @@ namespace PizzaShop.Library
 
         public List<Pizza> GetRecommendedOrder()
         {
-            //?? majority element??
-            //otherwise, use most recent order
+            //Returns the most recent order, if one exists for that user
+            //otherwise, use a basic small pizza
             var recommendation = new List<Pizza>();
-            recommendation.Add(new Pizza("small"));
+            if (OrderHistory.Count > 0)
+                recommendation = DataAccessor.DH.Orders.First(o => o.Id.Equals(OrderHistory[OrderHistory.Count - 1])).Pizzas;
+            else
+                recommendation.Add(new Pizza("small"));
             return recommendation;
+
+
+            //?? majority element??
         }
     }
 }
