@@ -43,12 +43,12 @@
         <string>636666114872632430</string>
         <string>636666114922657510</string>
       </OrderHistory>
-      <Name>Placeholder</Name>
+      <Name>Reston</Name>
     </Location>
     <Location>
       <Stock />
       <OrderHistory />
-      <Name>Alternate Placeholder</Name>
+      <Name>Herndon</Name>
     </Location>
   </Locations>
   <Orders>
@@ -116,8 +116,8 @@
   <Users>
     <User>
       <Username>test</Username>
-      <FirstName>a</FirstName>
-      <LastName>b</LastName>
+      <FirstName>First</FirstName>
+      <LastName>Last</LastName>
       <Email>a@a.com</Email>
       <Phone>1234567980</Phone>
       <FavStore>Placeholder</FavStore>
