@@ -55,6 +55,11 @@
   </Locations>
   <Orders>
     <Order>
+      <Id>636666669219840355</Id>
+      <Timestamp>2018-07-08T14:15:21.9840355-04:00</Timestamp>
+      <Store>Placeholder</Store>
+      <UserID>test</UserID>
+      <Price>5.5</Price>
       <Pizzas>
         <Pizza>
           <Size>small</Size>
@@ -66,13 +71,13 @@
           <Price>5.5</Price>
         </Pizza>
       </Pizzas>
-      <Timestamp>2018-07-08T14:15:21.9840355-04:00</Timestamp>
-      <Store>Placeholder</Store>
-      <UserID>test</UserID>
-      <Id>636666669219840355</Id>
-      <Price>5.5</Price>
     </Order>
     <Order>
+      <Id>636666669578339245</Id>
+      <Timestamp>2018-07-08T17:15:57.8339245-04:00</Timestamp>
+      <Store>Placeholder</Store>
+      <UserID>test2</UserID>
+      <Price>48</Price>
       <Pizzas>
         <Pizza>
           <Size>party-sized</Size>
@@ -85,41 +90,21 @@
           <Price>48</Price>
         </Pizza>
       </Pizzas>
-      <Timestamp>2018-07-08T17:15:57.8339245-04:00</Timestamp>
-      <Store>Placeholder</Store>
-      <UserID>test2</UserID>
-      <Id>636666669578339245</Id>
-      <Price>48</Price>
     </Order>
     <Order>
-      <Pizzas>
-        <Pizza>
-          <Size>medium</Size>
-          <CrustType>classic crust</CrustType>
-          <SauceType>classic sauce</SauceType>
-          <Toppings>
-            <string>cheese</string>
-          </Toppings>
-          <Price>7.50</Price>
-        </Pizza>
-        <Pizza>
-          <Size>large</Size>
-          <CrustType>classic crust</CrustType>
-          <SauceType>classic sauce</SauceType>
-          <Toppings>
-            <string>cheese</string>
-            <string>sausage</string>
-          </Toppings>
-          <Price>12</Price>
-        </Pizza>
-      </Pizzas>
+      <Id>636666670760381971</Id>
       <Timestamp>2018-07-08T17:17:56.0381971-04:00</Timestamp>
       <Store>Placeholder</Store>
       <UserID>test</UserID>
-      <Id>636666670760381971</Id>
       <Price>7.50</Price>
+      <Pizzas />
     </Order>
     <Order>
+      <Id>636666719618371658</Id>
+      <Timestamp>2018-07-08T18:39:21.8371658-04:00</Timestamp>
+      <Store>Placeholder</Store>
+      <UserID>bb</UserID>
+      <Price>12</Price>
       <Pizzas>
         <Pizza>
           <Size>large</Size>
@@ -132,11 +117,6 @@
           <Price>12</Price>
         </Pizza>
       </Pizzas>
-      <Timestamp>2018-07-08T18:39:21.8371658-04:00</Timestamp>
-      <Store>Placeholder</Store>
-      <UserID>bb</UserID>
-      <Id>636666719618371658</Id>
-      <Price>12</Price>
     </Order>
   </Orders>
   <Users>
