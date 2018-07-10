@@ -3,15 +3,19 @@
   <ingDir>
     <Crusts>
       <string>classic crust</string>
+      <string>deep dish crust</string>
       <string>thin crust</string>
     </Crusts>
     <Sauces>
+      <string>bbq sauce</string>
       <string>classic sauce</string>
       <string>garlic white sauce</string>
     </Sauces>
     <Toppings>
       <string>cheese</string>
+      <string>onions</string>
       <string>pepperoni</string>
+      <string>peppers</string>
       <string>sausage</string>
     </Toppings>
   </ingDir>
@@ -19,44 +23,75 @@
     <Location>
       <Stock>
         <Ingredient>
-          <Name>classic crust</Name>
-          <Quantity>18</Quantity>
-          <Type>crust</Type>
-        </Ingredient>
-        <Ingredient>
-          <Name>classic sauce</Name>
-          <Quantity>18</Quantity>
+          <Name>bbq sauce</Name>
+          <Quantity>20</Quantity>
           <Type>sauce</Type>
         </Ingredient>
         <Ingredient>
           <Name>cheese</Name>
-          <Quantity>98</Quantity>
+          <Quantity>15</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
-          <Name>sausage</Name>
-          <Quantity>50</Quantity>
+          <Name>deep dish crust</Name>
+          <Quantity>5</Quantity>
+          <Type>crust</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>pepperoni</Name>
+          <Quantity>10</Quantity>
           <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>thin crust</Name>
+          <Quantity>5</Quantity>
+          <Type>crust</Type>
+        </Ingredient>
+      </Stock>
+      <OrderHistory />
+      <Name>Herndon</Name>
+    </Location>
+    <Location>
+      <Stock>
+        <Ingredient>
+          <Name>cheese</Name>
+          <Quantity>14</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>classic crust</Name>
+          <Quantity>19</Quantity>
+          <Type>crust</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>classic sauce</Name>
+          <Quantity>19</Quantity>
+          <Type>sauce</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>sausage</Name>
+          <Quantity>10</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>thin crust</Name>
+          <Quantity>20</Quantity>
+          <Type>crust</Type>
         </Ingredient>
       </Stock>
       <OrderHistory>
-        <int>839967395</int>
+        <int>576195887</int>
       </OrderHistory>
-      <Name>Placeholder</Name>
-    </Location>
-    <Location>
-      <Stock />
-      <OrderHistory />
-      <Name>Alternate Placeholder</Name>
+      <Name>Reston</Name>
     </Location>
   </Locations>
   <Orders>
     <Order>
-      <Id>1359350855</Id>
-      <Timestamp>2018-07-10T01:20:26.1434439-04:00</Timestamp>
-      <Store>Placeholder</Store>
+      <Id>576195887</Id>
+      <Timestamp>2018-07-10T15:16:38.9453103-04:00</Timestamp>
+      <Store>Reston</Store>
       <UserID>test</UserID>
-      <Price>5.5</Price>
+      <Price>0</Price>
       <Pizzas>
         <Pizza>
           <Size>small</Size>
@@ -65,25 +100,7 @@
           <Toppings>
             <string>cheese</string>
           </Toppings>
-          <Price>5.5</Price>
-        </Pizza>
-      </Pizzas>
-    </Order>
-    <Order>
-      <Id>839967395</Id>
-      <Timestamp>2018-07-10T01:33:53.1985571-04:00</Timestamp>
-      <Store>Placeholder</Store>
-      <UserID>test</UserID>
-      <Price>5.5</Price>
-      <Pizzas>
-        <Pizza>
-          <Size>small</Size>
-          <CrustType>classic crust</CrustType>
-          <SauceType>classic sauce</SauceType>
-          <Toppings>
-            <string>cheese</string>
-          </Toppings>
-          <Price>5.5</Price>
+          <Price>5.5000</Price>
         </Pizza>
       </Pizzas>
     </Order>
@@ -91,40 +108,49 @@
   <Users>
     <User>
       <Username>test</Username>
-      <FirstName>a</FirstName>
-      <LastName>b</LastName>
+      <FirstName>First</FirstName>
+      <LastName>Last</LastName>
       <Email>a@a.com</Email>
-      <Phone>1234567980</Phone>
-      <FavStore>Placeholder</FavStore>
+      <Phone>1234567890</Phone>
+      <FavStore>Herndon</FavStore>
       <OrderHistory>
-        <int>839967395</int>
+        <int>576195887</int>
       </OrderHistory>
+    </User>
+    <User>
+      <Username>test2</Username>
+      <FirstName>Tess</FirstName>
+      <LastName>Est</LastName>
+      <Email>winner@gmail.com</Email>
+      <Phone>9307452132</Phone>
+      <FavStore>Reston</FavStore>
+      <OrderHistory />
     </User>
   </Users>
   <SPM>
     <Sizes>
-      <string>small</string>
-      <string>medium</string>
       <string>large</string>
+      <string>medium</string>
       <string>party-sized</string>
+      <string>small</string>
     </Sizes>
     <BasePrices>
-      <decimal>5</decimal>
-      <decimal>7.5</decimal>
-      <decimal>10</decimal>
-      <decimal>40</decimal>
+      <decimal>10.0000</decimal>
+      <decimal>7.5000</decimal>
+      <decimal>40.0000</decimal>
+      <decimal>5.0000</decimal>
     </BasePrices>
     <ToppingPrices>
-      <decimal>0.5</decimal>
-      <decimal>0.75</decimal>
-      <decimal>1</decimal>
-      <decimal>4</decimal>
+      <decimal>1.0000</decimal>
+      <decimal>0.7500</decimal>
+      <decimal>4.0000</decimal>
+      <decimal>0.5000</decimal>
     </ToppingPrices>
     <IngredientUsageScalar>
-      <int>1</int>
-      <int>2</int>
       <int>3</int>
+      <int>2</int>
       <int>4</int>
+      <int>1</int>
     </IngredientUsageScalar>
   </SPM>
 </DataHandler>

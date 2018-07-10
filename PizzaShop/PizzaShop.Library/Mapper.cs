@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PizzaShop.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,17 +13,13 @@ namespace PizzaShop.Library
         public static Location Map(Data.Locations otherLoc) => new Location
         {
             Name = otherLoc.Name,
-            //Reviews = Map(otherLoc.Review).ToList()
-            //Stock = Map(otherLoc.LocationIngredientJunction),
-            //OrderHistory = Map(otherLoc.Orders)
+            Stock = Map(otherLoc.LocationIngredientJunction),
+            OrderHistory = Map(otherLoc.Orders).Select( o => o.Id ).ToList()
         };
 
         public static Data.Locations Map(Location otherLoc) => new Data.Locations
         {
-            Name = otherLoc.Name,
-            //Review = Map(restaurant.Reviews).ToList()
-            //LocationIngredientJunction = Map(otherLoc.Stock),
-            //Orders = Map(otherLoc.OrderHistory)
+            Name = otherLoc.Name
         };
 
         public static User Map(Data.Users otherUser) => new User
@@ -33,7 +30,7 @@ namespace PizzaShop.Library
             Email = otherUser.Email,
             Phone = otherUser.Phone,
             FavStore = otherUser.FavLocation,
-            //OrderHistory = Map(otherUser.Orders)
+            OrderHistory = Map(otherUser.Orders).Select(m=> m.Id).ToList()
         };
 
         public static Data.Users Map(User otherUser) => new Data.Users
@@ -111,6 +108,29 @@ namespace PizzaShop.Library
             foreach (var op in otherPricing)
                 spm.AddNewSize(op.Size, (decimal)op.BasePrice, (decimal)op.ToppingPrice, (int)op.IngredientUsageScalar);
             return spm;
+        }
+
+        public static List<Ingredient> Map(ICollection<LocationIngredientJunction> lij)
+        {
+            List<Ingredient> stock = new List<Ingredient>();
+            if (lij == null)
+            {
+                Console.WriteLine("lij null for some reason");
+            }
+            foreach (var i in lij)
+            {
+                string t;
+                if (i.IngredientId.Contains("sauce"))
+                    t = "sauce";
+                else if (i.IngredientId.Contains("crust"))
+                    t = "crust";
+                else
+                    t = "topping";
+                //stock.Add(new Ingredient(i.IngredientId, (int)i.Quantity, "topping"));
+                stock.Add(new Ingredient(i.IngredientId, (int)i.Quantity, t));
+                //stock.Add(new Ingredient(i.IngredientId, (int)i.Quantity, i.Ingredient.Type));
+            }
+            return stock;
         }
 
 

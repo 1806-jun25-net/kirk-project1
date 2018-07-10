@@ -168,7 +168,6 @@ namespace PizzaShop.Library
 
             //add order to order history
             DataAccessor.DH.Orders.Add(order);
-            DataAccessor.RH.Orders.Add(order);
             //add orderID to user order history
             DataAccessor.GetUserByUsername(order.UserID).OrderHistory.Add(order.Id);
             //add orderID to location order history

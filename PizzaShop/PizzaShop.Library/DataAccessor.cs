@@ -15,15 +15,38 @@ namespace PizzaShop.Library
     public static class DataAccessor
     {
         public static DataHandler DH { get; set; }
-        public static RepoHandler RH { get; set; }
+        //public static RepoHandler RH { get; set; }
 
 
-        //public static readonly string serializationFilepath = @"C:\Revature\kirk-project1\PizzaShop\data.xml";
-        public static readonly string serializationFilepath = @"E:\Revature\kirk-project1\PizzaShop\data.xml";
+        public static readonly string serializationFilepath = @"C:\Revature\kirk-project1\PizzaShop\data.xml";
+        //public static readonly string serializationFilepath = @"E:\Revature\kirk-project1\PizzaShop\data.xml";
 
         public static void Setup(bool importFromXML, bool useSQL)
         {
-            if (importFromXML)
+            if (useSQL)
+            {
+                //INSERTING SQL STUFF HERE
+
+                // get the configuration from file
+                var builder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+                IConfigurationRoot configuration = builder.Build();
+
+                //Use to confirm .json is being read in properly
+                //Console.WriteLine(configuration.GetConnectionString("Project1DB"));
+
+                var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1DB"));
+                var options = optionsBuilder.Options;
+
+                DH = new DataHandler(new Project1DBContext(optionsBuilder.Options));
+
+                //END SQL STUFF
+                //Should now be able to access database records by using RH instead of DH
+            }
+            else if (importFromXML)
             {
                 //Run deserialization code
                 Task<DataHandler> desListTask = DeserializeFromFileAsync(serializationFilepath);
@@ -46,30 +69,7 @@ namespace PizzaShop.Library
                     InitializeDummyData();
                 }
             }
-            if (useSQL)
-            {
-                //INSERTING SQL STUFF HERE
-
-                // get the configuration from file
-                var builder = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-
-                IConfigurationRoot configuration = builder.Build();
-
-                //Use to confirm .json is being read in properly
-                //Console.WriteLine(configuration.GetConnectionString("Project1DB"));
-
-                var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1DB"));
-                var options = optionsBuilder.Options;
-
-                var lRepo = new LocationRepository(new Project1DBContext(optionsBuilder.Options));
-                RH = new RepoHandler(new Project1DBContext(optionsBuilder.Options));
-
-                //END SQL STUFF
-                //Should now be able to access database records by using RH instead of DH
-            }
+            
 
             if (! (importFromXML || useSQL))
             {

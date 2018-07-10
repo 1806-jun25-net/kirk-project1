@@ -19,7 +19,9 @@ namespace PizzaShop.Library.Repositories
 
         public IEnumerable<Locations> GetLocations()
         {
-            List<Locations> locations = _db.Locations.AsNoTracking().ToList();
+            //List<Locations> locations = _db.Locations.AsNoTracking().ToList();
+            List<Locations> locations = _db.Locations.AsNoTracking().Include(m => m.Orders).Include(s => s.LocationIngredientJunction).ToList();
+            //List<Locations> locations = _db.Locations.AsNoTracking().Include(m => m.Orders).Include(s => s.LocationIngredientJunction.AsQueryable().Include(k => k.Ingredient )).ToList();
             return locations;
         }
 

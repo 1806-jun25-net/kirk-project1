@@ -19,6 +19,7 @@ namespace PizzaShop.Library.Repositories
         public IEnumerable<Ingredients> GetIngredient()
         {
             List<Ingredients> ing = _db.Ingredients.AsNoTracking().ToList();
+            //List<Ingredients> ing = _db.Ingredients.AsNoTracking().Include(m => m.LocationIngredientJunction).ToList();
             return ing;
         }
 

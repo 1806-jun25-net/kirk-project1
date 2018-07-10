@@ -18,7 +18,8 @@ namespace PizzaShop.Library.Repositories
 
         public IEnumerable<Users> GetUsers()
         {
-            List<Users> users = _db.Users.AsNoTracking().ToList();
+            //List<Users> users = _db.Users.AsNoTracking().ToList();
+            List<Users> users = _db.Users.AsNoTracking().Include(m => m.Orders).ToList();
             return users;
         }
 

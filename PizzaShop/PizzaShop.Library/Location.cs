@@ -11,7 +11,7 @@ namespace PizzaShop.Library
 {
     public class Location
     {
-        public List<Ingredient> Stock { get; } = new List<Ingredient>();
+        public List<Ingredient> Stock { get; set; } = new List<Ingredient>();
         public List<int> OrderHistory { get; set; } = new List<int>();
         public String Name { get; set; }
 

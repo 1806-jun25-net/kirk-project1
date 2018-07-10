@@ -13,13 +13,14 @@ namespace PizzaShop.UI
     class Program
     {
         //TODO IDEAS:
+        //TODO IDEAS:
         //Combine DH and RH save on all refactoring (boolean to initialize lists to database or not)
         //Fully read from database
         //write new orders to db
         //set up .json & conneciton string on laptop
 
         private static string userID;
-        private static readonly bool readFromXML = true;
+        private static readonly bool useXML = true;
         private static readonly bool useSQL = true;
 
 
@@ -27,18 +28,14 @@ namespace PizzaShop.UI
         {
 
             //Get data ready
-            DataAccessor.Setup(readFromXML, useSQL);
+            DataAccessor.Setup(useXML, useSQL);
 
             //Begin at first screen of the menu system
             MenuStart();
 
             //Run serialization code to back up all changes upon menu termination
-            DataAccessor.SerializeToFile();
-
-
-            //List<Order> testList = new List<Order>();
-            //testList.Any(t=> t.Id.Equals(t.Id));
-            //testList.First(t => t.Id.Equals(t.Id));
+            if (useXML)
+                DataAccessor.SerializeToFile();
 
         }
 
@@ -305,9 +302,11 @@ namespace PizzaShop.UI
                 else
                 {
                     Console.WriteLine("Your current order:");
+                    Console.WriteLine($"Order placed on: {ob.order.Timestamp}");
+                    Console.WriteLine($"Order Prpared for username: {ob.order.UserID}");
                     Console.WriteLine($"Order location: {ob.order.Store}");
-                    PrintPizzaList(ob.GetPizzas());
-                    Console.WriteLine($"---------------------\n   Total Price: ${ob.CalculateTotalPrice()}\n");
+                    PrintPizzaList(ob.order.Pizzas);
+                    Console.WriteLine($"---------------------\n   Total Price: ${ob.order.Price.ToString("F")}\n");
                 }
 
                 Console.WriteLine("Please enter the number for your selection");
@@ -531,7 +530,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("add", "topping", DataAccessor.RH.ingDir.Toppings);
+                MenuHelperSelectIngredient("add", "topping", DataAccessor.DH.ingDir.Toppings);
                 input = Console.ReadLine();
                 result = ob.AddToppingToActivePizza(input);
                 if (result)
@@ -577,7 +576,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("change to", "crust", DataAccessor.RH.ingDir.Crusts);
+                MenuHelperSelectIngredient("change to", "crust", DataAccessor.DH.ingDir.Crusts);
                 input = Console.ReadLine();
                 result = ob.ChangeCrustOnActivePizza(input);
                 if (result)
@@ -600,7 +599,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("change to", "sauce", DataAccessor.RH.ingDir.Sauces);
+                MenuHelperSelectIngredient("change to", "sauce", DataAccessor.DH.ingDir.Sauces);
                 input = Console.ReadLine();
                 result = ob.ChangeSauceOnActivePizza(input);
                 if (result)
@@ -974,7 +973,7 @@ namespace PizzaShop.UI
         {
             Console.Write($"{pizza.Size} pizza, {pizza.CrustType}, {pizza.SauceType}\n    Toppings:");
             PrintIngredients(pizza.Toppings);
-            Console.WriteLine($"    Price: ${pizza.Price}");
+            Console.WriteLine($"    Price: ${pizza.Price.ToString("F")}");
         }
 
         public static void PrintIngredients(IEnumerable<Ingredient> ingredients)
@@ -1005,8 +1004,8 @@ namespace PizzaShop.UI
         public static void PrintLocations()
         {
             Console.WriteLine("Our order locations are:");
-            for (int i = 0; i < DataAccessor.RH.Locations.Count; i++)
-                Console.WriteLine($"{i + 1}: {DataAccessor.RH.Locations[i].Name}");
+            for (int i = 0; i < DataAccessor.DH.Locations.Count; i++)
+                Console.WriteLine($"{i + 1}: {DataAccessor.DH.Locations[i].Name}");
         }
 
         public static void PrintOrder(Order order)
@@ -1016,7 +1015,7 @@ namespace PizzaShop.UI
             Console.WriteLine($"Order Prpared for username: {order.UserID}");
             Console.WriteLine($"Order location: {order.Store}");
             PrintPizzaList(order.Pizzas);
-            Console.WriteLine($"---------------------\n   Total Price: ${order.Price}\n");
+            Console.WriteLine($"---------------------\n   Total Price: ${order.Price.ToString("F")}\n");
         }
 
     }
