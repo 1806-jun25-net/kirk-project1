@@ -12,6 +12,12 @@ namespace PizzaShop.UI
 {
     class Program
     {
+        //TODO IDEAS:
+        //Combine DH and RH save on all refactoring (boolean to initialize lists to database or not)
+        //Fully read from database
+        //write new orders to db
+        //set up .json & conneciton string on laptop
+
         private static string userID;
         private static readonly bool readFromXML = true;
         private static readonly bool useSQL = true;
