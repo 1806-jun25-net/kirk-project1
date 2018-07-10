@@ -23,6 +23,11 @@ namespace PizzaShop.Library.Repositories
             return users;
         }
 
+        public void AddUser(User u)
+        {
+            _db.Add(Mapper.Map(u));
+        }
+
         public void Save()
         {
             _db.SaveChanges();

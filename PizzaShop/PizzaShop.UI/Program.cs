@@ -36,6 +36,10 @@ namespace PizzaShop.UI
             //Run serialization code to back up all changes upon menu termination
             if (useXML)
                 DataAccessor.SerializeToFile();
+            if (useSQL)
+            {
+                DataAccessor.DH.db.Dispose();
+            }
 
         }
 
@@ -176,6 +180,8 @@ namespace PizzaShop.UI
 
             //add new user to user list
             DataAccessor.DH.Users.Add(newUser);
+            DataAccessor.DH.UserRepo.AddUser(newUser);
+            DataAccessor.DH.UserRepo.Save();
         }
 
         public static void MenuExistingUserLogin()
@@ -302,7 +308,6 @@ namespace PizzaShop.UI
                 else
                 {
                     Console.WriteLine("Your current order:");
-                    Console.WriteLine($"Order placed on: {ob.order.Timestamp}");
                     Console.WriteLine($"Order Prpared for username: {ob.order.UserID}");
                     Console.WriteLine($"Order location: {ob.order.Store}");
                     PrintPizzaList(ob.order.Pizzas);

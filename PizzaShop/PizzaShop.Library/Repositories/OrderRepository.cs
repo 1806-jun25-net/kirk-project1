@@ -24,6 +24,11 @@ namespace PizzaShop.Library.Repositories
             return orders;
         }
 
+        public void AddOrder(Order order)
+        {
+            _db.Add(Mapper.Map(order));
+        }
+
         public void Save()
         {
             _db.SaveChanges();

@@ -28,23 +28,26 @@ namespace PizzaShop.Library
         public SizingPricingRepository SPRepo { get; set; }
         [XmlIgnore]
         public IngredientRepository IngRepo { get; set; }
+        [XmlIgnore]
+        public Project1DBContext db;
 
         //if it's passed a DBContext, will read from db
-        public DataHandler(Project1DBContext db)
+        public DataHandler(Project1DBContext dbParam)
         {
-                LocRepo = new LocationRepository(db);
-                OrderRepo = new OrderRepository(db);
-                UserRepo = new UserRepository(db);
-                SPRepo = new SizingPricingRepository(db);
-                IngRepo = new IngredientRepository(db);
+            db = dbParam;
+            LocRepo = new LocationRepository(db);
+            OrderRepo = new OrderRepository(db);
+            UserRepo = new UserRepository(db);
+            SPRepo = new SizingPricingRepository(db);
+            IngRepo = new IngredientRepository(db);
 
-                Locations = Mapper.Map(LocRepo.GetLocations()).ToList();
-                Orders = Mapper.Map(OrderRepo.GetOrders()).ToList();
-                Users = Mapper.Map(UserRepo.GetUsers()).ToList();
+            Locations = Mapper.Map(LocRepo.GetLocations()).ToList();
+            Orders = Mapper.Map(OrderRepo.GetOrders()).ToList();
+            Users = Mapper.Map(UserRepo.GetUsers()).ToList();
 
-                SPM = Mapper.Map(SPRepo.GetSizingPricing());
-                foreach (var ing in Mapper.Map(IngRepo.GetIngredient()).ToList())
-                    ingDir.AddIngredient(ing);
+            SPM = Mapper.Map(SPRepo.GetSizingPricing());
+            foreach (var ing in Mapper.Map(IngRepo.GetIngredient()).ToList())
+                ingDir.AddIngredient(ing);
         }
 
         // otherwise, will use default values

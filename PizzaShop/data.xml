@@ -55,17 +55,17 @@
       <Stock>
         <Ingredient>
           <Name>cheese</Name>
-          <Quantity>14</Quantity>
+          <Quantity>15</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>classic crust</Name>
-          <Quantity>19</Quantity>
+          <Quantity>20</Quantity>
           <Type>crust</Type>
         </Ingredient>
         <Ingredient>
           <Name>classic sauce</Name>
-          <Quantity>19</Quantity>
+          <Quantity>20</Quantity>
           <Type>sauce</Type>
         </Ingredient>
         <Ingredient>
@@ -79,33 +79,21 @@
           <Type>crust</Type>
         </Ingredient>
       </Stock>
-      <OrderHistory>
-        <int>576195887</int>
-      </OrderHistory>
+      <OrderHistory />
       <Name>Reston</Name>
     </Location>
   </Locations>
-  <Orders>
-    <Order>
-      <Id>576195887</Id>
-      <Timestamp>2018-07-10T15:16:38.9453103-04:00</Timestamp>
-      <Store>Reston</Store>
-      <UserID>test</UserID>
-      <Price>0</Price>
-      <Pizzas>
-        <Pizza>
-          <Size>small</Size>
-          <CrustType>classic crust</CrustType>
-          <SauceType>classic sauce</SauceType>
-          <Toppings>
-            <string>cheese</string>
-          </Toppings>
-          <Price>5.5000</Price>
-        </Pizza>
-      </Pizzas>
-    </Order>
-  </Orders>
+  <Orders />
   <Users>
+    <User>
+      <Username>newguy</Username>
+      <FirstName>Guy</FirstName>
+      <LastName>Nu</LastName>
+      <Email>please@work.com</Email>
+      <Phone>4444444444</Phone>
+      <FavStore>Reston</FavStore>
+      <OrderHistory />
+    </User>
     <User>
       <Username>test</Username>
       <FirstName>First</FirstName>
@@ -113,9 +101,7 @@
       <Email>a@a.com</Email>
       <Phone>1234567890</Phone>
       <FavStore>Herndon</FavStore>
-      <OrderHistory>
-        <int>576195887</int>
-      </OrderHistory>
+      <OrderHistory />
     </User>
     <User>
       <Username>test2</Username>

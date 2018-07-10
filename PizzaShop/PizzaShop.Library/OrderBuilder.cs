@@ -51,7 +51,6 @@ namespace PizzaShop.Library
             if (ActivePizza != null)
             {
                 AddPizza(ActivePizza);
-                order.Price += ActivePizza.Price;
             }
         }
 
@@ -172,6 +171,12 @@ namespace PizzaShop.Library
             DataAccessor.GetUserByUsername(order.UserID).OrderHistory.Add(order.Id);
             //add orderID to location order history
             DataAccessor.DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory.Add(order.Id);
+            //add order to DB
+            DataAccessor.DH.OrderRepo.AddOrder(order);
+            //Update decremented inventory to DB
+            //DataAccessor.DH.LocRepo.UpdateLocationInventory(DataAccessor.GetLocationByName(order.Store));
+            DataAccessor.DH.LocRepo.Save();
+
             return null;
         }
 

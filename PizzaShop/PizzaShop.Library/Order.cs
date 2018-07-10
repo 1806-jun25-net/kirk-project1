@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PizzaShop.Library
@@ -22,6 +23,7 @@ namespace PizzaShop.Library
             //get unique order number somehow
             UserID = userParam;
             Store = storeParam;
+            Price = 0;
         }
 
         // importing suggested order for user
@@ -31,6 +33,7 @@ namespace PizzaShop.Library
             //get unique order number somehow
             UserID = userParam;
             Store = storeParam;
+            Price = pizzaParam.Sum(p => p.Price);
         }
 
         public Order() { }
