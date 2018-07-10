@@ -15,7 +15,7 @@ namespace PizzaShop.Testing
         public void AddStockShouldAddNewItemToDictionaryWhenNotAlreadyInside()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var peppers = new Ingredient("peppers", 1, "topping");
 
@@ -30,7 +30,7 @@ namespace PizzaShop.Testing
         public void AddStockShouldNotAddNewItemForOneAlreadyExistingInDictionary()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var peppers1 = new Ingredient("peppers", 1, "topping");
             var peppers2 = new Ingredient("peppers", 2, "topping");
@@ -48,7 +48,7 @@ namespace PizzaShop.Testing
         public void AddStockShouldIncrementQuantityOfExistingItemInDictionary()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var peppers1 = new Ingredient("peppers", 1, "topping");
             var peppers2 = new Ingredient("peppers", 2, "topping");
@@ -68,7 +68,7 @@ namespace PizzaShop.Testing
         public void RemoveStockShouldNotCauseExceptionIfAttemptingToRemoveFromEmptyStock()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var peppers = new Ingredient("peppers", 1, "topping");
 
@@ -83,7 +83,7 @@ namespace PizzaShop.Testing
         public void RemoveStockShouldNotCauseKeyNotFoundExceptionIfAttemptingToRemoveStockOfMissingItem()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var peppers = new Ingredient("peppers", 1, "topping");
             var onions = new Ingredient("onions", 7, "topping");
@@ -99,7 +99,7 @@ namespace PizzaShop.Testing
         public void RemoveStockShouldReturnIngredientNameWhenItDoesNotExistInStock()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var peppers = new Ingredient("peppers", 1, "topping");
 
@@ -114,7 +114,7 @@ namespace PizzaShop.Testing
         public void RemoveStockShouldReturnIngredientNameWhenSufficientQuantityDoesNotExist()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var peppers1 = new Ingredient("peppers", 1, "topping");
             var peppers2 = new Ingredient("peppers", 2, "topping");
@@ -130,7 +130,7 @@ namespace PizzaShop.Testing
         public void RemoveStockShouldNotChangeIngredientQuantityWhenSufficientQuantityDoesNotExist()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var peppers1 = new Ingredient("peppers", 1, "topping");
             var peppers2 = new Ingredient("peppers", 2, "topping");
@@ -147,7 +147,7 @@ namespace PizzaShop.Testing
         public void RemoveStockShouldDecrementIngredientQuantityWhenSufficientQuantityExists()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var peppers1 = new Ingredient("peppers", 1, "topping");
             var peppers2 = new Ingredient("peppers", 2, "topping");
@@ -164,7 +164,7 @@ namespace PizzaShop.Testing
         public void RemoveStockShouldRemoveIngredientFromStockDictionaryWhenQuantityReachesZero()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var peppers = new Ingredient("peppers", 1, "topping");
             location.AddStock(peppers);
@@ -183,7 +183,7 @@ namespace PizzaShop.Testing
         public void AddBulkStockShouldAddAllItemsToInitiallyEmptyDictionary()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var ingredients = new List<Ingredient>
             {
@@ -204,7 +204,7 @@ namespace PizzaShop.Testing
         public void AddBulkStockShouldOnlyAddNewItemsToDictionaryForHoweverManyAreNew()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             Ingredient peppers = new Ingredient("peppers", 1, "topping");
             var ingredients = new List<Ingredient>
@@ -227,7 +227,7 @@ namespace PizzaShop.Testing
         public void AddBulkStockShouldIncrementQuantityOfExistingItemInDictionary()
         {
             // Arrange
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var ingredients = new List<Ingredient>
             {
@@ -250,7 +250,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void RemoveBulkStockShouldNotReturnNullIfDictionaryIsEmpty()
         {
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var ingredients = new List<Ingredient>
             {
@@ -269,7 +269,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void RemoveBulkStockShouldReturnNameOfIngredientNotPresent()
         {
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var ingredients = new List<Ingredient>
             {
@@ -291,7 +291,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void RemoveBulkStockShouldReturnNameOfIngredientLackingSufficientQuantity()
         {
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var ingredients = new List<Ingredient>
             {
@@ -313,7 +313,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void RemoveBulkStockShouldNotChangeAnyQuantityIfSomeIngredientIsMissingFromDictionary()
         {
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var ingredients = new List<Ingredient>
             {
@@ -334,7 +334,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void RemoveBulkStockShouldNotChangeAnyQuantityIfSomeIngredientIsLackingSufficientQuantity()
         {
-            DataAccessor.Setup(false);
+            DataAccessor.Setup(false, false);
             var location = new Location();
             var ingredients = new List<Ingredient>
             {

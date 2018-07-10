@@ -45,7 +45,9 @@ CREATE TABLE PizzaShop.Pizzas
 (
 	ID int PRIMARY KEY IDENTITY,
 	SizeID nvarchar(128) FOREIGN KEY REFERENCES PizzaShop.SizingPricing(Size)
-)
+);
+ALTER TABLE PizzaShop.Pizzas
+ADD Price money;
 
 --DROP TABLE PizzaShop.OrderPizzaJunction
 CREATE TABLE PizzaShop.OrderPizzaJunction
@@ -80,10 +82,10 @@ CREATE TABLE PizzaShop.LocationIngredientJunction
 	IngredientID nvarchar(128) FOREIGN KEY REFERENCES PizzaShop.Ingredients(Name),
 	PRIMARY KEY (LocationID, IngredientID)
 )
-
+DELETE FROM PizzaShop.Users;
 INSERT INTO PizzaShop.Users
-VALUES ('test', 'First', 'Last', 'a@a.com', '1234567890'),
-		('test2', 'Tess', 'Est', 'winner@gmail.com', '9307452132');
+VALUES ('test', 'First', 'Last', 'a@a.com', '1234567890', 'Herndon'),
+		('test2', 'Tess', 'Est', 'winner@gmail.com', '9307452132', 'Reston');
 
 SELECT * FROM PizzaShop.Users;
 

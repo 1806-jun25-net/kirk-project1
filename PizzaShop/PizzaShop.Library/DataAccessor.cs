@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using PizzaShop.Data;
+using PizzaShop.Library.Repositories;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,10 +15,13 @@ namespace PizzaShop.Library
     public static class DataAccessor
     {
         public static DataHandler DH { get; set; }
+        public static RepoHandler RH { get; set; }
+
+
         //public static readonly string serializationFilepath = @"C:\Revature\kirk-project1\PizzaShop\data.xml";
         public static readonly string serializationFilepath = @"E:\Revature\kirk-project1\PizzaShop\data.xml";
 
-        public static void Setup(bool importFromXML)
+        public static void Setup(bool importFromXML, bool useSQL)
         {
             if (importFromXML)
             {
@@ -39,11 +46,37 @@ namespace PizzaShop.Library
                     InitializeDummyData();
                 }
             }
-            else
+            if (useSQL)
+            {
+                //INSERTING SQL STUFF HERE
+
+                // get the configuration from file
+                var builder = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+                IConfigurationRoot configuration = builder.Build();
+
+                //Use to confirm .json is being read in properly
+                //Console.WriteLine(configuration.GetConnectionString("Project1DB"));
+
+                var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1DB"));
+                var options = optionsBuilder.Options;
+
+                var lRepo = new LocationRepository(new Project1DBContext(optionsBuilder.Options));
+                RH = new RepoHandler(new Project1DBContext(optionsBuilder.Options));
+
+                //END SQL STUFF
+                //Should now be able to access database records by using RH instead of DH
+            }
+
+            if (! (importFromXML || useSQL))
             {
                 InitializeDummyData();
             }
         }
+
 
         private static void InitializeDummyData()
         {
@@ -120,7 +153,7 @@ namespace PizzaShop.Library
         }
 
         //overload for user OrderHistory and location OrderHistory
-        public static List<Order> CreateSortedOrderList(List<string> OrderIds, int orderingType)
+        public static List<Order> CreateSortedOrderList(List<int> OrderIds, int orderingType)
         {
             //ordering Types:
             // 1= newst first
@@ -196,9 +229,9 @@ namespace PizzaShop.Library
             return DH.Locations.First(l => l.Name.Equals(name));
         }
 
-        public static Order GetOrderByID(string id)
+        public static Order GetOrderByID(int id)
         {
-            return DH.Orders.First(o => o.Id.Equals(id));
+            return DH.Orders.First(o => o.Id ==id);
         }
 
         //check if list contains specified key
@@ -212,9 +245,9 @@ namespace PizzaShop.Library
             return DH.Locations.Any(t => t.Name.Equals(name));
         }
 
-        public static bool OrdersContainsID(string id)
+        public static bool OrdersContainsID(int id)
         {
-            return DH.Orders.Any(t => t.Id.Equals(id));
+            return DH.Orders.Any(t => t.Id==id);
         }
 
     }

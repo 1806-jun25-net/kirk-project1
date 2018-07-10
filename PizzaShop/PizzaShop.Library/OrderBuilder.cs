@@ -164,10 +164,11 @@ namespace PizzaShop.Library
 
             //if valid generate timestamp& order ID
             order.Timestamp = DateTime.Now;
-            order.Id = order.Timestamp.Ticks.ToString();
+            order.Id = (int)order.Timestamp.Ticks;
 
             //add order to order history
             DataAccessor.DH.Orders.Add(order);
+            DataAccessor.RH.Orders.Add(order);
             //add orderID to user order history
             DataAccessor.GetUserByUsername(order.UserID).OrderHistory.Add(order.Id);
             //add orderID to location order history
@@ -201,8 +202,8 @@ namespace PizzaShop.Library
             //Both Users and Locations have an order history contianing order ids
             //Find intersection of User & location order histories from newest to oldest
             //if newest shared order <2 hrs reject, otherwise accept
-            List<String> userOrders = DataAccessor.GetUserByUsername(order.UserID).OrderHistory;
-            List<String> locationOrders = DataAccessor.DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory;
+            List<int> userOrders = DataAccessor.GetUserByUsername(order.UserID).OrderHistory;
+            List<int> locationOrders = DataAccessor.DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory;
             DateTime orderTime;
             //new orders are always added to the end of the OrderHistory list, so go through newest orders first
             for (int i = userOrders.Count-1; i >= 0; i--)

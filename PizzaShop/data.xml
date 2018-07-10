@@ -20,43 +20,40 @@
       <Stock>
         <Ingredient>
           <Name>classic crust</Name>
-          <Quantity>10</Quantity>
+          <Quantity>18</Quantity>
           <Type>crust</Type>
         </Ingredient>
         <Ingredient>
           <Name>classic sauce</Name>
-          <Quantity>10</Quantity>
+          <Quantity>18</Quantity>
           <Type>sauce</Type>
         </Ingredient>
         <Ingredient>
           <Name>cheese</Name>
-          <Quantity>92</Quantity>
+          <Quantity>98</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>sausage</Name>
-          <Quantity>43</Quantity>
+          <Quantity>50</Quantity>
           <Type>topping</Type>
         </Ingredient>
       </Stock>
       <OrderHistory>
-        <string>636666669219840355</string>
-        <string>636666669578339245</string>
-        <string>636666670760381971</string>
-        <string>636666719618371658</string>
+        <int>839967395</int>
       </OrderHistory>
-      <Name>Reston</Name>
+      <Name>Placeholder</Name>
     </Location>
     <Location>
       <Stock />
       <OrderHistory />
-      <Name>Herndon</Name>
+      <Name>Alternate Placeholder</Name>
     </Location>
   </Locations>
   <Orders>
     <Order>
-      <Id>636666669219840355</Id>
-      <Timestamp>2018-07-08T14:15:21.9840355-04:00</Timestamp>
+      <Id>1359350855</Id>
+      <Timestamp>2018-07-10T01:20:26.1434439-04:00</Timestamp>
       <Store>Placeholder</Store>
       <UserID>test</UserID>
       <Price>5.5</Price>
@@ -73,48 +70,20 @@
       </Pizzas>
     </Order>
     <Order>
-      <Id>636666669578339245</Id>
-      <Timestamp>2018-07-08T17:15:57.8339245-04:00</Timestamp>
-      <Store>Placeholder</Store>
-      <UserID>test2</UserID>
-      <Price>48</Price>
-      <Pizzas>
-        <Pizza>
-          <Size>party-sized</Size>
-          <CrustType>classic crust</CrustType>
-          <SauceType>classic sauce</SauceType>
-          <Toppings>
-            <string>cheese</string>
-            <string>sausage</string>
-          </Toppings>
-          <Price>48</Price>
-        </Pizza>
-      </Pizzas>
-    </Order>
-    <Order>
-      <Id>636666670760381971</Id>
-      <Timestamp>2018-07-08T17:17:56.0381971-04:00</Timestamp>
+      <Id>839967395</Id>
+      <Timestamp>2018-07-10T01:33:53.1985571-04:00</Timestamp>
       <Store>Placeholder</Store>
       <UserID>test</UserID>
-      <Price>7.50</Price>
-      <Pizzas />
-    </Order>
-    <Order>
-      <Id>636666719618371658</Id>
-      <Timestamp>2018-07-08T18:39:21.8371658-04:00</Timestamp>
-      <Store>Placeholder</Store>
-      <UserID>bb</UserID>
-      <Price>12</Price>
+      <Price>5.5</Price>
       <Pizzas>
         <Pizza>
-          <Size>large</Size>
+          <Size>small</Size>
           <CrustType>classic crust</CrustType>
           <SauceType>classic sauce</SauceType>
           <Toppings>
             <string>cheese</string>
-            <string>sausage</string>
           </Toppings>
-          <Price>12</Price>
+          <Price>5.5</Price>
         </Pizza>
       </Pizzas>
     </Order>
@@ -122,36 +91,13 @@
   <Users>
     <User>
       <Username>test</Username>
-      <FirstName>First</FirstName>
-      <LastName>Last</LastName>
+      <FirstName>a</FirstName>
+      <LastName>b</LastName>
       <Email>a@a.com</Email>
       <Phone>1234567980</Phone>
       <FavStore>Placeholder</FavStore>
       <OrderHistory>
-        <string>636666669219840355</string>
-        <string>636666670760381971</string>
-      </OrderHistory>
-    </User>
-    <User>
-      <Username>test2</Username>
-      <FirstName>Tess</FirstName>
-      <LastName>Est</LastName>
-      <Email>1@2.gov</Email>
-      <Phone>1234567890</Phone>
-      <FavStore>Placeholder</FavStore>
-      <OrderHistory>
-        <string>636666669578339245</string>
-      </OrderHistory>
-    </User>
-    <User>
-      <Username>bb</Username>
-      <FirstName>Billy</FirstName>
-      <LastName>Bob</LastName>
-      <Email>bb@b.com</Email>
-      <Phone>2222222222</Phone>
-      <FavStore>Alternate Placeholder</FavStore>
-      <OrderHistory>
-        <string>636666719618371658</string>
+        <int>839967395</int>
       </OrderHistory>
     </User>
   </Users>

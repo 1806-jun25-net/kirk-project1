@@ -1,4 +1,8 @@
-﻿using PizzaShop.Library;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using PizzaShop.Data;
+using PizzaShop.Library;
+using PizzaShop.Library.Repositories;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,16 +14,14 @@ namespace PizzaShop.UI
     {
         private static string userID;
         private static readonly bool readFromXML = true;
+        private static readonly bool useSQL = true;
 
-        //TODO:
-        //Move all data accessing functionality you can to back end
-        //Write additional test cases for new methods
-        //Implement all order menu functionality & sorting
 
         public static void Main(string[] args)
         {
+
             //Get data ready
-            DataAccessor.Setup(readFromXML);
+            DataAccessor.Setup(readFromXML, useSQL);
 
             //Begin at first screen of the menu system
             MenuStart();
@@ -523,7 +525,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("add", "topping", DataAccessor.DH.ingDir.Toppings);
+                MenuHelperSelectIngredient("add", "topping", DataAccessor.RH.ingDir.Toppings);
                 input = Console.ReadLine();
                 result = ob.AddToppingToActivePizza(input);
                 if (result)
@@ -569,7 +571,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("change to", "crust", DataAccessor.DH.ingDir.Crusts);
+                MenuHelperSelectIngredient("change to", "crust", DataAccessor.RH.ingDir.Crusts);
                 input = Console.ReadLine();
                 result = ob.ChangeCrustOnActivePizza(input);
                 if (result)
@@ -592,7 +594,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("change to", "sauce", DataAccessor.DH.ingDir.Sauces);
+                MenuHelperSelectIngredient("change to", "sauce", DataAccessor.RH.ingDir.Sauces);
                 input = Console.ReadLine();
                 result = ob.ChangeSauceOnActivePizza(input);
                 if (result)
@@ -697,11 +699,11 @@ namespace PizzaShop.UI
             Console.WriteLine("Please enter the order ID you wish to view:");
             Console.Write("->");
             input = Console.ReadLine();
-            if (!DataAccessor.OrdersContainsID(input))
+            if (!DataAccessor.OrdersContainsID(Int32.Parse(input)))
                 Console.WriteLine("OrderID not recognized.");
             else
             {
-                PrintOrder(DataAccessor.GetOrderByID(input));
+                PrintOrder(DataAccessor.GetOrderByID(Int32.Parse(input)));
             }
         }
 
@@ -997,8 +999,8 @@ namespace PizzaShop.UI
         public static void PrintLocations()
         {
             Console.WriteLine("Our order locations are:");
-            for (int i = 0; i < DataAccessor.DH.Locations.Count; i++)
-                Console.WriteLine($"{i + 1}: {DataAccessor.DH.Locations[i].Name}");
+            for (int i = 0; i < DataAccessor.RH.Locations.Count; i++)
+                Console.WriteLine($"{i + 1}: {DataAccessor.RH.Locations[i].Name}");
         }
 
         public static void PrintOrder(Order order)

@@ -8,7 +8,7 @@ namespace PizzaShop.Library
 
     public class Order
     {
-        public string Id { get; set; }  //Null on incomplete orders, Timestamp as ticks on completed order
+        public int Id { get; set; }  //Null on incomplete orders, Timestamp as ticks on completed order
         public DateTime Timestamp { get; set; }
         public string Store { get; set; }
         public string UserID { get; set; }
@@ -20,7 +20,6 @@ namespace PizzaShop.Library
         {
             Pizzas = new List<Pizza>();
             //get unique order number somehow
-            Id = null;
             UserID = userParam;
             Store = storeParam;
         }
@@ -30,7 +29,6 @@ namespace PizzaShop.Library
         {
             Pizzas = pizzaParam;
             //get unique order number somehow
-            Id = null;
             UserID = userParam;
             Store = storeParam;
         }

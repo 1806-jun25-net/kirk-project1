@@ -12,20 +12,20 @@ namespace PizzaShop.Library
     public class Location
     {
         public List<Ingredient> Stock { get; } = new List<Ingredient>();
-        public List<string> OrderHistory { get; set; } = new List<string>();
+        public List<int> OrderHistory { get; set; } = new List<int>();
         public String Name { get; set; }
 
         public Location(String name)
         {
             Name = name;
             Stock = new List<Ingredient>();
-            OrderHistory = new List<string>();
+            OrderHistory = new List<int>();
         }
 
         public Location()
         {
             Stock = new List<Ingredient>();
-            OrderHistory = new List<string>();
+            OrderHistory = new List<int>();
             Name = "";
         }
 

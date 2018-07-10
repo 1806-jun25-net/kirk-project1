@@ -13,7 +13,7 @@ namespace PizzaShop.Library
         public string Email { get; set; }
         public string Phone { get; set; }
         public string FavStore { get; set; }
-        public List<string> OrderHistory { get; set; } = new List<string>();
+        public List<int> OrderHistory { get; set; } = new List<int>();
         
 
         public User(string un, string fn, string ln, string em, string ph, string fav)
