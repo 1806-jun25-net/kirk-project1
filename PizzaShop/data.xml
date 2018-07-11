@@ -55,22 +55,22 @@
       <Stock>
         <Ingredient>
           <Name>cheese</Name>
-          <Quantity>15</Quantity>
+          <Quantity>9</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>classic crust</Name>
-          <Quantity>20</Quantity>
+          <Quantity>14</Quantity>
           <Type>crust</Type>
         </Ingredient>
         <Ingredient>
           <Name>classic sauce</Name>
-          <Quantity>20</Quantity>
+          <Quantity>14</Quantity>
           <Type>sauce</Type>
         </Ingredient>
         <Ingredient>
           <Name>sausage</Name>
-          <Quantity>10</Quantity>
+          <Quantity>4</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
@@ -79,11 +79,33 @@
           <Type>crust</Type>
         </Ingredient>
       </Stock>
-      <OrderHistory />
+      <OrderHistory>
+        <int>865716874</int>
+      </OrderHistory>
       <Name>Reston</Name>
     </Location>
   </Locations>
-  <Orders />
+  <Orders>
+    <Order>
+      <Id>865716874</Id>
+      <Timestamp>2018-07-10T23:02:25.184833-04:00</Timestamp>
+      <Store>Reston</Store>
+      <UserID>test</UserID>
+      <Price>12.0000</Price>
+      <Pizzas>
+        <Pizza>
+          <Size>large</Size>
+          <CrustType>classic crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings>
+            <string>cheese</string>
+            <string>sausage</string>
+          </Toppings>
+          <Price>12.0000</Price>
+        </Pizza>
+      </Pizzas>
+    </Order>
+  </Orders>
   <Users>
     <User>
       <Username>newguy</Username>
@@ -101,7 +123,9 @@
       <Email>a@a.com</Email>
       <Phone>1234567890</Phone>
       <FavStore>Herndon</FavStore>
-      <OrderHistory />
+      <OrderHistory>
+        <int>865716874</int>
+      </OrderHistory>
     </User>
     <User>
       <Username>test2</Username>
@@ -115,28 +139,28 @@
   </Users>
   <SPM>
     <Sizes>
-      <string>large</string>
-      <string>medium</string>
-      <string>party-sized</string>
       <string>small</string>
+      <string>medium</string>
+      <string>large</string>
+      <string>party-sized</string>
     </Sizes>
     <BasePrices>
-      <decimal>10.0000</decimal>
-      <decimal>7.5000</decimal>
-      <decimal>40.0000</decimal>
       <decimal>5.0000</decimal>
+      <decimal>7.5000</decimal>
+      <decimal>10.0000</decimal>
+      <decimal>40.0000</decimal>
     </BasePrices>
     <ToppingPrices>
-      <decimal>1.0000</decimal>
-      <decimal>0.7500</decimal>
-      <decimal>4.0000</decimal>
       <decimal>0.5000</decimal>
+      <decimal>0.7500</decimal>
+      <decimal>1.0000</decimal>
+      <decimal>4.0000</decimal>
     </ToppingPrices>
     <IngredientUsageScalar>
-      <int>3</int>
-      <int>2</int>
-      <int>4</int>
       <int>1</int>
+      <int>2</int>
+      <int>3</int>
+      <int>4</int>
     </IngredientUsageScalar>
   </SPM>
 </DataHandler>

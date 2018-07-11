@@ -31,7 +31,7 @@ CREATE TABLE PizzaShop.Locations
 --DROP TABLE PizzaShop.Orders
 CREATE TABLE PizzaShop.Orders
 (
-	ID int PRIMARY KEY IDENTITY,
+	ID int PRIMARY KEY,
 	Timestamp datetime,
 	LocationID nvarchar(128) FOREIGN KEY REFERENCES PizzaShop.Locations(Name),
 	UserID nvarchar(128) FOREIGN KEY REFERENCES PizzaShop.Users(Username),
@@ -41,13 +41,13 @@ CREATE TABLE PizzaShop.Orders
 ALTER TABLE PizzaShop.Users
 ADD FavLocation nvarchar(128) FOREIGN KEY REFERENCES PizzaShop.Locations(Name);
 
+--DROP TABLE PizzaShop.Pizzas
 CREATE TABLE PizzaShop.Pizzas
 (
 	ID int PRIMARY KEY IDENTITY,
-	SizeID nvarchar(128) FOREIGN KEY REFERENCES PizzaShop.SizingPricing(Size)
+	SizeID nvarchar(128) FOREIGN KEY REFERENCES PizzaShop.SizingPricing(Size),
+	Price money
 );
-ALTER TABLE PizzaShop.Pizzas
-ADD Price money;
 
 --DROP TABLE PizzaShop.OrderPizzaJunction
 CREATE TABLE PizzaShop.OrderPizzaJunction
@@ -121,4 +121,12 @@ VALUES ('Herndon', 5, 'thin crust'), ('Herndon', 5, 'deep dish crust'),('Herndon
 INSERT INTO PizzaShop.LocationIngredientJunction
 VALUES ('Reston', 20, 'classic crust');
 
+
+
 SELECT * FROM PizzaShop.LocationIngredientJunction;
+
+
+SELECT * FROM PizzaShop.Orders;
+
+DELETE FROM PizzaShop.Orders WHERE ID = -1332610449;
+

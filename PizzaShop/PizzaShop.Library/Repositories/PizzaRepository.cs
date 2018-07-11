@@ -7,19 +7,19 @@ using System.Text;
 
 namespace PizzaShop.Library.Repositories
 {
-    public class IngredientRepository
+    public class PizzaRepository
     {
         private readonly Project1DBContext _db;
 
-        public IngredientRepository(Project1DBContext db)
+        public PizzaRepository(Project1DBContext db)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public IEnumerable<Ingredients> GetIngredient()
+        public IEnumerable<Pizzas> GetSizingPricing()
         {
-            List<Ingredients> ing = _db.Ingredients.AsNoTracking().ToList();
-            return ing;
+            List<Pizzas> sp = _db.Pizzas.AsNoTracking().ToList();
+            return sp;
         }
 
         public void Save()

@@ -66,9 +66,13 @@ namespace PizzaShop.Library
             //3rd - decrease quantity
             Stock.First(t => t.Name.Equals(ing.Name)).Quantity -= ing.Quantity;
 
+            /*Disabling ingredient removal per Nick since it may cause conflict with DB
+
             //4th - check if quantity is now 0
             if (Stock.First(t => t.Name.Equals(ing.Name)).Quantity == 0)
                 Stock.Remove(Stock.First(t => t.Name.Equals(ing.Name)));
+
+            */
 
             return null;
         }

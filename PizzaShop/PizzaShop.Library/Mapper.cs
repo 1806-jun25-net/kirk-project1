@@ -48,8 +48,8 @@ namespace PizzaShop.Library
         {
             Id = otherOrder.Id,
             Timestamp = (DateTime)otherOrder.Timestamp,
-            UserID = otherOrder.User.Username,
-            Store = otherOrder.Location.Name,
+            UserID = otherOrder.UserId,
+            Store = otherOrder.LocationId,
             Price = (decimal)otherOrder.Price,
             //Pizzas = Map(otherOrder.OrderPizzaJunction)
         };
@@ -58,8 +58,8 @@ namespace PizzaShop.Library
         {
             Id = otherOrder.Id,
             Timestamp = (DateTime)otherOrder.Timestamp,
-            User = Map(DataAccessor.GetUserByUsername(otherOrder.UserID)),
-            Location = Map(DataAccessor.GetLocationByName(otherOrder.Store)),
+            UserId = otherOrder.UserID,
+            LocationId = otherOrder.Store,
             Price = otherOrder.Price,
             //Pizzas = Map(otherOrder.OrderPizzaJunction)
         };

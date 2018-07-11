@@ -163,7 +163,7 @@ namespace PizzaShop.Library
 
             //if valid generate timestamp& order ID
             order.Timestamp = DateTime.Now;
-            order.Id = (int)order.Timestamp.Ticks;
+            order.Id = Math.Abs((int)order.Timestamp.Ticks);
 
             //add order to order history
             DataAccessor.DH.Orders.Add(order);
@@ -172,10 +172,19 @@ namespace PizzaShop.Library
             //add orderID to location order history
             DataAccessor.DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory.Add(order.Id);
             //add order to DB
-            DataAccessor.DH.OrderRepo.AddOrder(order);
+            
             //Update decremented inventory to DB
-            //DataAccessor.DH.LocRepo.UpdateLocationInventory(DataAccessor.GetLocationByName(order.Store));
+            Console.WriteLine("Updating location inventory:");
+            DataAccessor.DH.LocRepo.UpdateLocationInventory(DataAccessor.GetLocationByName(order.Store));
+            Console.WriteLine("Saving...");
             DataAccessor.DH.LocRepo.Save();
+            Console.WriteLine("Save success(?)");
+
+            Console.WriteLine("Adding order to db:");
+            DataAccessor.DH.OrderRepo.AddOrder(order);
+            Console.WriteLine("Saving...");
+            DataAccessor.DH.LocRepo.Save();
+            Console.WriteLine("Save success(?)");
 
             return null;
         }
