@@ -51,7 +51,7 @@ namespace PizzaShop.Library
             UserID = otherOrder.UserId,
             Store = otherOrder.LocationId,
             Price = (decimal)otherOrder.Price,
-            //Pizzas = Map(otherOrder.OrderPizzaJunction)
+            Pizzas = otherOrder.OrderPizzaJunction.Select( j => Mapper.Map(j.Pizza)).ToList()
         };
 
         public static Data.Orders Map(Order otherOrder) => new Data.Orders
@@ -60,8 +60,7 @@ namespace PizzaShop.Library
             Timestamp = (DateTime)otherOrder.Timestamp,
             UserId = otherOrder.UserID,
             LocationId = otherOrder.Store,
-            Price = otherOrder.Price,
-            //Pizzas = Map(otherOrder.OrderPizzaJunction)
+            Price = otherOrder.Price
         };
 
         public static Ingredient Map(Data.Ingredients otherIng) => new Ingredient
@@ -80,18 +79,27 @@ namespace PizzaShop.Library
 
         public static Pizza Map(Data.Pizzas otherPizza) => new Pizza
         {
-            Size = otherPizza.Size.Size,
+            Size = otherPizza.SizeId,
             Price = (decimal)otherPizza.Price,
+            
+            CrustType = otherPizza.PizzaIngredientJunction.First( i => i.Ingredient.Type.Equals("crust")).Ingredient.Name,
+            SauceType = otherPizza.PizzaIngredientJunction.First(i => i.Ingredient.Type.Equals("sauce")).Ingredient.Name,
+            Toppings = otherPizza.PizzaIngredientJunction.Where(i => i.Ingredient.Type.Equals("Topping")).Select(j => j.Ingredient.Name).ToHashSet()
             //Eventually add other toppings, for now keep things standard
+            /*
             CrustType = "classic crust",
             SauceType = "classic sauce",
             Toppings = { "cheese" }
+            */
         };
 
         public static Data.Pizzas Map(Pizza otherPizza) => new Data.Pizzas
         {
-            Size = new Data.SizingPricing(otherPizza.Size, DataAccessor.DH.SPM.GetBasePrice(otherPizza.Size), DataAccessor.DH.SPM.GetToppingPrice(otherPizza.Size), DataAccessor.DH.SPM.GetIngredientUsageScalar(otherPizza.Size)),
-            Price = otherPizza.Price
+            SizeId = otherPizza.Size,
+            Price = otherPizza.Price,
+
+            //PizzaIngredientJunction
+            
         };
 
         

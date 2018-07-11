@@ -30,6 +30,8 @@ namespace PizzaShop.Library
         public IngredientRepository IngRepo { get; set; }
         [XmlIgnore]
         public Project1DBContext db;
+        [XmlIgnore]
+        public PizzaRepository PizzaRepo { get; set; }
 
         //if it's passed a DBContext, will read from db
         public DataHandler(Project1DBContext dbParam)
@@ -40,13 +42,14 @@ namespace PizzaShop.Library
             UserRepo = new UserRepository(db);
             SPRepo = new SizingPricingRepository(db);
             IngRepo = new IngredientRepository(db);
+            PizzaRepo = new PizzaRepository(db);
 
             Locations = Mapper.Map(LocRepo.GetLocations()).ToList();
             Orders = Mapper.Map(OrderRepo.GetOrders()).ToList();
             Users = Mapper.Map(UserRepo.GetUsers()).ToList();
 
             SPM = Mapper.Map(SPRepo.GetSizingPricing().OrderBy( i => i.IngredientUsageScalar));
-            foreach (var ing in Mapper.Map(IngRepo.GetIngredient()).ToList())
+            foreach (var ing in Mapper.Map(IngRepo.GetIngredients()).ToList())
                 ingDir.AddIngredient(ing);
         }
 

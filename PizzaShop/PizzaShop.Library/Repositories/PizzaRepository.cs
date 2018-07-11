@@ -18,8 +18,18 @@ namespace PizzaShop.Library.Repositories
 
         public IEnumerable<Pizzas> GetSizingPricing()
         {
-            List<Pizzas> sp = _db.Pizzas.AsNoTracking().ToList();
+            List<Pizzas> sp = _db.Pizzas.Include(p => p.PizzaIngredientJunction).AsNoTracking().ToList();
             return sp;
+        }
+
+        public void AddPizza(Pizza p)
+        {
+            _db.Add(Mapper.Map(p));
+        }
+
+        public void AddPizza(Data.Pizzas p)
+        {
+            _db.Add(p);
         }
 
         public void Save()

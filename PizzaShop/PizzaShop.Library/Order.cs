@@ -13,7 +13,19 @@ namespace PizzaShop.Library
         public DateTime Timestamp { get; set; }
         public string Store { get; set; }
         public string UserID { get; set; }
-        public decimal Price { get; set; }
+        private decimal _price;
+        public decimal Price
+        {
+            get
+            {
+                //return Pizzas.Sum(p => DataAccessor.DH.SPM.GetBasePrice(p.Size) + DataAccessor.DH.SPM.GetToppingPrice(p.Size) * p.Toppings.Count);
+                return Pizzas.Sum(p => p.Price);
+            }
+            set
+            {
+                _price = value;
+            }
+        }
         public List<Pizza> Pizzas { get; set; }
 
         //fresh order from scratch

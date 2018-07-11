@@ -709,7 +709,7 @@ namespace PizzaShop.UI
             Console.WriteLine("Please enter the order ID you wish to view:");
             Console.Write("->");
             input = Console.ReadLine();
-            if (!DataAccessor.OrdersContainsID(Int32.Parse(input)))
+            if (input.Equals("") || !input.All(char.IsDigit) ||!DataAccessor.OrdersContainsID(Int32.Parse(input)))
                 Console.WriteLine("OrderID not recognized.");
             else
             {

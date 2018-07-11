@@ -174,17 +174,10 @@ namespace PizzaShop.Library
             //add order to DB
             
             //Update decremented inventory to DB
-            Console.WriteLine("Updating location inventory:");
             DataAccessor.DH.LocRepo.UpdateLocationInventory(DataAccessor.GetLocationByName(order.Store));
-            Console.WriteLine("Saving...");
             DataAccessor.DH.LocRepo.Save();
-            Console.WriteLine("Save success(?)");
-
-            Console.WriteLine("Adding order to db:");
             DataAccessor.DH.OrderRepo.AddOrder(order);
-            Console.WriteLine("Saving...");
             DataAccessor.DH.LocRepo.Save();
-            Console.WriteLine("Save success(?)");
 
             return null;
         }

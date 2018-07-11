@@ -109,6 +109,9 @@ VALUES ('classic sauce', 'sauce'), ('garlic white sauce', 'sauce'), ('bbq sauce'
 INSERT INTO PizzaShop.Ingredients
 VALUES ('cheese', 'topping'), ('sausage', 'topping'), ('pepperoni', 'topping'), ('peppers', 'topping'), ('onions', 'topping')
 
+INSERT INTO PizzaShop.Ingredients
+VALUES ('bacon', 'topping'), ('chicken', 'topping'), ('beef', 'topping')
+
 SELECT * FROM PizzaShop.Ingredients Order By (Type)
 
 
@@ -121,12 +124,35 @@ VALUES ('Herndon', 5, 'thin crust'), ('Herndon', 5, 'deep dish crust'),('Herndon
 INSERT INTO PizzaShop.LocationIngredientJunction
 VALUES ('Reston', 20, 'classic crust');
 
+INSERT INTO PizzaShop.LocationIngredientJunction
+VALUES ('Reston', 100, 'deep dish crust'), ('Reston', 100, 'garlic white sauce'), ('Reston', 100, 'bbq sauce'), ('Reston', 100, 'pepperoni');
+
+
+
 
 
 SELECT * FROM PizzaShop.LocationIngredientJunction;
 
+UPDATE PizzaShop.LocationIngredientJunction
+SET Quantity = 1000 WHERE LocationID='Reston';
+
 
 SELECT * FROM PizzaShop.Orders;
 
-DELETE FROM PizzaShop.Orders WHERE ID = -1332610449;
+SELECT * FROM PizzaShop.OrderPizzaJunction;
 
+SELECT * FROM PizzaShop.Pizzas;
+
+SELECT * FROM PizzaShop.PizzaIngredientJunction;
+
+SELECT * FROM PizzaShop.Ingredients;
+
+DELETE FROM PizzaShop.Orders WHERE ID = 147096348;
+
+DELETE FROM PizzaShop.Pizzas WHERE ID = 1;
+
+DELETE FROM PizzaShop.PizzaIngredientJunction WHERE PizzaID = 1;
+
+
+UPDATE PizzaShop.Orders 
+SET Timestamp = '2018-07-11 01:05:59.060' WHERE ID=975577407;

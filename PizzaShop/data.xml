@@ -12,7 +12,10 @@
       <string>garlic white sauce</string>
     </Sauces>
     <Toppings>
+      <string>bacon</string>
+      <string>beef</string>
       <string>cheese</string>
+      <string>chicken</string>
       <string>onions</string>
       <string>pepperoni</string>
       <string>peppers</string>
@@ -23,85 +26,235 @@
     <Location>
       <Stock>
         <Ingredient>
+          <Name>bacon</Name>
+          <Quantity>100</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
           <Name>bbq sauce</Name>
-          <Quantity>20</Quantity>
+          <Quantity>15</Quantity>
           <Type>sauce</Type>
         </Ingredient>
         <Ingredient>
+          <Name>beef</Name>
+          <Quantity>100</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
           <Name>cheese</Name>
-          <Quantity>15</Quantity>
+          <Quantity>11</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>chicken</Name>
+          <Quantity>100</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>deep dish crust</Name>
-          <Quantity>5</Quantity>
+          <Quantity>4</Quantity>
           <Type>crust</Type>
         </Ingredient>
         <Ingredient>
+          <Name>onions</Name>
+          <Quantity>100</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
           <Name>pepperoni</Name>
-          <Quantity>10</Quantity>
+          <Quantity>6</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>peppers</Name>
+          <Quantity>100</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>thin crust</Name>
-          <Quantity>5</Quantity>
+          <Quantity>1</Quantity>
           <Type>crust</Type>
         </Ingredient>
       </Stock>
-      <OrderHistory />
+      <OrderHistory>
+        <int>1531535415</int>
+      </OrderHistory>
       <Name>Herndon</Name>
     </Location>
     <Location>
       <Stock>
         <Ingredient>
+          <Name>bacon</Name>
+          <Quantity>93</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>bbq sauce</Name>
+          <Quantity>97</Quantity>
+          <Type>sauce</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>beef</Name>
+          <Quantity>97</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
           <Name>cheese</Name>
-          <Quantity>9</Quantity>
+          <Quantity>991</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>chicken</Name>
+          <Quantity>96</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>classic crust</Name>
-          <Quantity>14</Quantity>
+          <Quantity>997</Quantity>
           <Type>crust</Type>
         </Ingredient>
         <Ingredient>
           <Name>classic sauce</Name>
-          <Quantity>14</Quantity>
+          <Quantity>996</Quantity>
           <Type>sauce</Type>
         </Ingredient>
         <Ingredient>
+          <Name>deep dish crust</Name>
+          <Quantity>98</Quantity>
+          <Type>crust</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>garlic white sauce</Name>
+          <Quantity>98</Quantity>
+          <Type>sauce</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>onions</Name>
+          <Quantity>98</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>pepperoni</Name>
+          <Quantity>97</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
+          <Name>peppers</Name>
+          <Quantity>98</Quantity>
+          <Type>topping</Type>
+        </Ingredient>
+        <Ingredient>
           <Name>sausage</Name>
-          <Quantity>4</Quantity>
+          <Quantity>995</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>thin crust</Name>
-          <Quantity>20</Quantity>
+          <Quantity>996</Quantity>
           <Type>crust</Type>
         </Ingredient>
       </Stock>
       <OrderHistory>
-        <int>865716874</int>
+        <int>975577407</int>
+        <int>1279139925</int>
+        <int>919179378</int>
       </OrderHistory>
       <Name>Reston</Name>
     </Location>
   </Locations>
   <Orders>
     <Order>
-      <Id>865716874</Id>
-      <Timestamp>2018-07-10T23:02:25.184833-04:00</Timestamp>
+      <Id>975577407</Id>
+      <Timestamp>2018-07-11T01:05:59.06</Timestamp>
       <Store>Reston</Store>
       <UserID>test</UserID>
-      <Price>12.0000</Price>
+      <Price>6.0000</Price>
       <Pizzas>
         <Pizza>
+          <Size>small</Size>
+          <CrustType>classic crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings />
+          <Price>6.0000</Price>
+        </Pizza>
+      </Pizzas>
+    </Order>
+    <Order>
+      <Id>1279139925</Id>
+      <Timestamp>2018-07-11T03:59:29.563</Timestamp>
+      <Store>Reston</Store>
+      <UserID>newguy</UserID>
+      <Price>25.5000</Price>
+      <Pizzas>
+        <Pizza>
+          <Size>medium</Size>
+          <CrustType>deep dish crust</CrustType>
+          <SauceType>garlic white sauce</SauceType>
+          <Toppings />
+          <Price>10.5000</Price>
+        </Pizza>
+        <Pizza>
           <Size>large</Size>
+          <CrustType>thin crust</CrustType>
+          <SauceType>bbq sauce</SauceType>
+          <Toppings />
+          <Price>15.0000</Price>
+        </Pizza>
+      </Pizzas>
+    </Order>
+    <Order>
+      <Id>1531535415</Id>
+      <Timestamp>2018-07-11T03:28:23.147</Timestamp>
+      <Store>Herndon</Store>
+      <UserID>test</UserID>
+      <Price>53.0000</Price>
+      <Pizzas>
+        <Pizza>
+          <Size>party-sized</Size>
+          <CrustType>thin crust</CrustType>
+          <SauceType>bbq sauce</SauceType>
+          <Toppings />
+          <Price>48.0000</Price>
+        </Pizza>
+        <Pizza>
+          <Size>small</Size>
+          <CrustType>deep dish crust</CrustType>
+          <SauceType>bbq sauce</SauceType>
+          <Toppings />
+          <Price>5.0000</Price>
+        </Pizza>
+      </Pizzas>
+    </Order>
+    <Order>
+      <Id>919179378</Id>
+      <Timestamp>2018-07-11T04:03:09.3937266-04:00</Timestamp>
+      <Store>Reston</Store>
+      <UserID>test2</UserID>
+      <Price>14.0000</Price>
+      <Pizzas>
+        <Pizza>
+          <Size>small</Size>
           <CrustType>classic crust</CrustType>
           <SauceType>classic sauce</SauceType>
           <Toppings>
             <string>cheese</string>
-            <string>sausage</string>
+            <string>bacon</string>
+            <string>chicken</string>
+            <string>onions</string>
           </Toppings>
-          <Price>12.0000</Price>
+          <Price>7.0000</Price>
+        </Pizza>
+        <Pizza>
+          <Size>small</Size>
+          <CrustType>thin crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings>
+            <string>cheese</string>
+            <string>bacon</string>
+            <string>chicken</string>
+            <string>onions</string>
+          </Toppings>
+          <Price>7.0000</Price>
         </Pizza>
       </Pizzas>
     </Order>
@@ -114,7 +267,9 @@
       <Email>please@work.com</Email>
       <Phone>4444444444</Phone>
       <FavStore>Reston</FavStore>
-      <OrderHistory />
+      <OrderHistory>
+        <int>1279139925</int>
+      </OrderHistory>
     </User>
     <User>
       <Username>test</Username>
@@ -124,7 +279,8 @@
       <Phone>1234567890</Phone>
       <FavStore>Herndon</FavStore>
       <OrderHistory>
-        <int>865716874</int>
+        <int>1531535415</int>
+        <int>975577407</int>
       </OrderHistory>
     </User>
     <User>
@@ -134,6 +290,17 @@
       <Email>winner@gmail.com</Email>
       <Phone>9307452132</Phone>
       <FavStore>Reston</FavStore>
+      <OrderHistory>
+        <int>919179378</int>
+      </OrderHistory>
+    </User>
+    <User>
+      <Username>test3</Username>
+      <FirstName>Joey</FirstName>
+      <LastName>Jack</LastName>
+      <Email>jj@aol.com</Email>
+      <Phone>7621594433</Phone>
+      <FavStore>Herndon</FavStore>
       <OrderHistory />
     </User>
   </Users>
