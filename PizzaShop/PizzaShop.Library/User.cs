@@ -34,7 +34,7 @@ namespace PizzaShop.Library
             //otherwise, use a basic small pizza
             var recommendation = new List<Pizza>();
             if (OrderHistory.Count > 0)
-                recommendation = DataAccessor.GetOrderByID(OrderHistory[OrderHistory.Count - 1]).Pizzas;
+                recommendation = DataAccessor.DH.OrderRepo.GetOrderByID(OrderHistory[OrderHistory.Count - 1]).Pizzas;
             else
                 recommendation.Add(new Pizza("small"));
             return recommendation;

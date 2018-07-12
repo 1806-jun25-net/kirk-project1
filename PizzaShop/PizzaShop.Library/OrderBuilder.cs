@@ -168,13 +168,13 @@ namespace PizzaShop.Library
             //add order to order history
             DataAccessor.DH.Orders.Add(order);
             //add orderID to user order history
-            DataAccessor.GetUserByUsername(order.UserID).OrderHistory.Add(order.Id);
+            DataAccessor.DH.UserRepo.GetUserByUsername(order.UserID).OrderHistory.Add(order.Id);
             //add orderID to location order history
             DataAccessor.DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory.Add(order.Id);
             //add order to DB
             
             //Update decremented inventory to DB
-            DataAccessor.DH.LocRepo.UpdateLocationInventory(DataAccessor.GetLocationByName(order.Store));
+            DataAccessor.DH.LocRepo.UpdateLocationInventory(DataAccessor.DH.LocRepo.GetLocationByName(order.Store));
             DataAccessor.DH.LocRepo.Save();
             DataAccessor.DH.OrderRepo.AddOrder(order);
             DataAccessor.DH.LocRepo.Save();
@@ -208,14 +208,14 @@ namespace PizzaShop.Library
             //Both Users and Locations have an order history contianing order ids
             //Find intersection of User & location order histories from newest to oldest
             //if newest shared order <2 hrs reject, otherwise accept
-            List<int> userOrders = DataAccessor.GetUserByUsername(order.UserID).OrderHistory;
+            List<int> userOrders = DataAccessor.DH.UserRepo.GetUserByUsername(order.UserID).OrderHistory;
             List<int> locationOrders = DataAccessor.DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory;
             DateTime orderTime;
             //new orders are always added to the end of the OrderHistory list, so go through newest orders first
             for (int i = userOrders.Count-1; i >= 0; i--)
             {
                 //get the order time off the user order we want to check
-                orderTime = DataAccessor.GetOrderByID(userOrders[i]).Timestamp;
+                orderTime = DataAccessor.DH.OrderRepo.GetOrderByID(userOrders[i]).Timestamp;
                 //if the most recent order being checked is already older than two hours
                 //this is just for efficiency to not have to go through a user's entire order history since the beginning of time
                 if (DateTime.Compare(DateTime.Now, orderTime.AddHours(2)) > 0)
@@ -226,7 +226,7 @@ namespace PizzaShop.Library
                  //if an orderID is shared between user and location
                 if (locationOrders.Contains(userOrders[i]))
                 {
-                    orderTime = DataAccessor.GetOrderByID(userOrders[i]).Timestamp;
+                    orderTime = DataAccessor.DH.OrderRepo.GetOrderByID(userOrders[i]).Timestamp;
                     //if order was placed within the last two hours
                     if ( DateTime.Compare(DateTime.Now, orderTime.AddHours(2)) < 0 )
                     {

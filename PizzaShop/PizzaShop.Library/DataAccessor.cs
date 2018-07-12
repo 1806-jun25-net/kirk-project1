@@ -154,39 +154,5 @@ namespace PizzaShop.Library
             }
         }
         
-
-        //LINQ based methods used to aid in replacing dictionares with lists
-        //get element with specified key
-        public static User GetUserByUsername(string username)
-        {
-            return DH.Users.First(u => u.Username.Equals(username));
-        }
-
-        public static Location GetLocationByName(string name)
-        {
-            return DH.Locations.First(l => l.Name.Equals(name));
-        }
-
-        public static Order GetOrderByID(int id)
-        {
-            return DH.Orders.First(o => o.Id ==id);
-        }
-
-        //check if list contains specified key
-        public static bool UsersContainsUsername(string username)
-        {
-            return DH.Users.Any(t => t.Username.Equals(username));
-        }
-
-        public static bool LocationsContainsName(string name)
-        {
-            return DH.Locations.Any(t => t.Name.Equals(name));
-        }
-
-        public static bool OrdersContainsID(int id)
-        {
-            return DH.Orders.Any(t => t.Id==id);
-        }
-
     }
 }

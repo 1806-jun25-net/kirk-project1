@@ -86,7 +86,7 @@ namespace PizzaShop.UI
                 Console.WriteLine("Please create a new username:");
                 Console.Write("->");
                 input = Console.ReadLine();
-                inputValid = !DataAccessor.UsersContainsUsername(input)
+                inputValid = !DataAccessor.DH.UserRepo.UsersContainsUsername(input)
                     && input.Any(c => char.IsLetter(c));
                 if (!inputValid)
                     Console.WriteLine("That username is already taken or is invalid.  Please try again.");
@@ -186,7 +186,7 @@ namespace PizzaShop.UI
                 Console.WriteLine("Please enter your username:");
                 Console.Write("->");
                 input = Console.ReadLine();
-                if (!DataAccessor.UsersContainsUsername(input))  //if user not found, prompt to try again
+                if (!DataAccessor.DH.UserRepo.UsersContainsUsername(input))  //if user not found, prompt to try again
                 {
                     do
                     {
@@ -257,7 +257,7 @@ namespace PizzaShop.UI
         {
             string input = "";
             bool invalidInput = true;
-            List<Pizza> recommendedOrder = DataAccessor.GetUserByUsername(userID).GetRecommendedOrder();
+            List<Pizza> recommendedOrder = DataAccessor.DH.UserRepo.GetUserByUsername(userID).GetRecommendedOrder();
             Console.WriteLine("~~~New Order Creation~~~");
             Console.WriteLine("Check out this recommended order, just for you!");
             PrintPizzaList(recommendedOrder);
@@ -272,11 +272,11 @@ namespace PizzaShop.UI
                 switch (input)
                 {
                     case "1":  //recommended order
-                        MenuBuildOrder(new OrderBuilder(userID, DataAccessor.GetUserByUsername(userID).FavStore, recommendedOrder));
+                        MenuBuildOrder(new OrderBuilder(userID, DataAccessor.DH.UserRepo.GetUserByUsername(userID).FavStore, recommendedOrder));
                         invalidInput = false;
                         break;
                     case "2":  //new empty order
-                        MenuBuildOrder(new OrderBuilder(userID, DataAccessor.GetUserByUsername(userID).FavStore));
+                        MenuBuildOrder(new OrderBuilder(userID, DataAccessor.DH.UserRepo.GetUserByUsername(userID).FavStore));
                         invalidInput = false;
                         break;
                     case "0": //Go back
@@ -702,11 +702,11 @@ namespace PizzaShop.UI
             Console.WriteLine("Please enter the order ID you wish to view:");
             Console.Write("->");
             input = Console.ReadLine();
-            if (input.Equals("") || !input.All(char.IsDigit) ||!DataAccessor.OrdersContainsID(Int32.Parse(input)))
+            if (input.Equals("") || !input.All(char.IsDigit) ||!DataAccessor.DH.OrderRepo.OrdersContainsID(Int32.Parse(input)))
                 Console.WriteLine("OrderID not recognized.");
             else
             {
-                PrintOrder(DataAccessor.GetOrderByID(Int32.Parse(input)));
+                PrintOrder(DataAccessor.DH.OrderRepo.GetOrderByID(Int32.Parse(input)));
             }
         }
 
@@ -725,7 +725,7 @@ namespace PizzaShop.UI
                 Console.WriteLine("Please enter the username who's orders you wish to view:");
                 Console.Write("->");
                 input = Console.ReadLine();
-                if (!DataAccessor.UsersContainsUsername(input))
+                if (!DataAccessor.DH.UserRepo.UsersContainsUsername(input))
                 {
                     do
                     {
@@ -738,7 +738,7 @@ namespace PizzaShop.UI
                 }
                 else
                 {
-                    orderUser = DataAccessor.GetUserByUsername((input));
+                    orderUser = DataAccessor.DH.UserRepo.GetUserByUsername((input));
                     Console.WriteLine($"Order history for username \"{orderUser}\" - {orderUser.OrderHistory.Count} records found:");
 
                     do
@@ -894,7 +894,7 @@ namespace PizzaShop.UI
                 Console.WriteLine("Please enter the username to look up:");
                 Console.Write("->");
                 input = Console.ReadLine();
-                if (!DataAccessor.UsersContainsUsername(input))  //if user not found, prompt to try again
+                if (!DataAccessor.DH.UserRepo.UsersContainsUsername(input))  //if user not found, prompt to try again
                 {
                     do
                     {
@@ -908,7 +908,7 @@ namespace PizzaShop.UI
                 else  // If User found print info
                 {
                     input2 = "2";
-                    uSearch = DataAccessor.GetUserByUsername(input);
+                    uSearch = DataAccessor.DH.UserRepo.GetUserByUsername(input);
                     Console.WriteLine($"First name: {uSearch.FirstName}");
                     Console.WriteLine($"Last name: {uSearch.LastName}");
                     Console.WriteLine($"Email: {uSearch.Email}");
