@@ -24,6 +24,17 @@ namespace PizzaShop.Library.Repositories
             return Mapper.Map(orders);
         }
 
+        public Order GetOrderByID(int id)
+        {
+            Orders ord = _db.Orders.Include(o => o.OrderPizzaJunction).ThenInclude(p => p.Pizza).ThenInclude(j => j.PizzaIngredientJunction).ThenInclude(k => k.Ingredient).AsNoTracking().First(o => o.Id == id);
+            return Mapper.Map(ord);
+        }
+
+        public bool OrdersContainsID(int id)
+        {
+            return _db.Orders.Include(o => o.OrderPizzaJunction).ThenInclude(p => p.Pizza).ThenInclude(j => j.PizzaIngredientJunction).ThenInclude(k => k.Ingredient).AsNoTracking().Any(t => t.Id == id);
+        }
+
         public void AddOrder(Order order)
         {
             //take care of order basics

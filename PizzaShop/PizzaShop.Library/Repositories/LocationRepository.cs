@@ -25,6 +25,17 @@ namespace PizzaShop.Library.Repositories
             return Mapper.Map(locations);
         }
 
+        public Location GetLocationByName(string name)
+        {
+            Locations loc = _db.Locations.Include(m => m.Orders).Include(s => s.LocationIngredientJunction).ThenInclude(k => k.Ingredient).AsNoTracking().First(l => l.Name.Equals(name));
+            return Mapper.Map(loc);
+        }
+
+        public bool LocationsContainsName(string name)
+        {
+            return _db.Locations.Include(m => m.Orders).Include(s => s.LocationIngredientJunction).ThenInclude(k => k.Ingredient).AsNoTracking().Any(t => t.Name.Equals(name));
+        }
+
         /*
         public void UpdateLocation(Location loc)
         {

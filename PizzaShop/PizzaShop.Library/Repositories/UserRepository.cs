@@ -23,6 +23,17 @@ namespace PizzaShop.Library.Repositories
             return Mapper.Map(users);
         }
 
+        public User GetUserByUsername(string username)
+        {
+            Users u = _db.Users.AsNoTracking().Include(m => m.Orders).First(t => t.Username.Equals(username));
+            return Mapper.Map(u);
+        }
+
+        public bool UsersContainsUsername(string username)
+        {
+            return _db.Users.AsNoTracking().Include(m => m.Orders).Any(t => t.Username.Equals(username));
+        }
+
         public void AddUser(User u)
         {
             _db.Add(Mapper.Map(u));

@@ -46,7 +46,7 @@ namespace PizzaShop.Library
                 //END SQL STUFF
                 //Should now be able to access database records by using RH instead of DH
             }
-            /*  DIA
+            /*  DISABLING XML
             else if (useXML)
             {
                 //Run deserialization code
