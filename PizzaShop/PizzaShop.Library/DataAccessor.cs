@@ -21,7 +21,7 @@ namespace PizzaShop.Library
         public static readonly string serializationFilepath = @"C:\Revature\kirk-project1\PizzaShop\data.xml";
         //public static readonly string serializationFilepath = @"E:\Revature\kirk-project1\PizzaShop\data.xml";
 
-        public static void Setup(bool importFromXML, bool useSQL)
+        public static void Setup(bool useXML, bool useSQL)
         {
             if (useSQL)
             {
@@ -46,7 +46,8 @@ namespace PizzaShop.Library
                 //END SQL STUFF
                 //Should now be able to access database records by using RH instead of DH
             }
-            else if (importFromXML)
+            /*  DIA
+            else if (useXML)
             {
                 //Run deserialization code
                 Task<DataHandler> desListTask = DeserializeFromFileAsync(serializationFilepath);
@@ -71,10 +72,11 @@ namespace PizzaShop.Library
             }
             
 
-            if (! (importFromXML || useSQL))
+            if (! (useXML || useSQL))
             {
                 InitializeDummyData();
             }
+            */
         }
 
 

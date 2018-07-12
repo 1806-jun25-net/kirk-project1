@@ -85,7 +85,7 @@
       <Stock>
         <Ingredient>
           <Name>bacon</Name>
-          <Quantity>93</Quantity>
+          <Quantity>87</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
@@ -95,27 +95,27 @@
         </Ingredient>
         <Ingredient>
           <Name>beef</Name>
-          <Quantity>97</Quantity>
+          <Quantity>91</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>cheese</Name>
-          <Quantity>991</Quantity>
+          <Quantity>983</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>chicken</Name>
-          <Quantity>96</Quantity>
+          <Quantity>93</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>classic crust</Name>
-          <Quantity>997</Quantity>
+          <Quantity>988</Quantity>
           <Type>crust</Type>
         </Ingredient>
         <Ingredient>
           <Name>classic sauce</Name>
-          <Quantity>996</Quantity>
+          <Quantity>986</Quantity>
           <Type>sauce</Type>
         </Ingredient>
         <Ingredient>
@@ -145,24 +145,95 @@
         </Ingredient>
         <Ingredient>
           <Name>sausage</Name>
-          <Quantity>995</Quantity>
+          <Quantity>994</Quantity>
           <Type>topping</Type>
         </Ingredient>
         <Ingredient>
           <Name>thin crust</Name>
-          <Quantity>996</Quantity>
+          <Quantity>995</Quantity>
           <Type>crust</Type>
         </Ingredient>
       </Stock>
       <OrderHistory>
+        <int>2024619184</int>
+        <int>216735110</int>
+        <int>919179378</int>
         <int>975577407</int>
         <int>1279139925</int>
-        <int>919179378</int>
+        <int>5771356</int>
       </OrderHistory>
       <Name>Reston</Name>
     </Location>
   </Locations>
   <Orders>
+    <Order>
+      <Id>216735110</Id>
+      <Timestamp>2018-07-11T09:16:57.007</Timestamp>
+      <Store>Reston</Store>
+      <UserID>test2</UserID>
+      <Price>28.0000</Price>
+      <Pizzas>
+        <Pizza>
+          <Size>small</Size>
+          <CrustType>classic crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings />
+          <Price>7.0000</Price>
+        </Pizza>
+        <Pizza>
+          <Size>small</Size>
+          <CrustType>thin crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings />
+          <Price>7.0000</Price>
+        </Pizza>
+        <Pizza>
+          <Size>large</Size>
+          <CrustType>classic crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings>
+            <string>bacon</string>
+            <string>beef</string>
+            <string>cheese</string>
+            <string>chicken</string>
+          </Toppings>
+          <Price>14.0000</Price>
+        </Pizza>
+      </Pizzas>
+    </Order>
+    <Order>
+      <Id>919179378</Id>
+      <Timestamp>2018-07-11T04:03:09.393</Timestamp>
+      <Store>Reston</Store>
+      <UserID>test2</UserID>
+      <Price>14.0000</Price>
+      <Pizzas>
+        <Pizza>
+          <Size>small</Size>
+          <CrustType>classic crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings>
+            <string>bacon</string>
+            <string>cheese</string>
+            <string>chicken</string>
+            <string>onions</string>
+          </Toppings>
+          <Price>7.0000</Price>
+        </Pizza>
+        <Pizza>
+          <Size>small</Size>
+          <CrustType>thin crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings>
+            <string>bacon</string>
+            <string>cheese</string>
+            <string>chicken</string>
+            <string>onions</string>
+          </Toppings>
+          <Price>7.0000</Price>
+        </Pizza>
+      </Pizzas>
+    </Order>
     <Order>
       <Id>975577407</Id>
       <Timestamp>2018-07-11T01:05:59.06</Timestamp>
@@ -174,7 +245,10 @@
           <Size>small</Size>
           <CrustType>classic crust</CrustType>
           <SauceType>classic sauce</SauceType>
-          <Toppings />
+          <Toppings>
+            <string>cheese</string>
+            <string>sausage</string>
+          </Toppings>
           <Price>6.0000</Price>
         </Pizza>
       </Pizzas>
@@ -190,14 +264,25 @@
           <Size>medium</Size>
           <CrustType>deep dish crust</CrustType>
           <SauceType>garlic white sauce</SauceType>
-          <Toppings />
+          <Toppings>
+            <string>bacon</string>
+            <string>cheese</string>
+            <string>chicken</string>
+            <string>peppers</string>
+          </Toppings>
           <Price>10.5000</Price>
         </Pizza>
         <Pizza>
           <Size>large</Size>
           <CrustType>thin crust</CrustType>
           <SauceType>bbq sauce</SauceType>
-          <Toppings />
+          <Toppings>
+            <string>bacon</string>
+            <string>beef</string>
+            <string>cheese</string>
+            <string>pepperoni</string>
+            <string>sausage</string>
+          </Toppings>
           <Price>15.0000</Price>
         </Pizza>
       </Pizzas>
@@ -213,7 +298,10 @@
           <Size>party-sized</Size>
           <CrustType>thin crust</CrustType>
           <SauceType>bbq sauce</SauceType>
-          <Toppings />
+          <Toppings>
+            <string>cheese</string>
+            <string>pepperoni</string>
+          </Toppings>
           <Price>48.0000</Price>
         </Pizza>
         <Pizza>
@@ -226,11 +314,11 @@
       </Pizzas>
     </Order>
     <Order>
-      <Id>919179378</Id>
-      <Timestamp>2018-07-11T04:03:09.3937266-04:00</Timestamp>
+      <Id>2024619184</Id>
+      <Timestamp>2018-07-11T09:34:16.787</Timestamp>
       <Store>Reston</Store>
-      <UserID>test2</UserID>
-      <Price>14.0000</Price>
+      <UserID>test3</UserID>
+      <Price>11.5000</Price>
       <Pizzas>
         <Pizza>
           <Size>small</Size>
@@ -238,23 +326,38 @@
           <SauceType>classic sauce</SauceType>
           <Toppings>
             <string>cheese</string>
-            <string>bacon</string>
-            <string>chicken</string>
-            <string>onions</string>
           </Toppings>
-          <Price>7.0000</Price>
+          <Price>5.5000</Price>
         </Pizza>
         <Pizza>
           <Size>small</Size>
-          <CrustType>thin crust</CrustType>
+          <CrustType>classic crust</CrustType>
+          <SauceType>classic sauce</SauceType>
+          <Toppings>
+            <string>cheese</string>
+            <string>sausage</string>
+          </Toppings>
+          <Price>6.0000</Price>
+        </Pizza>
+      </Pizzas>
+    </Order>
+    <Order>
+      <Id>5771356</Id>
+      <Timestamp>2018-07-11T10:42:29.869782-04:00</Timestamp>
+      <Store>Reston</Store>
+      <UserID>test</UserID>
+      <Price>13.0000</Price>
+      <Pizzas>
+        <Pizza>
+          <Size>large</Size>
+          <CrustType>classic crust</CrustType>
           <SauceType>classic sauce</SauceType>
           <Toppings>
             <string>cheese</string>
             <string>bacon</string>
-            <string>chicken</string>
-            <string>onions</string>
+            <string>beef</string>
           </Toppings>
-          <Price>7.0000</Price>
+          <Price>13.0000</Price>
         </Pizza>
       </Pizzas>
     </Order>
@@ -281,6 +384,7 @@
       <OrderHistory>
         <int>1531535415</int>
         <int>975577407</int>
+        <int>5771356</int>
       </OrderHistory>
     </User>
     <User>
@@ -291,6 +395,7 @@
       <Phone>9307452132</Phone>
       <FavStore>Reston</FavStore>
       <OrderHistory>
+        <int>216735110</int>
         <int>919179378</int>
       </OrderHistory>
     </User>
@@ -301,7 +406,9 @@
       <Email>jj@aol.com</Email>
       <Phone>7621594433</Phone>
       <FavStore>Herndon</FavStore>
-      <OrderHistory />
+      <OrderHistory>
+        <int>2024619184</int>
+      </OrderHistory>
     </User>
   </Users>
   <SPM>

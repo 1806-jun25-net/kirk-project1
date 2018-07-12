@@ -13,7 +13,7 @@ namespace PizzaShop.UI
     class Program
     {
         private static string userID;
-        private static readonly bool useXML = true;
+        private static readonly bool useXML = false;
         private static readonly bool useSQL = true;
 
 

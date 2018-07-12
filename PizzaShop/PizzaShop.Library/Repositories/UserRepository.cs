@@ -16,11 +16,11 @@ namespace PizzaShop.Library.Repositories
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public IEnumerable<Users> GetUsers()
+        public IEnumerable<User> GetUsers()
         {
             //List<Users> users = _db.Users.AsNoTracking().ToList();
             List<Users> users = _db.Users.AsNoTracking().Include(m => m.Orders).ToList();
-            return users;
+            return Mapper.Map(users);
         }
 
         public void AddUser(User u)

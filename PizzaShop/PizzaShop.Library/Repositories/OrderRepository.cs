@@ -18,10 +18,10 @@ namespace PizzaShop.Library.Repositories
 
 
 
-        public IEnumerable<Orders> GetOrders()
+        public IEnumerable<Order> GetOrders()
         {
             List<Orders> orders = _db.Orders.Include( o => o.OrderPizzaJunction).ThenInclude( p => p.Pizza).ThenInclude( j => j.PizzaIngredientJunction).ThenInclude( k => k.Ingredient).AsNoTracking().ToList();
-            return orders;
+            return Mapper.Map(orders);
         }
 
         public void AddOrder(Order order)
