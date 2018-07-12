@@ -49,7 +49,6 @@ namespace PizzaShop.Library.Repositories
                     break;
                 default:
                     throw new Exception("Sorting type not recognized.");
-                    break;
             }
             return Mapper.Map(sortedOrders);
         }
