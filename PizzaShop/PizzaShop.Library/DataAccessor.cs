@@ -18,8 +18,8 @@ namespace PizzaShop.Library
         //public static RepoHandler RH { get; set; }
 
 
-        //public static readonly string serializationFilepath = @"C:\Revature\kirk-project1\PizzaShop\data.xml";
-        public static readonly string serializationFilepath = @"E:\Revature\kirk-project1\PizzaShop\data.xml";
+        public static readonly string serializationFilepath = @"C:\Revature\kirk-project1\PizzaShop\data.xml";
+        //public static readonly string serializationFilepath = @"E:\Revature\kirk-project1\PizzaShop\data.xml";
 
         public static void Setup(bool importFromXML, bool useSQL)
         {

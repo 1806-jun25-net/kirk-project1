@@ -61,6 +61,7 @@ namespace PizzaShop.Library.Repositories
                     }
                     AddPizzaIngredientJunction(new PizzaIngredientJunction { PizzaId = datP.Id, IngredientId = datI.Name });
                 }
+                Save();
             }
         }
 

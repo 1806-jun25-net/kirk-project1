@@ -84,7 +84,7 @@ namespace PizzaShop.Library
             
             CrustType = otherPizza.PizzaIngredientJunction.First( i => i.Ingredient.Type.Equals("crust")).Ingredient.Name,
             SauceType = otherPizza.PizzaIngredientJunction.First(i => i.Ingredient.Type.Equals("sauce")).Ingredient.Name,
-            Toppings = otherPizza.PizzaIngredientJunction.Where(i => i.Ingredient.Type.Equals("Topping")).Select(j => j.Ingredient.Name).ToHashSet()
+            Toppings = otherPizza.PizzaIngredientJunction.Where(i => i.Ingredient.Type.Equals("topping")).Select(j => j.Ingredient.Name).ToHashSet()
             //Eventually add other toppings, for now keep things standard
             /*
             CrustType = "classic crust",
