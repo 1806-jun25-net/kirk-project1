@@ -48,7 +48,7 @@ namespace PizzaShop.Library
             Orders = OrderRepo.GetOrders().ToList();
             Users = UserRepo.GetUsers().ToList();
 
-            SPM = Mapper.Map(SPRepo.GetSizingPricing().OrderBy( i => i.IngredientUsageScalar));
+            SPM = Mapper.Map(SPRepo.GetAllSizingPricing());
             foreach (var ing in Mapper.Map(IngRepo.GetIngredients()).ToList())
                 ingDir.AddIngredient(ing);
         }
