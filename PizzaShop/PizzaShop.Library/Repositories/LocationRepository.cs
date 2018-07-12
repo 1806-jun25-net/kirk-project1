@@ -36,6 +36,38 @@ namespace PizzaShop.Library.Repositories
             return _db.Locations.Include(m => m.Orders).Include(s => s.LocationIngredientJunction).ThenInclude(k => k.Ingredient).AsNoTracking().Any(t => t.Name.Equals(name));
         }
 
+
+        public IEnumerable<Order> GetSortedOrders(int orderingType, string locName, OrderRepository or)
+        {
+            //ordering Types:
+            // 1= newst first
+            // 2= oldest first
+            // 3= cheapest first
+            // 4= priciest first
+
+
+            List<Order> sortedOrders = GetLocationByName(locName).OrderHistory.Select(o => or.GetOrderByID(o)).ToList();
+            switch (orderingType)
+            {
+                case 1:
+                    sortedOrders = (sortedOrders.OrderByDescending(a => a.Timestamp)).ToList();
+                    break;
+                case 2:
+                    sortedOrders = (sortedOrders.OrderBy(a => a.Timestamp)).ToList();
+                    break;
+                case 3:
+                    sortedOrders = (sortedOrders.OrderBy(a => a.Price)).ToList();
+                    break;
+                case 4:
+                    sortedOrders = (sortedOrders.OrderByDescending(a => a.Price)).ToList();
+                    break;
+                default:
+                    throw new Exception("Sorting type not recognized.");
+                    break;
+            }
+            return sortedOrders;
+        }
+
         /*
         public void UpdateLocation(Location loc)
         {

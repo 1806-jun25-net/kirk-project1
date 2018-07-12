@@ -754,16 +754,10 @@ namespace PizzaShop.UI
                         switch (input)
                         {
                             case "1":  // newest
-                                sortedOrders = DataAccessor.CreateSortedOrderList(orderUser.OrderHistory, 1);
-                                break;
                             case "2":  // oldest
-                                sortedOrders = DataAccessor.CreateSortedOrderList(orderUser.OrderHistory, 2);
-                                break;
                             case "3":  // cheapest
-                                sortedOrders = DataAccessor.CreateSortedOrderList(orderUser.OrderHistory, 3);
-                                break;
                             case "4":  // priciest
-                                sortedOrders = DataAccessor.CreateSortedOrderList(orderUser.OrderHistory, 4);
+                                sortedOrders = DataAccessor.DH.UserRepo.GetSortedOrders(Int32.Parse(input), orderUser.Username, DataAccessor.DH.OrderRepo).ToList();
                                 break;
                             default:  //Invalid Input
                                 Console.WriteLine("Input invalid.  Please try again.");
@@ -827,16 +821,10 @@ namespace PizzaShop.UI
                     switch (input)
                     {
                         case "1":  // newest
-                            sortedOrders = DataAccessor.CreateSortedOrderList(loc.OrderHistory, 1);
-                            break;
                         case "2":  // oldest
-                            sortedOrders = DataAccessor.CreateSortedOrderList(loc.OrderHistory, 2);
-                            break;
                         case "3":  // cheapest
-                            sortedOrders = DataAccessor.CreateSortedOrderList(loc.OrderHistory, 3);
-                            break;
                         case "4":  // priciest
-                            sortedOrders = DataAccessor.CreateSortedOrderList(loc.OrderHistory, 4);
+                            sortedOrders = DataAccessor.DH.UserRepo.GetSortedOrders(Int32.Parse(input), loc.Name, DataAccessor.DH.OrderRepo).ToList();
                             break;
                         default:  //Invalid Input
                             Console.WriteLine("Input invalid.  Please try again.");
@@ -869,24 +857,18 @@ namespace PizzaShop.UI
                 exitMenu = true;
                 Console.Write("->");
                 input = Console.ReadLine();
-                switch (input)
-                {
-                    case "1":  // newest
-                        sortedOrders = DataAccessor.CreateSortedOrderList(1);
-                        break;
-                    case "2":  // oldest
-                        sortedOrders = DataAccessor.CreateSortedOrderList(2);
-                        break;
-                    case "3":  // cheapest
-                        sortedOrders = DataAccessor.CreateSortedOrderList(3);
-                        break;
-                    case "4":  // priciest
-                        sortedOrders = DataAccessor.CreateSortedOrderList(4);
-                        break;
+                switch(input)
+                        {
+                            case "1":  // newest
+                            case "2":  // oldest
+                            case "3":  // cheapest
+                            case "4":  // priciest
+                                sortedOrders = DataAccessor.DH.OrderRepo.GetSortedOrders(Int32.Parse(input)).ToList();
+                    break;
                     default:  //Invalid Input
-                        Console.WriteLine("Input invalid.  Please try again.");
-                        exitMenu = false;
-                        break;
+                                Console.WriteLine("Input invalid.  Please try again.");
+                    exitMenu = false;
+                    break;
                 }
             } while (!exitMenu);
 
