@@ -251,7 +251,7 @@ namespace PizzaShop.Library
             //1: generate -List- of all ingredient types w/ appropiate quantity based on scalar
             List<Ingredient> allIngredients = BuildIngredientList();
             Location loc = DH.LocRepo.GetLocations().First( l => l.Name.Equals(order.Store));
-            return loc.RemoveBulkStock(allIngredients);
+            return DH.LocRepo.RemoveBulkStock(allIngredients, order.Store);
         }
 
         public List<Ingredient> BuildIngredientList()
