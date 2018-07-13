@@ -41,8 +41,6 @@ namespace PizzaShop.Library
             else
             {
                 Stock.Add(ing);
-                //also register ingredient in ingredient directory
-                DataAccessor.DH.ingDir.AddIngredient(ing);
             }
         }
 

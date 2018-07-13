@@ -11,16 +11,19 @@ namespace PizzaShop.Library
         public Pizza ActivePizza { get; set; } = null;
         public const int maxPizzas = 12;
         public const decimal maxOrderPrice = 500m;
+        public DataHandler DH;
 
-        public OrderBuilder(string user, string store)
+        public OrderBuilder(string user, string store, DataHandler dh)
         {
             order = new Order(user, store);
             ActivePizza = null;
+            DH = dh;
         }
-        public OrderBuilder(string user, string store, List<Pizza> pizzas)
+        public OrderBuilder(string user, string store, DataHandler dh, List<Pizza> pizzas)
         {
             order = new Order(user, store, pizzas);
             ActivePizza = null;
+            DH = dh;
         }
 
         public void StartNewPizza(string size)
@@ -63,13 +66,13 @@ namespace PizzaShop.Library
         public bool AddToppingToActivePizza(string topping)
         {
             // if topping is not in valid list of toppings
-            if (!DataAccessor.DH.ingDir.Toppings.Contains(topping))
+            if (!DH.ingDir.Toppings.Contains(topping))
                 return false;
             //if topping already on pizza
             if (ActivePizza.Toppings.Contains(topping))
                 return false;
             ActivePizza.Toppings.Add(topping);
-            ActivePizza.Price += DataAccessor.DH.SPM.GetToppingPrice(ActivePizza.Size);
+            ActivePizza.Price += DH.SPM.GetToppingPrice(ActivePizza.Size);
             return true;
         }
 
@@ -79,7 +82,7 @@ namespace PizzaShop.Library
             if (ActivePizza.Toppings.Contains(topping))
             {
                 ActivePizza.Toppings.Remove(topping);
-                ActivePizza.Price -= DataAccessor.DH.SPM.GetToppingPrice(ActivePizza.Size);
+                ActivePizza.Price -= DH.SPM.GetToppingPrice(ActivePizza.Size);
                 return true;
             }
             return false;
@@ -88,7 +91,7 @@ namespace PizzaShop.Library
         public bool ChangeSauceOnActivePizza(string sauce)
         {
             //if sauce is not from valid list of toppings
-            if (!DataAccessor.DH.ingDir.Sauces.Contains(sauce))
+            if (!DH.ingDir.Sauces.Contains(sauce))
                 return false;
             ActivePizza.SauceType = sauce;
             return true;
@@ -97,7 +100,7 @@ namespace PizzaShop.Library
         public bool ChangeCrustOnActivePizza(string crust)
         {
             // if topping is not in valid list of toppings
-            if (!DataAccessor.DH.ingDir.Crusts.Contains(crust))
+            if (!DH.ingDir.Crusts.Contains(crust))
                 return false;
             ActivePizza.CrustType = crust;
             return true;
@@ -106,10 +109,10 @@ namespace PizzaShop.Library
         public bool ChangeSizeOfActivePizza(string size)
         {
             // if size is not in valid list of sizes
-            if (!DataAccessor.DH.SPM.Sizes.Contains(size))
+            if (!DH.SPM.Sizes.Contains(size))
                 return false;
             ActivePizza.Size = size;
-            ActivePizza.Price = DataAccessor.DH.SPM.GetBasePrice(size) + DataAccessor.DH.SPM.GetToppingPrice(size) * ActivePizza.Toppings.Count;
+            ActivePizza.Price = DH.SPM.GetBasePrice(size) + DH.SPM.GetToppingPrice(size) * ActivePizza.Toppings.Count;
             return true;
         }
 
@@ -166,18 +169,18 @@ namespace PizzaShop.Library
             order.Id = Math.Abs((int)order.Timestamp.Ticks);
 
             //add order to order history
-            DataAccessor.DH.Orders.Add(order);
+            DH.Orders.Add(order);
             //add orderID to user order history
-            DataAccessor.DH.UserRepo.GetUserByUsername(order.UserID).OrderHistory.Add(order.Id);
+            DH.UserRepo.GetUserByUsername(order.UserID).OrderHistory.Add(order.Id);
             //add orderID to location order history
-            DataAccessor.DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory.Add(order.Id);
+            DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory.Add(order.Id);
             //add order to DB
             
             //Update decremented inventory to DB
-            DataAccessor.DH.LocRepo.UpdateLocationInventory(DataAccessor.DH.LocRepo.GetLocationByName(order.Store));
-            DataAccessor.DH.LocRepo.Save();
-            DataAccessor.DH.OrderRepo.AddOrder(order);
-            DataAccessor.DH.LocRepo.Save();
+            DH.LocRepo.UpdateLocationInventory(DH.LocRepo.GetLocationByName(order.Store));
+            DH.LocRepo.Save();
+            DH.OrderRepo.AddOrder(order);
+            DH.LocRepo.Save();
 
             return null;
         }
@@ -208,14 +211,14 @@ namespace PizzaShop.Library
             //Both Users and Locations have an order history contianing order ids
             //Find intersection of User & location order histories from newest to oldest
             //if newest shared order <2 hrs reject, otherwise accept
-            List<int> userOrders = DataAccessor.DH.UserRepo.GetUserByUsername(order.UserID).OrderHistory;
-            List<int> locationOrders = DataAccessor.DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory;
+            List<int> userOrders = DH.UserRepo.GetUserByUsername(order.UserID).OrderHistory;
+            List<int> locationOrders = DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory;
             DateTime orderTime;
             //new orders are always added to the end of the OrderHistory list, so go through newest orders first
             for (int i = userOrders.Count-1; i >= 0; i--)
             {
                 //get the order time off the user order we want to check
-                orderTime = DataAccessor.DH.OrderRepo.GetOrderByID(userOrders[i]).Timestamp;
+                orderTime = DH.OrderRepo.GetOrderByID(userOrders[i]).Timestamp;
                 //if the most recent order being checked is already older than two hours
                 //this is just for efficiency to not have to go through a user's entire order history since the beginning of time
                 if (DateTime.Compare(DateTime.Now, orderTime.AddHours(2)) > 0)
@@ -226,7 +229,7 @@ namespace PizzaShop.Library
                  //if an orderID is shared between user and location
                 if (locationOrders.Contains(userOrders[i]))
                 {
-                    orderTime = DataAccessor.DH.OrderRepo.GetOrderByID(userOrders[i]).Timestamp;
+                    orderTime = DH.OrderRepo.GetOrderByID(userOrders[i]).Timestamp;
                     //if order was placed within the last two hours
                     if ( DateTime.Compare(DateTime.Now, orderTime.AddHours(2)) < 0 )
                     {
@@ -243,7 +246,7 @@ namespace PizzaShop.Library
         {
             //1: generate -List- of all ingredient types w/ appropiate quantity based on scalar
             List<Ingredient> allIngredients = BuildIngredientList();
-            Location loc = DataAccessor.DH.Locations.First( l => l.Name.Equals(order.Store));
+            Location loc = DH.Locations.First( l => l.Name.Equals(order.Store));
             return loc.RemoveBulkStock(allIngredients);
         }
 
@@ -253,7 +256,7 @@ namespace PizzaShop.Library
             int amount;
             foreach (var p in order.Pizzas)
             {
-                amount = DataAccessor.DH.SPM.GetIngredientUsageScalar(p.Size);
+                amount = DH.SPM.GetIngredientUsageScalar(p.Size);
                 AddToIngredientList(allIngredients, new Ingredient(p.CrustType, amount, "crust"));
                 AddToIngredientList(allIngredients, new Ingredient(p.SauceType, amount, "sauce"));
                 foreach (var s in p.Toppings)

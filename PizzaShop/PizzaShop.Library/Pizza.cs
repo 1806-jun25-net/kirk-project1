@@ -18,7 +18,6 @@ namespace PizzaShop.Library
             CrustType = "classic crust";
             SauceType = "classic sauce";
             Toppings.Add("cheese");
-            Price = DataAccessor.DH.SPM.GetBasePrice(s) + DataAccessor.DH.SPM.GetToppingPrice(s);
         }
 
         public Pizza ()
@@ -33,11 +32,11 @@ namespace PizzaShop.Library
 
         public void AddTopping(string item)
         {
-            // Do nothing if topping is already on this pizza, or is not a valid known topping
-            if (Toppings.Contains(item) || !DataAccessor.DH.ingDir.Toppings.Contains(item))
-                return;
+            // Do nothing if topping is already on this pizza
+            //Validation that topping is valid must be done elsewhere
+            if (Toppings.Contains(item))
+                return; 
             Toppings.Add(item);
-            Price += DataAccessor.DH.SPM.GetToppingPrice(Size);
         }
 
         public void RemoveTopping(string item)
@@ -46,32 +45,24 @@ namespace PizzaShop.Library
             if (!Toppings.Contains(item))
                 return;
             Toppings.Remove(item);
-            Price -= DataAccessor.DH.SPM.GetToppingPrice(Size);
         }
 
         public void ChangeCrust(string item)
         {
-            //Do nothing if given crust is not a valid crust
-            if (!DataAccessor.DH.ingDir.Crusts.Contains(item))
-                return;
+            //Item validation must be done elsewhere where 
             CrustType = item;
         }
 
         public void ChangesSauce(string item)
         {
-            //Do nothing if given sauce is not a valid sauce
-            if (!DataAccessor.DH.ingDir.Sauces.Contains(item))
-                return;
+            //must validate sauce is valid elsewhere
             SauceType = item;
         }
 
         public void changeSize(string s)
         {
             //Do nothing if given size is not a valid size
-            if (!DataAccessor.DH.SPM.Sizes.Contains(s))
-                return;
             Size = s;
-            Price = DataAccessor.DH.SPM.GetBasePrice(s) + DataAccessor.DH.SPM.GetToppingPrice(s) * Toppings.Count;
         }
 
     }

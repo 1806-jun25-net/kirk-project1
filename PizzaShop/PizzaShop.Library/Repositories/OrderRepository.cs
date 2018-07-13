@@ -72,33 +72,21 @@ namespace PizzaShop.Library.Repositories
             foreach (var p in order.Pizzas)
             {
                 Data.Pizzas datP = Mapper.Map(p);
-                DataAccessor.DH.PizzaRepo.AddPizza(datP);
+                _db.Add(datP);
                 Save();
                 OrderPizzaJunction opj = new OrderPizzaJunction { OrderId = order.Id, Quantity = 1, PizzaId = datP.Id };
                 AddOrderPizzaJunction(opj);
                 //add crust to ingredients
                 Data.Ingredients datI = Mapper.Map(new Ingredient { Name = p.CrustType, Type = "crust" });
-                if (!DataAccessor.DH.IngRepo.GetIngredients().Any(i => i.Name.Equals(datI.Name)))
-                {
-                    DataAccessor.DH.IngRepo.AddIngredient(datI);
-                }
                 AddPizzaIngredientJunction(new PizzaIngredientJunction { PizzaId = datP.Id, IngredientId = datI.Name });
                 //add sauce to ingredients
                 datI = Mapper.Map(new Ingredient { Name = p.SauceType, Type = "sauce" });
-                if (!DataAccessor.DH.IngRepo.GetIngredients().Any(i => i.Name.Equals(datI.Name)))
-                {
-                    DataAccessor.DH.IngRepo.AddIngredient(datI);
-                }
                 AddPizzaIngredientJunction(new PizzaIngredientJunction { PizzaId = datP.Id, IngredientId = datI.Name });
 
                 //add remaining toppings to ingredients
                 foreach (var t in p.Toppings)
                 {
                     datI = Mapper.Map(new Ingredient { Name = t, Type = "topping" });
-                    if (!DataAccessor.DH.IngRepo.GetIngredients().Any(i => i.Name.Equals(datI.Name)))
-                    {
-                        DataAccessor.DH.IngRepo.AddIngredient(datI);
-                    }
                     AddPizzaIngredientJunction(new PizzaIngredientJunction { PizzaId = datP.Id, IngredientId = datI.Name });
                 }
                 Save();

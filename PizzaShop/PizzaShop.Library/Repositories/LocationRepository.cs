@@ -84,6 +84,29 @@ namespace PizzaShop.Library.Repositories
                 //_db.Entry(_db.LocationIngredientJunction).State = _db.Entry.EntityState.Modified;
         }
 
+        public void AddStock(Ingredient ing, string name)
+        {
+            Location loc = GetLocationByName(name);
+            if (loc.Stock.Any(t => t.Name.Equals(ing.Name)))
+                loc.Stock.First(t => t.Name.Equals(ing.Name)).Quantity += ing.Quantity;
+            else
+            {
+                loc.Stock.Add(ing);
+                //also register ingredient in ingredient directory
+                if (!_db.Ingredients.Contains(Mapper.Map(ing)))
+                    _db.Ingredients.Add(Mapper.Map(ing));
+            }
+            UpdateLocationInventory(loc);
+        }
+
+        public void AddBulkStock(List<Ingredient> list, string name)
+        {
+            foreach (var item in list)
+            {
+                AddStock(item, name);
+            }
+        }
+
         public void Save()
         {
             _db.SaveChanges();

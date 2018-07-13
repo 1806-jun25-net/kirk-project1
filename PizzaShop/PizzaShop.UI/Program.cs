@@ -13,26 +13,36 @@ namespace PizzaShop.UI
     class Program
     {
         private static string userID;
-        private static readonly bool useXML = false;
-        private static readonly bool useSQL = true;
-
+        private static DataHandler DH;
 
         public static void Main(string[] args)
         {
+            // SQL STUFF HERE
 
-            //Get data ready
-            DataAccessor.Setup(useXML, useSQL);
+            // get the configuration from file
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            IConfigurationRoot configuration = builder.Build();
+
+            //Use to confirm .json is being read in properly
+            //Console.WriteLine(configuration.GetConnectionString("Project1DB"));
+
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1DB"));
+            var options = optionsBuilder.Options;
+
+            DH = new DataHandler(new Project1DBContext(optionsBuilder.Options));
+
+            //END SQL STUFF
+            //Should now be able to access database records by using RH instead of DH
 
             //Begin at first screen of the menu system
             MenuStart();
 
             //Run serialization code to back up all changes upon menu termination
-            if (useXML)
-                DataAccessor.SerializeToFile();
-            if (useSQL)
-            {
-                DataAccessor.DH.db.Dispose();
-            }
+            DH.db.Dispose();
 
         }
 
@@ -86,7 +96,7 @@ namespace PizzaShop.UI
                 Console.WriteLine("Please create a new username:");
                 Console.Write("->");
                 input = Console.ReadLine();
-                inputValid = !DataAccessor.DH.UserRepo.UsersContainsUsername(input)
+                inputValid = !DH.UserRepo.UsersContainsUsername(input)
                     && input.Any(c => char.IsLetter(c));
                 if (!inputValid)
                     Console.WriteLine("That username is already taken or is invalid.  Please try again.");
@@ -161,20 +171,20 @@ namespace PizzaShop.UI
                 input = Console.ReadLine();
                 inputValid = input.Count(c => !char.IsDigit(c)) == 0 
                     && Int32.Parse(input) >= 1 
-                    && Int32.Parse(input) <= DataAccessor.DH.Locations.Count;
+                    && Int32.Parse(input) <= DH.Locations.Count;
                 if (!inputValid)
                     Console.WriteLine("That selection is invalid.  Enter only the number associated with the store. Please try again.");
             }
             while (!inputValid);
-            newUser.FavStore = DataAccessor.DH.Locations[Int32.Parse(input)-1].Name;
+            newUser.FavStore = DH.Locations[Int32.Parse(input)-1].Name;
 
             Console.WriteLine("New user created!");
             Console.WriteLine($"Username: {newUser.Username}\nFirst Name: {newUser.FirstName}\nLast Name: {newUser.LastName}\nEmail: {newUser.Email}\nPhone: {newUser.Phone}\nDefault Location: {newUser.FavStore}");
 
             //add new user to user list
-            DataAccessor.DH.Users.Add(newUser);
-            DataAccessor.DH.UserRepo.AddUser(newUser);
-            DataAccessor.DH.UserRepo.Save();
+            DH.Users.Add(newUser);
+            DH.UserRepo.AddUser(newUser);
+            DH.UserRepo.Save();
         }
 
         public static void MenuExistingUserLogin()
@@ -186,7 +196,7 @@ namespace PizzaShop.UI
                 Console.WriteLine("Please enter your username:");
                 Console.Write("->");
                 input = Console.ReadLine();
-                if (!DataAccessor.DH.UserRepo.UsersContainsUsername(input))  //if user not found, prompt to try again
+                if (!DH.UserRepo.UsersContainsUsername(input))  //if user not found, prompt to try again
                 {
                     do
                     {
@@ -257,7 +267,7 @@ namespace PizzaShop.UI
         {
             string input = "";
             bool invalidInput = true;
-            List<Pizza> recommendedOrder = DataAccessor.DH.UserRepo.GetUserByUsername(userID).GetRecommendedOrder();
+            List<Pizza> recommendedOrder = DH.UserRepo.GetRecommendedOrder(userID, DH.OrderRepo);
             Console.WriteLine("~~~New Order Creation~~~");
             Console.WriteLine("Check out this recommended order, just for you!");
             PrintPizzaList(recommendedOrder);
@@ -272,11 +282,11 @@ namespace PizzaShop.UI
                 switch (input)
                 {
                     case "1":  //recommended order
-                        MenuBuildOrder(new OrderBuilder(userID, DataAccessor.DH.UserRepo.GetUserByUsername(userID).FavStore, recommendedOrder));
+                        MenuBuildOrder(new OrderBuilder(userID, DH.UserRepo.GetUserByUsername(userID).FavStore, DH, recommendedOrder));
                         invalidInput = false;
                         break;
                     case "2":  //new empty order
-                        MenuBuildOrder(new OrderBuilder(userID, DataAccessor.DH.UserRepo.GetUserByUsername(userID).FavStore));
+                        MenuBuildOrder(new OrderBuilder(userID, DH.UserRepo.GetUserByUsername(userID).FavStore, DH));
                         invalidInput = false;
                         break;
                     case "0": //Go back
@@ -364,7 +374,7 @@ namespace PizzaShop.UI
                 input = Console.ReadLine();
                 if (input.Any(c => !char.IsDigit(c))
                     || Int32.Parse(input) < 1
-                    || Int32.Parse(input) > DataAccessor.DH.SPM.Sizes.Count)
+                    || Int32.Parse(input) > DH.SPM.Sizes.Count)
                 {
                     validInput = false;
                     Console.WriteLine("Input invalid.  Please try again.");
@@ -373,7 +383,7 @@ namespace PizzaShop.UI
                     validInput = true;
             }
             while (!validInput);
-            ob.StartNewPizza(DataAccessor.DH.SPM.Sizes[Int32.Parse(input)-1]);
+            ob.StartNewPizza(DH.SPM.Sizes[Int32.Parse(input)-1]);
             //new pizza created, now allow for topping/sauce/crust changes
             MenuModifyPizza(ob);
             ob.AddActivePizza();
@@ -464,14 +474,14 @@ namespace PizzaShop.UI
                 input = Console.ReadLine();
                 inputValid = input.Count(c => !char.IsDigit(c)) == 0
                     && Int32.Parse(input) >= 1
-                    && Int32.Parse(input) <= DataAccessor.DH.Locations.Count;
+                    && Int32.Parse(input) <= DH.Locations.Count;
                 if (!inputValid)
                     Console.WriteLine("That selection is invalid.  Enter only the number associated with the store. Please try again.");
             }
             while (!inputValid  && !input.Equals("0"));
             if(!input.Equals("0"))
             {
-                ob.ChangeLocation(DataAccessor.DH.Locations[Int32.Parse(input)-1].Name);
+                ob.ChangeLocation(DH.Locations[Int32.Parse(input)-1].Name);
             }
         }
 
@@ -528,7 +538,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("add", "topping", DataAccessor.DH.ingDir.Toppings);
+                MenuHelperSelectIngredient("add", "topping", DH.ingDir.Toppings);
                 input = Console.ReadLine();
                 result = ob.AddToppingToActivePizza(input);
                 if (result)
@@ -574,7 +584,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("change to", "crust", DataAccessor.DH.ingDir.Crusts);
+                MenuHelperSelectIngredient("change to", "crust", DH.ingDir.Crusts);
                 input = Console.ReadLine();
                 result = ob.ChangeCrustOnActivePizza(input);
                 if (result)
@@ -597,7 +607,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("change to", "sauce", DataAccessor.DH.ingDir.Sauces);
+                MenuHelperSelectIngredient("change to", "sauce", DH.ingDir.Sauces);
                 input = Console.ReadLine();
                 result = ob.ChangeSauceOnActivePizza(input);
                 if (result)
@@ -620,7 +630,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("change to", "size", DataAccessor.DH.SPM.Sizes);
+                MenuHelperSelectIngredient("change to", "size", DH.SPM.Sizes);
                 input = Console.ReadLine();
                 result = ob.ChangeSizeOfActivePizza(input);
                 if (result)
@@ -702,11 +712,11 @@ namespace PizzaShop.UI
             Console.WriteLine("Please enter the order ID you wish to view:");
             Console.Write("->");
             input = Console.ReadLine();
-            if (input.Equals("") || !input.All(char.IsDigit) ||!DataAccessor.DH.OrderRepo.OrdersContainsID(Int32.Parse(input)))
+            if (input.Equals("") || !input.All(char.IsDigit) ||!DH.OrderRepo.OrdersContainsID(Int32.Parse(input)))
                 Console.WriteLine("OrderID not recognized.");
             else
             {
-                PrintOrder(DataAccessor.DH.OrderRepo.GetOrderByID(Int32.Parse(input)));
+                PrintOrder(DH.OrderRepo.GetOrderByID(Int32.Parse(input)));
             }
         }
 
@@ -714,7 +724,7 @@ namespace PizzaShop.UI
         {
             string input = "";
             string input2 = "";
-            User orderUser;
+            string usernameInput;
             bool exitMenu = false;
             List<Order> sortedOrders = new List<Order>();
 
@@ -724,12 +734,12 @@ namespace PizzaShop.UI
             {
                 Console.WriteLine("Please enter the username who's orders you wish to view:");
                 Console.Write("->");
-                input = Console.ReadLine();
-                if (!DataAccessor.DH.UserRepo.UsersContainsUsername(input))
+                usernameInput = Console.ReadLine();
+                if (!DH.UserRepo.UsersContainsUsername(usernameInput))
                 {
                     do
                     {
-                        Console.WriteLine($"User \"{input}\"not recognized!");
+                        Console.WriteLine($"User \"{usernameInput}\"not recognized!");
                         Console.WriteLine("1: Try again");
                         Console.WriteLine("2: Go back");
                         input2 = Console.ReadLine();
@@ -738,8 +748,7 @@ namespace PizzaShop.UI
                 }
                 else
                 {
-                    orderUser = DataAccessor.DH.UserRepo.GetUserByUsername((input));
-                    Console.WriteLine($"Order history for username \"{orderUser}\" - {orderUser.OrderHistory.Count} records found:");
+                    Console.WriteLine($"Order history for username \"{usernameInput}\":");
 
                     do
                     {
@@ -757,7 +766,7 @@ namespace PizzaShop.UI
                             case "2":  // oldest
                             case "3":  // cheapest
                             case "4":  // priciest
-                                sortedOrders = DataAccessor.DH.UserRepo.GetSortedOrders(Int32.Parse(input), orderUser.Username, DataAccessor.DH.OrderRepo).ToList();
+                                sortedOrders = DH.UserRepo.GetSortedOrders(Int32.Parse(input), usernameInput, DH.OrderRepo).ToList();
                                 break;
                             default:  //Invalid Input
                                 Console.WriteLine("Input invalid.  Please try again.");
@@ -797,7 +806,7 @@ namespace PizzaShop.UI
                 input = Console.ReadLine();
                 inputValid = input.Count(c => !char.IsDigit(c)) == 0
                     && Int32.Parse(input) >= 1
-                    && Int32.Parse(input) <= DataAccessor.DH.Locations.Count;
+                    && Int32.Parse(input) <= DH.Locations.Count;
                 if (!inputValid)
                     Console.WriteLine("That selection is invalid.  Enter only the number associated with the store. Please try again.");
             }
@@ -805,7 +814,7 @@ namespace PizzaShop.UI
 
             if (!input.Equals("0"))
             {
-                loc = DataAccessor.DH.Locations.ElementAt(Int32.Parse(input)-1);
+                loc = DH.Locations.ElementAt(Int32.Parse(input)-1);
                 Console.WriteLine($"Order history for location \"{loc.Name}\" - {loc.OrderHistory.Count} records found:");
 
                 do
@@ -824,7 +833,7 @@ namespace PizzaShop.UI
                         case "2":  // oldest
                         case "3":  // cheapest
                         case "4":  // priciest
-                            sortedOrders = DataAccessor.DH.UserRepo.GetSortedOrders(Int32.Parse(input), loc.Name, DataAccessor.DH.OrderRepo).ToList();
+                            sortedOrders = DH.LocRepo.GetSortedOrders(Int32.Parse(input), loc.Name, DH.OrderRepo).ToList();
                             break;
                         default:  //Invalid Input
                             Console.WriteLine("Input invalid.  Please try again.");
@@ -863,7 +872,7 @@ namespace PizzaShop.UI
                             case "2":  // oldest
                             case "3":  // cheapest
                             case "4":  // priciest
-                                sortedOrders = DataAccessor.DH.OrderRepo.GetSortedOrders(Int32.Parse(input)).ToList();
+                                sortedOrders = DH.OrderRepo.GetSortedOrders(Int32.Parse(input)).ToList();
                     break;
                     default:  //Invalid Input
                                 Console.WriteLine("Input invalid.  Please try again.");
@@ -894,7 +903,7 @@ namespace PizzaShop.UI
                 Console.WriteLine("Please enter the username to look up:");
                 Console.Write("->");
                 input = Console.ReadLine();
-                if (!DataAccessor.DH.UserRepo.UsersContainsUsername(input))  //if user not found, prompt to try again
+                if (!DH.UserRepo.UsersContainsUsername(input))  //if user not found, prompt to try again
                 {
                     do
                     {
@@ -908,7 +917,7 @@ namespace PizzaShop.UI
                 else  // If User found print info
                 {
                     input2 = "2";
-                    uSearch = DataAccessor.DH.UserRepo.GetUserByUsername(input);
+                    uSearch = DH.UserRepo.GetUserByUsername(input);
                     Console.WriteLine($"First name: {uSearch.FirstName}");
                     Console.WriteLine($"Last name: {uSearch.LastName}");
                     Console.WriteLine($"Email: {uSearch.Email}");
@@ -975,17 +984,17 @@ namespace PizzaShop.UI
 
         public static void PrintPizzaSizes()
         {
-            for(int i = 0; i < DataAccessor.DH.SPM.Sizes.Count; i++)
+            for(int i = 0; i < DH.SPM.Sizes.Count; i++)
             {
-                Console.WriteLine($"{i + 1}: {DataAccessor.DH.SPM.Sizes[i]}");
+                Console.WriteLine($"{i + 1}: {DH.SPM.Sizes[i]}");
             }
         }
 
         public static void PrintLocations()
         {
             Console.WriteLine("Our order locations are:");
-            for (int i = 0; i < DataAccessor.DH.Locations.Count; i++)
-                Console.WriteLine($"{i + 1}: {DataAccessor.DH.Locations[i].Name}");
+            for (int i = 0; i < DH.Locations.Count; i++)
+                Console.WriteLine($"{i + 1}: {DH.Locations[i].Name}");
         }
 
         public static void PrintOrder(Order order)

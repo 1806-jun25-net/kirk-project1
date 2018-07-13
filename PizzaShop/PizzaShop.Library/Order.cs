@@ -18,7 +18,7 @@ namespace PizzaShop.Library
         {
             get
             {
-                //return Pizzas.Sum(p => DataAccessor.DH.SPM.GetBasePrice(p.Size) + DataAccessor.DH.SPM.GetToppingPrice(p.Size) * p.Toppings.Count);
+                //return Pizzas.Sum(p => DH.SPM.GetBasePrice(p.Size) + DH.SPM.GetToppingPrice(p.Size) * p.Toppings.Count);
                 return Pizzas.Sum(p => p.Price);
             }
             set

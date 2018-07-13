@@ -69,6 +69,22 @@ namespace PizzaShop.Library.Repositories
             return sortedOrders;
         }
 
+        public List<Pizza> GetRecommendedOrder(string user, OrderRepository or)
+        {
+            //Returns the most recent order, if one exists for that user
+            //otherwise, use a basic small pizza
+            List<int> oHistory= GetUserByUsername(user).OrderHistory;
+
+            var recommendation = new List<Pizza>();
+            if (oHistory.Count > 0)
+                recommendation = or.GetOrderByID(oHistory[oHistory.Count - 1]).Pizzas;
+            else
+                recommendation.Add(new Pizza("small"));
+            return recommendation;
+
+
+            //?? majority element??
+        }
 
         public void Save()
         {

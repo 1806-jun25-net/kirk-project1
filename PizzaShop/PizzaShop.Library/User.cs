@@ -28,19 +28,6 @@ namespace PizzaShop.Library
 
         public User() { }
 
-        public List<Pizza> GetRecommendedOrder()
-        {
-            //Returns the most recent order, if one exists for that user
-            //otherwise, use a basic small pizza
-            var recommendation = new List<Pizza>();
-            if (OrderHistory.Count > 0)
-                recommendation = DataAccessor.DH.OrderRepo.GetOrderByID(OrderHistory[OrderHistory.Count - 1]).Pizzas;
-            else
-                recommendation.Add(new Pizza("small"));
-            return recommendation;
-
-
-            //?? majority element??
-        }
+        
     }
 }
