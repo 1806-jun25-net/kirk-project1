@@ -7,8 +7,9 @@ using Xunit;
 namespace PizzaShop.Testing
 {
     public class IngredientDirectoryTest
-    { 
-        
+    {
+
+        /*
         [Theory]
         [InlineData("brooklyn-style crust")]
         [InlineData("deep dish crust")]
@@ -47,5 +48,6 @@ namespace PizzaShop.Testing
 
             Assert.Contains(t.Name, DataAccessor.DH.ingDir.Toppings);
         }
+        */
     }
 }

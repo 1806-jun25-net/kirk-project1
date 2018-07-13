@@ -102,22 +102,6 @@ namespace PizzaShop.Library
             
         };
 
-        
-        public static SizingPricingManager Map(Data.SizingPricing otherPricing)
-        {
-            SizingPricingManager spm = new SizingPricingManager();
-            spm.AddNewSize(otherPricing.Size, (decimal)otherPricing.BasePrice, (decimal)otherPricing.ToppingPrice, (int)otherPricing.IngredientUsageScalar);
-            return spm;
-        }
-
-        public static SizingPricingManager Map(IEnumerable<Data.SizingPricing> otherPricing)
-        {
-            SizingPricingManager spm = new SizingPricingManager();
-            foreach (var op in otherPricing)
-                spm.AddNewSize(op.Size, (decimal)op.BasePrice, (decimal)op.ToppingPrice, (int)op.IngredientUsageScalar);
-            return spm;
-        }
-
         public static List<Ingredient> Map(ICollection<LocationIngredientJunction> lij)
         {
             List<Ingredient> stock = new List<Ingredient>();

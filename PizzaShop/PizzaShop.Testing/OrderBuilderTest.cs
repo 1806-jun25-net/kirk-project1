@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 using PizzaShop.Library;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using Microsoft.EntityFrameworkCore;
+using PizzaShop.Data;
 
 namespace PizzaShop.Testing
 {
@@ -12,19 +16,34 @@ namespace PizzaShop.Testing
         [Fact]
         public void StartNewPizzaShouldSetActivePizzaToANonNullPizza()
         {
-            RepositoryHandler DH = new RepositoryHandler();
-            OrderBuilder ob = new OrderBuilder("user", "store", DH);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1"));
+            var RH = (new RepositoryHandler(new Project1DBContext(optionsBuilder.Options)));
+            OrderBuilder ob = new OrderBuilder("user", "store", RH);
 
             ob.StartNewPizza("large");
 
             Assert.True(ob.ActivePizza != null);
         }
 
-        [Fact]
-        public void StartNewPizzaShouldSetActivePizzaToAppropiateSize()
+        [Theory]
+        [InlineData("small")]
+        [InlineData("medium")]
+        [InlineData("large")]
+        public void StartNewPizzaShouldSetActivePizzaToAppropiateSize(string s)
         {
-            RepositoryHandler DH = new RepositoryHandler();
-            OrderBuilder ob = new OrderBuilder("user", "store", DH);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1"));
+            var RH = (new RepositoryHandler(new Project1DBContext(optionsBuilder.Options)));
+            OrderBuilder ob = new OrderBuilder("user", "store", RH);
 
             ob.StartNewPizza("large");
 
@@ -35,8 +54,14 @@ namespace PizzaShop.Testing
         [Fact]
         public void DuplicatePizzaShouldAddExactlyOneAdditionalPizzaToPizzas()
         {
-            RepositoryHandler DH = new RepositoryHandler();
-            OrderBuilder ob = new OrderBuilder("user", "store", DH);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1"));
+            var RH = (new RepositoryHandler(new Project1DBContext(optionsBuilder.Options)));
+            OrderBuilder ob = new OrderBuilder("user", "store", RH);
             ob.order.Pizzas.Add(new Pizza("small"));
 
             ob.DuplicatePizza(0);
