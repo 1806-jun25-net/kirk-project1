@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PizzaShop.Library.Repositories;
+using PizzaShop.WebApp.Models;
 
 namespace PizzaShop.WebApp.Controllers
 {
@@ -19,13 +20,17 @@ namespace PizzaShop.WebApp.Controllers
         // GET: User
         public ActionResult Index()
         {
+            var libUsers = URepo.GetUsers();
+            var webUsers = libUsers.Select(x => Mapper.Map(x));
             return View();
         }
 
         // GET: User/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
-            return View();
+            var libUser = URepo.GetUserByUsername(id);
+            var webUser = Mapper.Map(libUser);
+            return View(webUser);
         }
 
         // GET: User/Create

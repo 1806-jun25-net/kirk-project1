@@ -53,7 +53,7 @@ namespace PizzaShop.WebApp
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
+                app.UseHsts();  //?? Not used in RestRev example
             }
 
             app.UseHttpsRedirection();

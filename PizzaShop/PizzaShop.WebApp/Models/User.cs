@@ -13,6 +13,6 @@ namespace PizzaShop.WebApp.Models
         public string Email { get; set; }
         public string Phone { get; set; }
         public string FavStore { get; set; }
-        public List<int> OrderHistory { get; set; } = new List<int>();
+        //public List<int> OrderHistory { get; set; } = new List<int>();
     }
 }
