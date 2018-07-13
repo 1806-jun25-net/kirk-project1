@@ -22,6 +22,11 @@ namespace PizzaShop.Library.Repositories
             return sp.OrderBy(i => i.IngredientUsageScalar);
         }
 
+        public IEnumerable<string> GetSizes()
+        {
+            return GetAllSizingPricing().Select(p => p.Size);
+        }
+
         public void AddNewSize(string name, decimal basePrice, decimal toppingPrice, int iUS)
         {
             if (SizingPricingContainsSize(name) || basePrice <= 0m || toppingPrice <= 0m || iUS <= 0)

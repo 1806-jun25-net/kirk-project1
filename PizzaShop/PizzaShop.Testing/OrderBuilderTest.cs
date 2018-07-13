@@ -12,7 +12,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void StartNewPizzaShouldSetActivePizzaToANonNullPizza()
         {
-            DataHandler DH = new DataHandler();
+            RepositoryHandler DH = new RepositoryHandler();
             OrderBuilder ob = new OrderBuilder("user", "store", DH);
 
             ob.StartNewPizza("large");
@@ -23,7 +23,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void StartNewPizzaShouldSetActivePizzaToAppropiateSize()
         {
-            DataHandler DH = new DataHandler();
+            RepositoryHandler DH = new RepositoryHandler();
             OrderBuilder ob = new OrderBuilder("user", "store", DH);
 
             ob.StartNewPizza("large");
@@ -35,7 +35,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void DuplicatePizzaShouldAddExactlyOneAdditionalPizzaToPizzas()
         {
-            DataHandler DH = new DataHandler();
+            RepositoryHandler DH = new RepositoryHandler();
             OrderBuilder ob = new OrderBuilder("user", "store", DH);
             ob.order.Pizzas.Add(new Pizza("small"));
 
@@ -47,7 +47,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void DuplicatePizzaShouldAddExactPizzaToEndOfPizzas()
         {
-            DataHandler DH = new DataHandler();
+            RepositoryHandler DH = new RepositoryHandler();
             OrderBuilder ob = new OrderBuilder("user", "store", DH);
             Pizza p = new Pizza("small");
             ob.order.Pizzas.Add(p);
@@ -61,7 +61,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void DuplicatePizzaShouldDoNothingIfIndexIsOutOfBounds()
         {
-            DataHandler DH = new DataHandler();
+            RepositoryHandler DH = new RepositoryHandler();
             OrderBuilder ob = new OrderBuilder("user", "store", DH);
             Pizza p = new Pizza("small");
             ob.order.Pizzas.Add(p);
@@ -75,7 +75,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void AddPizzaShouldAddExactlyOneAdditionalPizzaToPizzas()
         {
-            DataHandler DH = new DataHandler();
+            RepositoryHandler DH = new RepositoryHandler();
             OrderBuilder ob = new OrderBuilder("user", "store", DH);
             ob.order.Pizzas.Add(new Pizza("small"));
 
@@ -87,7 +87,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void AddPizzaShouldAddExactPizzaToEndOfPizzas()
         {
-            DataHandler DH = new DataHandler();
+            RepositoryHandler DH = new RepositoryHandler();
             OrderBuilder ob = new OrderBuilder("user", "store", DH);
             Pizza p = new Pizza("small");
             ob.order.Pizzas.Add(new Pizza("medium"));
@@ -101,7 +101,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void AddPizzaShouldDoNothingIfPassedNullIPizza()
         {
-            DataHandler DH = new DataHandler();
+            RepositoryHandler DH = new RepositoryHandler();
             OrderBuilder ob = new OrderBuilder("user", "store", DH);
             ob.order.Pizzas.Add(new Pizza("medium"));
 
@@ -114,7 +114,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void SwitchActivePizzaShouldNotLeaveActivePizzaNull()
         {
-            DataHandler DH = new DataHandler();
+            RepositoryHandler DH = new RepositoryHandler();
             OrderBuilder ob = new OrderBuilder("user", "store", DH);
             ob.ActivePizza = new Pizza("small");
 
@@ -127,7 +127,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void SwitchActivePizzaShouldCorrectlySetActivePizza()
         {
-            DataHandler DH = new DataHandler();
+            RepositoryHandler DH = new RepositoryHandler();
             OrderBuilder ob = new OrderBuilder("user", "store", DH);
             Pizza p = new Pizza("small");
             ob.order.Pizzas.Add(p);
@@ -141,7 +141,7 @@ namespace PizzaShop.Testing
         [Fact]
         public void SwitchActivePizzaShouldDoNothingIfIndexIsOutOfBounds()
         {
-            DataHandler DH = new DataHandler();
+            RepositoryHandler DH = new RepositoryHandler();
             OrderBuilder ob = new OrderBuilder("user", "store", DH);
             Pizza p = ob.ActivePizza;
             ob.order.Pizzas.Add(p);

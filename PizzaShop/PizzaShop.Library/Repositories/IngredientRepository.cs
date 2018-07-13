@@ -16,10 +16,28 @@ namespace PizzaShop.Library.Repositories
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public IEnumerable<Ingredients> GetIngredients()
+        public IEnumerable<Ingredient> GetIngredients()
         {
             List<Ingredients> ing = _db.Ingredients.AsNoTracking().ToList();
-            return ing;
+            return Mapper.Map(ing);
+        }
+
+        public IEnumerable<Ingredient> GetToppings()
+        {
+            List<Ingredients> ing = _db.Ingredients.AsNoTracking().ToList();
+            return Mapper.Map(ing.Where(i => i.Type.Equals("topping")));
+        }
+
+        public IEnumerable<Ingredient> GetSauces()
+        {
+            List<Ingredients> ing = _db.Ingredients.AsNoTracking().ToList();
+            return Mapper.Map(ing.Where(i => i.Type.Equals("sauce")));
+        }
+
+        public IEnumerable<Ingredient> GetCrusts()
+        {
+            List<Ingredients> ing = _db.Ingredients.AsNoTracking().ToList();
+            return Mapper.Map(ing.Where(i => i.Type.Equals("crust")));
         }
 
         public void AddIngredient(Ingredient i)

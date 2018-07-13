@@ -11,15 +11,15 @@ namespace PizzaShop.Library
         public Pizza ActivePizza { get; set; } = null;
         public const int maxPizzas = 12;
         public const decimal maxOrderPrice = 500m;
-        public DataHandler DH;
+        public RepositoryHandler DH;
 
-        public OrderBuilder(string user, string store, DataHandler dh)
+        public OrderBuilder(string user, string store, RepositoryHandler dh)
         {
             order = new Order(user, store);
             ActivePizza = null;
             DH = dh;
         }
-        public OrderBuilder(string user, string store, DataHandler dh, List<Pizza> pizzas)
+        public OrderBuilder(string user, string store, RepositoryHandler dh, List<Pizza> pizzas)
         {
             order = new Order(user, store, pizzas);
             ActivePizza = null;
@@ -29,6 +29,7 @@ namespace PizzaShop.Library
         public void StartNewPizza(string size)
         {
             ActivePizza = new Pizza(size);
+            ActivePizza.Price = DH.SPRepo.GetBasePrice(size) + DH.SPRepo.GetToppingPrice(size);
         }
 
         public void DuplicatePizza(int i)
@@ -66,13 +67,13 @@ namespace PizzaShop.Library
         public bool AddToppingToActivePizza(string topping)
         {
             // if topping is not in valid list of toppings
-            if (!DH.ingDir.Toppings.Contains(topping))
+            if (!DH.IngRepo.GetIngredients().Any( t => t.Name.Equals(topping) || !t.Type.Equals("topping")))
                 return false;
             //if topping already on pizza
             if (ActivePizza.Toppings.Contains(topping))
                 return false;
             ActivePizza.Toppings.Add(topping);
-            ActivePizza.Price += DH.SPM.GetToppingPrice(ActivePizza.Size);
+            ActivePizza.Price += DH.SPRepo.GetToppingPrice(ActivePizza.Size);
             return true;
         }
 
@@ -82,7 +83,7 @@ namespace PizzaShop.Library
             if (ActivePizza.Toppings.Contains(topping))
             {
                 ActivePizza.Toppings.Remove(topping);
-                ActivePizza.Price -= DH.SPM.GetToppingPrice(ActivePizza.Size);
+                ActivePizza.Price -= DH.SPRepo.GetToppingPrice(ActivePizza.Size);
                 return true;
             }
             return false;
@@ -91,7 +92,7 @@ namespace PizzaShop.Library
         public bool ChangeSauceOnActivePizza(string sauce)
         {
             //if sauce is not from valid list of toppings
-            if (!DH.ingDir.Sauces.Contains(sauce))
+            if (!!DH.IngRepo.GetIngredients().Any(t => t.Name.Equals(sauce) || !t.Type.Equals("sauce")))
                 return false;
             ActivePizza.SauceType = sauce;
             return true;
@@ -100,7 +101,7 @@ namespace PizzaShop.Library
         public bool ChangeCrustOnActivePizza(string crust)
         {
             // if topping is not in valid list of toppings
-            if (!DH.ingDir.Crusts.Contains(crust))
+            if (!!DH.IngRepo.GetIngredients().Any(t => t.Name.Equals(crust) && t.Type.Equals("crust")))
                 return false;
             ActivePizza.CrustType = crust;
             return true;
@@ -109,10 +110,10 @@ namespace PizzaShop.Library
         public bool ChangeSizeOfActivePizza(string size)
         {
             // if size is not in valid list of sizes
-            if (!DH.SPM.Sizes.Contains(size))
+            if (!DH.SPRepo.SizingPricingContainsSize(size))
                 return false;
             ActivePizza.Size = size;
-            ActivePizza.Price = DH.SPM.GetBasePrice(size) + DH.SPM.GetToppingPrice(size) * ActivePizza.Toppings.Count;
+            ActivePizza.Price = DH.SPRepo.GetBasePrice(size) + DH.SPRepo.GetToppingPrice(size) * ActivePizza.Toppings.Count;
             return true;
         }
 
@@ -167,7 +168,7 @@ namespace PizzaShop.Library
             //if valid generate timestamp& order ID
             order.Timestamp = DateTime.Now;
             order.Id = Math.Abs((int)order.Timestamp.Ticks);
-
+            /*
             //add order to order history
             DH.Orders.Add(order);
             //add orderID to user order history
@@ -175,7 +176,7 @@ namespace PizzaShop.Library
             //add orderID to location order history
             DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory.Add(order.Id);
             //add order to DB
-            
+            */
             //Update decremented inventory to DB
             DH.LocRepo.UpdateLocationInventory(DH.LocRepo.GetLocationByName(order.Store));
             DH.LocRepo.Save();
@@ -212,7 +213,7 @@ namespace PizzaShop.Library
             //Find intersection of User & location order histories from newest to oldest
             //if newest shared order <2 hrs reject, otherwise accept
             List<int> userOrders = DH.UserRepo.GetUserByUsername(order.UserID).OrderHistory;
-            List<int> locationOrders = DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory;
+            List<int> locationOrders = DH.LocRepo.GetLocations().First(l => l.Name.Equals(order.Store)).OrderHistory;
             DateTime orderTime;
             //new orders are always added to the end of the OrderHistory list, so go through newest orders first
             for (int i = userOrders.Count-1; i >= 0; i--)
@@ -246,7 +247,7 @@ namespace PizzaShop.Library
         {
             //1: generate -List- of all ingredient types w/ appropiate quantity based on scalar
             List<Ingredient> allIngredients = BuildIngredientList();
-            Location loc = DH.Locations.First( l => l.Name.Equals(order.Store));
+            Location loc = DH.LocRepo.GetLocations().First( l => l.Name.Equals(order.Store));
             return loc.RemoveBulkStock(allIngredients);
         }
 
@@ -256,7 +257,7 @@ namespace PizzaShop.Library
             int amount;
             foreach (var p in order.Pizzas)
             {
-                amount = DH.SPM.GetIngredientUsageScalar(p.Size);
+                amount = DH.SPRepo.GetIngredientUsageScalar(p.Size);
                 AddToIngredientList(allIngredients, new Ingredient(p.CrustType, amount, "crust"));
                 AddToIngredientList(allIngredients, new Ingredient(p.SauceType, amount, "sauce"));
                 foreach (var s in p.Toppings)

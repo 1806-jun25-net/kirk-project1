@@ -13,7 +13,7 @@ namespace PizzaShop.UI
     class Program
     {
         private static string userID;
-        private static DataHandler DH;
+        private static RepositoryHandler DH;
 
         public static void Main(string[] args)
         {
@@ -33,15 +33,14 @@ namespace PizzaShop.UI
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1DB"));
             var options = optionsBuilder.Options;
 
-            DH = new DataHandler(new Project1DBContext(optionsBuilder.Options));
+            DH = new RepositoryHandler(new Project1DBContext(optionsBuilder.Options));
 
             //END SQL STUFF
-            //Should now be able to access database records by using RH instead of DH
 
             //Begin at first screen of the menu system
             MenuStart();
 
-            //Run serialization code to back up all changes upon menu termination
+            //Close DB connection
             DH.db.Dispose();
 
         }
@@ -171,18 +170,18 @@ namespace PizzaShop.UI
                 input = Console.ReadLine();
                 inputValid = input.Count(c => !char.IsDigit(c)) == 0 
                     && Int32.Parse(input) >= 1 
-                    && Int32.Parse(input) <= DH.Locations.Count;
+                    && Int32.Parse(input) <= DH.LocRepo.GetLocations().Count();
                 if (!inputValid)
                     Console.WriteLine("That selection is invalid.  Enter only the number associated with the store. Please try again.");
             }
             while (!inputValid);
-            newUser.FavStore = DH.Locations[Int32.Parse(input)-1].Name;
+            newUser.FavStore = DH.LocRepo.GetLocations().ToList()[Int32.Parse(input)-1].Name;
 
             Console.WriteLine("New user created!");
             Console.WriteLine($"Username: {newUser.Username}\nFirst Name: {newUser.FirstName}\nLast Name: {newUser.LastName}\nEmail: {newUser.Email}\nPhone: {newUser.Phone}\nDefault Location: {newUser.FavStore}");
 
             //add new user to user list
-            DH.Users.Add(newUser);
+            //DH.Users.Add(newUser);
             DH.UserRepo.AddUser(newUser);
             DH.UserRepo.Save();
         }
@@ -374,7 +373,7 @@ namespace PizzaShop.UI
                 input = Console.ReadLine();
                 if (input.Any(c => !char.IsDigit(c))
                     || Int32.Parse(input) < 1
-                    || Int32.Parse(input) > DH.SPM.Sizes.Count)
+                    || Int32.Parse(input) > DH.SPRepo.GetAllSizingPricing().Count())
                 {
                     validInput = false;
                     Console.WriteLine("Input invalid.  Please try again.");
@@ -383,7 +382,7 @@ namespace PizzaShop.UI
                     validInput = true;
             }
             while (!validInput);
-            ob.StartNewPizza(DH.SPM.Sizes[Int32.Parse(input)-1]);
+            ob.StartNewPizza(DH.SPRepo.GetAllSizingPricing().ToList()[Int32.Parse(input)-1].Size);
             //new pizza created, now allow for topping/sauce/crust changes
             MenuModifyPizza(ob);
             ob.AddActivePizza();
@@ -474,14 +473,14 @@ namespace PizzaShop.UI
                 input = Console.ReadLine();
                 inputValid = input.Count(c => !char.IsDigit(c)) == 0
                     && Int32.Parse(input) >= 1
-                    && Int32.Parse(input) <= DH.Locations.Count;
+                    && Int32.Parse(input) <= DH.LocRepo.GetLocations().Count();
                 if (!inputValid)
                     Console.WriteLine("That selection is invalid.  Enter only the number associated with the store. Please try again.");
             }
             while (!inputValid  && !input.Equals("0"));
             if(!input.Equals("0"))
             {
-                ob.ChangeLocation(DH.Locations[Int32.Parse(input)-1].Name);
+                ob.ChangeLocation(DH.LocRepo.GetLocations().ToList()[Int32.Parse(input)-1].Name);
             }
         }
 
@@ -538,7 +537,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("add", "topping", DH.ingDir.Toppings);
+                MenuHelperSelectIngredient("add", "topping", DH.IngRepo.GetToppings());
                 input = Console.ReadLine();
                 result = ob.AddToppingToActivePizza(input);
                 if (result)
@@ -584,7 +583,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("change to", "crust", DH.ingDir.Crusts);
+                MenuHelperSelectIngredient("change to", "crust", DH.IngRepo.GetCrusts());
                 input = Console.ReadLine();
                 result = ob.ChangeCrustOnActivePizza(input);
                 if (result)
@@ -607,7 +606,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("change to", "sauce", DH.ingDir.Sauces);
+                MenuHelperSelectIngredient("change to", "sauce", DH.IngRepo.GetSauces());
                 input = Console.ReadLine();
                 result = ob.ChangeSauceOnActivePizza(input);
                 if (result)
@@ -630,7 +629,7 @@ namespace PizzaShop.UI
             bool result;
             do
             {
-                MenuHelperSelectIngredient("change to", "size", DH.SPM.Sizes);
+                MenuHelperSelectIngredient("change to", "size", DH.SPRepo.GetSizes());
                 input = Console.ReadLine();
                 result = ob.ChangeSizeOfActivePizza(input);
                 if (result)
@@ -806,7 +805,7 @@ namespace PizzaShop.UI
                 input = Console.ReadLine();
                 inputValid = input.Count(c => !char.IsDigit(c)) == 0
                     && Int32.Parse(input) >= 1
-                    && Int32.Parse(input) <= DH.Locations.Count;
+                    && Int32.Parse(input) <= DH.LocRepo.GetLocations().Count();
                 if (!inputValid)
                     Console.WriteLine("That selection is invalid.  Enter only the number associated with the store. Please try again.");
             }
@@ -814,7 +813,7 @@ namespace PizzaShop.UI
 
             if (!input.Equals("0"))
             {
-                loc = DH.Locations.ElementAt(Int32.Parse(input)-1);
+                loc = DH.LocRepo.GetLocations().ElementAt(Int32.Parse(input)-1);
                 Console.WriteLine($"Order history for location \"{loc.Name}\" - {loc.OrderHistory.Count} records found:");
 
                 do
@@ -984,17 +983,18 @@ namespace PizzaShop.UI
 
         public static void PrintPizzaSizes()
         {
-            for(int i = 0; i < DH.SPM.Sizes.Count; i++)
+            for(int i = 0; i < DH.SPRepo.GetSizes().ToList().Count; i++)
             {
-                Console.WriteLine($"{i + 1}: {DH.SPM.Sizes[i]}");
+                Console.WriteLine($"{i + 1}: {DH.SPRepo.GetSizes().ToList()[i]}");
             }
         }
 
         public static void PrintLocations()
         {
             Console.WriteLine("Our order locations are:");
-            for (int i = 0; i < DH.Locations.Count; i++)
-                Console.WriteLine($"{i + 1}: {DH.Locations[i].Name}");
+            List<Location> lList = DH.LocRepo.GetLocations().ToList();
+            for (int i = 0; i < lList.Count; i++)
+                Console.WriteLine($"{i + 1}: {lList[i].Name}");
         }
 
         public static void PrintOrder(Order order)
