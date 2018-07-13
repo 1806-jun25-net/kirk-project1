@@ -45,9 +45,9 @@ namespace PizzaShop.Testing
             var RH = (new RepositoryHandler(new Project1DBContext(optionsBuilder.Options)));
             OrderBuilder ob = new OrderBuilder("user", "store", RH);
 
-            ob.StartNewPizza("large");
+            ob.StartNewPizza(s);
 
-            Assert.Equal("large", ob.ActivePizza.Size);
+            Assert.Equal(s, ob.ActivePizza.Size);
         }
 
         //Testing of DuplicatePizza
@@ -72,8 +72,15 @@ namespace PizzaShop.Testing
         [Fact]
         public void DuplicatePizzaShouldAddExactPizzaToEndOfPizzas()
         {
-            RepositoryHandler DH = new RepositoryHandler();
-            OrderBuilder ob = new OrderBuilder("user", "store", DH);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1"));
+            var RH = (new RepositoryHandler(new Project1DBContext(optionsBuilder.Options)));
+            OrderBuilder ob = new OrderBuilder("user", "store", RH);
+
             Pizza p = new Pizza("small");
             ob.order.Pizzas.Add(p);
 
@@ -86,8 +93,14 @@ namespace PizzaShop.Testing
         [Fact]
         public void DuplicatePizzaShouldDoNothingIfIndexIsOutOfBounds()
         {
-            RepositoryHandler DH = new RepositoryHandler();
-            OrderBuilder ob = new OrderBuilder("user", "store", DH);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1"));
+            var RH = (new RepositoryHandler(new Project1DBContext(optionsBuilder.Options)));
+            OrderBuilder ob = new OrderBuilder("user", "store", RH);
             Pizza p = new Pizza("small");
             ob.order.Pizzas.Add(p);
 
@@ -100,8 +113,14 @@ namespace PizzaShop.Testing
         [Fact]
         public void AddPizzaShouldAddExactlyOneAdditionalPizzaToPizzas()
         {
-            RepositoryHandler DH = new RepositoryHandler();
-            OrderBuilder ob = new OrderBuilder("user", "store", DH);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1"));
+            var RH = (new RepositoryHandler(new Project1DBContext(optionsBuilder.Options)));
+            OrderBuilder ob = new OrderBuilder("user", "store", RH);
             ob.order.Pizzas.Add(new Pizza("small"));
 
             ob.AddPizza(new Pizza("small"));
@@ -112,8 +131,14 @@ namespace PizzaShop.Testing
         [Fact]
         public void AddPizzaShouldAddExactPizzaToEndOfPizzas()
         {
-            RepositoryHandler DH = new RepositoryHandler();
-            OrderBuilder ob = new OrderBuilder("user", "store", DH);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1"));
+            var RH = (new RepositoryHandler(new Project1DBContext(optionsBuilder.Options)));
+            OrderBuilder ob = new OrderBuilder("user", "store", RH);
             Pizza p = new Pizza("small");
             ob.order.Pizzas.Add(new Pizza("medium"));
 
@@ -126,8 +151,14 @@ namespace PizzaShop.Testing
         [Fact]
         public void AddPizzaShouldDoNothingIfPassedNullIPizza()
         {
-            RepositoryHandler DH = new RepositoryHandler();
-            OrderBuilder ob = new OrderBuilder("user", "store", DH);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1"));
+            var RH = (new RepositoryHandler(new Project1DBContext(optionsBuilder.Options)));
+            OrderBuilder ob = new OrderBuilder("user", "store", RH);
             ob.order.Pizzas.Add(new Pizza("medium"));
 
             ob.AddPizza(null);
@@ -139,8 +170,14 @@ namespace PizzaShop.Testing
         [Fact]
         public void SwitchActivePizzaShouldNotLeaveActivePizzaNull()
         {
-            RepositoryHandler DH = new RepositoryHandler();
-            OrderBuilder ob = new OrderBuilder("user", "store", DH);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1"));
+            var RH = (new RepositoryHandler(new Project1DBContext(optionsBuilder.Options)));
+            OrderBuilder ob = new OrderBuilder("user", "store", RH);
             ob.ActivePizza = new Pizza("small");
 
             ob.SwitchActivePizza(1);
@@ -152,8 +189,14 @@ namespace PizzaShop.Testing
         [Fact]
         public void SwitchActivePizzaShouldCorrectlySetActivePizza()
         {
-            RepositoryHandler DH = new RepositoryHandler();
-            OrderBuilder ob = new OrderBuilder("user", "store", DH);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1"));
+            var RH = (new RepositoryHandler(new Project1DBContext(optionsBuilder.Options)));
+            OrderBuilder ob = new OrderBuilder("user", "store", RH);
             Pizza p = new Pizza("small");
             ob.order.Pizzas.Add(p);
 
@@ -166,8 +209,14 @@ namespace PizzaShop.Testing
         [Fact]
         public void SwitchActivePizzaShouldDoNothingIfIndexIsOutOfBounds()
         {
-            RepositoryHandler DH = new RepositoryHandler();
-            OrderBuilder ob = new OrderBuilder("user", "store", DH);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot configuration = builder.Build();
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1"));
+            var RH = (new RepositoryHandler(new Project1DBContext(optionsBuilder.Options)));
+            OrderBuilder ob = new OrderBuilder("user", "store", RH);
             Pizza p = ob.ActivePizza;
             ob.order.Pizzas.Add(p);
             

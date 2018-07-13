@@ -9,7 +9,8 @@ namespace PizzaShop.Testing
     public class IngredientDirectoryTest
     {
 
-        /*
+        /*  Class no longer exists
+         *  Keeping testing methods around for reuse in testing repos
         [Theory]
         [InlineData("brooklyn-style crust")]
         [InlineData("deep dish crust")]

@@ -8,6 +8,10 @@ namespace PizzaShop.Testing
 {
     public class SizingPricingManagerTest
     {
+
+        /* SPM no longer exists, as its tests have been moved to the SizingPricingRepo
+         * Commenting out code for now until it can be reused for RepoTests
+
         //Testing for AddNewSize method
         [Theory]
         [InlineData("medium-small", 5.5, .5, 2)]
@@ -190,5 +194,6 @@ namespace PizzaShop.Testing
 
             Assert.True(result == tPrice);
         }
+        */
     }
 }
