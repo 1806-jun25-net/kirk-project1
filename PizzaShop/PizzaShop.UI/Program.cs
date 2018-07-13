@@ -933,16 +933,20 @@ namespace PizzaShop.UI
         {
             Console.WriteLine($"Please type the name of the {type} you would like to {action}, or 0 to go back:");
             PrintIngredients(ingredients);
+            Console.Write("\n->");
         }
         public static void MenuHelperSelectIngredient(string action, string type, IEnumerable<string> ingredients)
         {
             Console.WriteLine($"Please type the name of the {type} you would like to {action}, or 0 to go back:");
             PrintIngredients(ingredients);
+            Console.Write("\n->");
         }
         public static void MenuHelperSelectPizza(string action, string type, List<Pizza> ingredients)
         {
             Console.WriteLine($"Please type the number of the {type} you would like to {action}, or 0 to go back:");
             PrintPizzaList(ingredients);
+            Console.Write("\n->");
+            Console.Write("\n->");
         }
 
 

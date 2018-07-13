@@ -61,7 +61,7 @@ namespace PizzaShop.Library.Repositories
 
         public bool OrdersContainsID(int id)
         {
-            return _db.Orders.Include(o => o.OrderPizzaJunction).ThenInclude(p => p.Pizza).ThenInclude(j => j.PizzaIngredientJunction).ThenInclude(k => k.Ingredient).AsNoTracking().Any(t => t.Id == id);
+            return _db.Orders.AsNoTracking().Any(t => t.Id == id);
         }
 
         public void AddOrder(Order order)

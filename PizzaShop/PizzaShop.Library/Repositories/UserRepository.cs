@@ -31,7 +31,7 @@ namespace PizzaShop.Library.Repositories
 
         public bool UsersContainsUsername(string username)
         {
-            return _db.Users.AsNoTracking().Include(m => m.Orders).Any(t => t.Username.Equals(username));
+            return _db.Users.AsNoTracking().Any(t => t.Username.Equals(username));
         }
 
         public void AddUser(User u)

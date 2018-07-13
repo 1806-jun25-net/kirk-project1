@@ -33,7 +33,7 @@ namespace PizzaShop.Library.Repositories
 
         public bool LocationsContainsName(string name)
         {
-            return _db.Locations.Include(m => m.Orders).Include(s => s.LocationIngredientJunction).ThenInclude(k => k.Ingredient).AsNoTracking().Any(t => t.Name.Equals(name));
+            return _db.Locations.AsNoTracking().Any(t => t.Name.Equals(name));
         }
 
 

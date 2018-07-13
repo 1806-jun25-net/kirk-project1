@@ -29,7 +29,7 @@ namespace PizzaShop.Library.Repositories
 
         public void AddNewSize(string name, decimal basePrice, decimal toppingPrice, int iUS)
         {
-            if (SizingPricingContainsSize(name) || basePrice <= 0m || toppingPrice <= 0m || iUS <= 0)
+            if (ContainsSize(name) || basePrice <= 0m || toppingPrice <= 0m || iUS <= 0)
                 return;
             var sp = new Data.SizingPricing
             {
@@ -41,7 +41,7 @@ namespace PizzaShop.Library.Repositories
             _db.Add(sp);
         }
 
-        public bool SizingPricingContainsSize(string s)
+        public bool ContainsSize(string s)
         {
             return _db.Ingredient.AsNoTracking().Any(z => z.Size.Equals(s));
         }
@@ -53,28 +53,28 @@ namespace PizzaShop.Library.Repositories
 
         public decimal GetBasePrice(string name)
         {
-            if (!SizingPricingContainsSize(name))
+            if (!ContainsSize(name))
                 throw new Exception("Given size does not exist in DB");
             return (decimal)_db.Ingredient.AsNoTracking().First(i => i.Size.Equals(name)).BasePrice;
         }
 
         public decimal GetToppingPrice(string name)
         {
-            if (!SizingPricingContainsSize(name))
+            if (!ContainsSize(name))
                 throw new Exception("Given size does not exist in DB");
             return (decimal)_db.Ingredient.AsNoTracking().First(i => i.Size.Equals(name)).ToppingPrice;
         }
 
         public int GetIngredientUsageScalar(string name)
         {
-            if (!SizingPricingContainsSize(name))
+            if (!ContainsSize(name))
                 throw new Exception("Given size does not exist in DB");
             return (int)_db.Ingredient.AsNoTracking().First(i => i.Size.Equals(name)).IngredientUsageScalar;
         }
 
         public void RemoveSize(string name)
         {
-            if (!SizingPricingContainsSize(name))
+            if (!ContainsSize(name))
                 throw new Exception("Given size does not exist in DB");
             _db.Remove(GetSizingPricingBySize(name));
         }

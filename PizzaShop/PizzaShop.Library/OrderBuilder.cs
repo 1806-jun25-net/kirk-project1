@@ -26,10 +26,13 @@ namespace PizzaShop.Library
             DH = dh;
         }
 
-        public void StartNewPizza(string size)
+        public bool StartNewPizza(string size)
         {
+            if (!DH.SPRepo.ContainsSize(size))
+                return false;
             ActivePizza = new Pizza(size);
             ActivePizza.Price = DH.SPRepo.GetBasePrice(size) + DH.SPRepo.GetToppingPrice(size);
+            return true;
         }
 
         public void DuplicatePizza(int i)
@@ -67,7 +70,7 @@ namespace PizzaShop.Library
         public bool AddToppingToActivePizza(string topping)
         {
             // if topping is not in valid list of toppings
-            if (!DH.IngRepo.GetIngredients().Any( t => t.Name.Equals(topping) || !t.Type.Equals("topping")))
+            if ( !( DH.IngRepo.GetIngredients().Any( t => t.Name.Equals(topping) && t.Type.Equals("topping"))) )
                 return false;
             //if topping already on pizza
             if (ActivePizza.Toppings.Contains(topping))
@@ -92,7 +95,7 @@ namespace PizzaShop.Library
         public bool ChangeSauceOnActivePizza(string sauce)
         {
             //if sauce is not from valid list of toppings
-            if (!!DH.IngRepo.GetIngredients().Any(t => t.Name.Equals(sauce) || !t.Type.Equals("sauce")))
+            if (!(DH.IngRepo.GetIngredients().Any(t => t.Name.Equals(sauce) && t.Type.Equals("sauce"))))
                 return false;
             ActivePizza.SauceType = sauce;
             return true;
@@ -101,7 +104,7 @@ namespace PizzaShop.Library
         public bool ChangeCrustOnActivePizza(string crust)
         {
             // if topping is not in valid list of toppings
-            if (!!DH.IngRepo.GetIngredients().Any(t => t.Name.Equals(crust) && t.Type.Equals("crust")))
+            if (!(DH.IngRepo.GetIngredients().Any(t => t.Name.Equals(crust) && t.Type.Equals("crust"))))
                 return false;
             ActivePizza.CrustType = crust;
             return true;
@@ -110,7 +113,7 @@ namespace PizzaShop.Library
         public bool ChangeSizeOfActivePizza(string size)
         {
             // if size is not in valid list of sizes
-            if (!DH.SPRepo.SizingPricingContainsSize(size))
+            if (!DH.SPRepo.ContainsSize(size))
                 return false;
             ActivePizza.Size = size;
             ActivePizza.Price = DH.SPRepo.GetBasePrice(size) + DH.SPRepo.GetToppingPrice(size) * ActivePizza.Toppings.Count;
