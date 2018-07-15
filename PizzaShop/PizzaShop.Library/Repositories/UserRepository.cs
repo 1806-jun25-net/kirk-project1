@@ -86,6 +86,18 @@ namespace PizzaShop.Library.Repositories
             //?? majority element??
         }
 
+        public void UpdateUser(User u)
+        {
+            if (!UsersContainsUsername(u.Username))
+                return;
+            Data.Users dUser = _db.Users.Find((u.Username));
+            dUser.FirstName = u.FirstName;
+            dUser.LastName = u.LastName;
+            dUser.Email = u.Email;
+            dUser.Phone = u.Phone;
+            dUser.FavLocation = u.FavStore;
+        }
+
         public void Save()
         {
             _db.SaveChanges();
