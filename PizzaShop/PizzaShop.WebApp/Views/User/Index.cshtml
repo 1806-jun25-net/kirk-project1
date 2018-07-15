@@ -1,0 +1,11 @@
+﻿@model IEnumerable<PizzaShop.WebApp.Models.User>
+@{
+    ViewData["Title"] = "User Search";
+}
+
+<h2>User Search</h2>
+<p>Search users by name or username:</p>
+<form asp-action="SearchAllUsers" asp-controller="User" method="post">
+    <input type="text" name="searchTerm" class="button1" value=@TempData["LastInput"] />
+    <input type="submit" name="Search" class="button1" value="Search" />
+</form>

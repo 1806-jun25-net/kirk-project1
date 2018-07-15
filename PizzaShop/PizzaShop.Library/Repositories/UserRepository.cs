@@ -39,7 +39,7 @@ namespace PizzaShop.Library.Repositories
             _db.Add(Mapper.Map(u));
         }
 
-        public IEnumerable<Order> GetSortedOrders(int orderingType, string user, OrderRepository or)
+        public IEnumerable<Order> GetSortedOrders(string orderingType, string user, OrderRepository or)
         {
             //ordering Types:
             // 1= newst first
@@ -51,16 +51,16 @@ namespace PizzaShop.Library.Repositories
             List<Order> sortedOrders = GetUserByUsername(user).OrderHistory.Select (o => or.GetOrderByID(o)).ToList();
             switch (orderingType)
             {
-                case 1:
+                case "1":
                     sortedOrders = (sortedOrders.OrderByDescending(a => a.Timestamp)).ToList();
                     break;
-                case 2:
+                case "2":
                     sortedOrders = (sortedOrders.OrderBy(a => a.Timestamp)).ToList();
                     break;
-                case 3:
+                case "3":
                     sortedOrders = (sortedOrders.OrderBy(a => a.Price)).ToList();
                     break;
-                case 4:
+                case "4":
                     sortedOrders = (sortedOrders.OrderByDescending(a => a.Price)).ToList();
                     break;
                 default:
@@ -69,7 +69,7 @@ namespace PizzaShop.Library.Repositories
             return sortedOrders;
         }
 
-        public List<Pizza> GetRecommendedOrder(string user, OrderRepository or)
+        public List<Pizza> GetRecommendedOrder(string user, RepositoryHandler RH)
         {
             //Returns the most recent order, if one exists for that user
             //otherwise, use a basic small pizza
@@ -77,9 +77,13 @@ namespace PizzaShop.Library.Repositories
 
             var recommendation = new List<Pizza>();
             if (oHistory.Count > 0)
-                recommendation = or.GetOrderByID(oHistory[oHistory.Count - 1]).Pizzas;
+                recommendation = RH.OrderRepo.GetOrderByID(oHistory[oHistory.Count - 1]).Pizzas;
             else
-                recommendation.Add(new Pizza("small"));
+            {
+                SizingPricing sp = RH.SPRepo.GetAllSizingPricing().First();
+                recommendation.Add(new Pizza(sp.Size));
+                recommendation[0].CalculatePrice((decimal)sp.BasePrice, (decimal)sp.ToppingPrice);
+            }
             return recommendation;
 
 
@@ -96,6 +100,20 @@ namespace PizzaShop.Library.Repositories
             dUser.Email = u.Email;
             dUser.Phone = u.Phone;
             dUser.FavLocation = u.FavStore;
+        }
+
+        public IEnumerable<Library.User> SearchUsers(string searchTerm)
+        {
+            if (searchTerm == null)
+                searchTerm = "";
+            List<User> fullNameMatch = GetUsers().Where(u => String.Concat(u.FirstName, " ", u.LastName).ToLower().Contains(searchTerm.ToLower())).ToList();
+            List<User> usernameMatch = GetUsers().Where(u => u.Username.ToLower().Contains(searchTerm.ToLower())).ToList();
+            var dict = fullNameMatch.ToDictionary(p => p.Username);
+            foreach (var x in usernameMatch)
+            {
+                dict[x.Username] = x;
+            }
+            return dict.Values.ToList();
         }
 
         public void Save()

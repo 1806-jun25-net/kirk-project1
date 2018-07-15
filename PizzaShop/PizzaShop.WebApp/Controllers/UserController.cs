@@ -19,12 +19,11 @@ namespace PizzaShop.WebApp.Controllers
             RH = rh;
         }
         // GET: User
-        public ActionResult Index()
+        public ActionResult Index(List<Models.User> users)
         {
             var libUsers = RH.UserRepo.GetUsers();
             var webUsers = libUsers.Select(x => Models.Mapper.Map(x));
-            return View();
-            
+            return View(webUsers);
         }
         
 
@@ -125,12 +124,15 @@ namespace PizzaShop.WebApp.Controllers
             }
         }
 
-        //public ActionResult Login(IFormCollection collection)
-        //{
-        //    TempData["CurrentUser"] = collection["Username"];
-
-        //    return View();
-        //}
+        //My action methods
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SearchAllUsers(string searchTerm)
+        {
+            List<Models.User> userList = Models.Mapper.Map(RH.UserRepo.SearchUsers(searchTerm)).ToList();
+            TempData["LastInput"] = searchTerm;
+            return View(userList);
+        }
 
     }
 }

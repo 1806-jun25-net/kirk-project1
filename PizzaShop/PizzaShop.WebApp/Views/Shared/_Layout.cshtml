@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PizzaShop.WebApp</title>
+    <title>@ViewData["Title"] - Pizza Shop Online</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -26,14 +26,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">PizzaShop.WebApp</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Pizza Shop Online</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Ordering</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">Order Archive</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Location Lookup</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">User Lookup</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Place Order</a></li>
+                    <li><a asp-area="" asp-controller="Order" asp-action="Index">Order Archive</a></li>
+                    <li><a asp-area="" asp-controller="Location" asp-action="Index">Location Info</a></li>
+                    <li><a asp-area="" asp-controller="User" asp-action="Index">User Search</a></li>
                 </ul>
             </div>
         </div>
@@ -45,7 +45,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2018 - PizzaShop.WebApp</p>
+            <p>&copy; 2018 - Brandon Kirk</p>
         </footer>
     </div>
 

@@ -4,11 +4,9 @@
     ViewData["Title"] = "AllOrderDetails";
 }
 
-<h2>AllOrderDetails</h2>
+<h2>Order List</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@TempData["FeedbackMsg"]
 <table class="table">
     <thead>
         <tr>
@@ -49,11 +47,13 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("View Details", $"SingleOrderDetails", new { orderId = item.Id})
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<p>
+    <a asp-action="Index">Return to Order Archive</a>
+</p>

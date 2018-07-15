@@ -9,7 +9,7 @@
 @if (TempData.Peek("CurrentUser") == null)
 {
     <p>Log in to begin your order:</p>
-    <form asp-action="Login" method="post">
+    <form asp-action="Login" asp-controller="Home" method="post">
         <input type="text" name="Username" class="button1" value=@TempData["LastInput"]  />
         <input type="submit" name="Log In" class="button1" value="Log In" />
     </form>
@@ -24,6 +24,6 @@
         <input type="submit" value="Logout" class="btn btn-default" />
     </form>
 
-    <a asp-area="" asp-controller="Home" asp-action="StartOrder">Order Pizza</a>
+    <a asp-area="" asp-controller="Home" asp-action="OrderStart">Order Pizza</a>
 
 }

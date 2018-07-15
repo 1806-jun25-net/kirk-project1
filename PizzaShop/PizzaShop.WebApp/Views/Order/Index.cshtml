@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "Order Archive";
+}
+
+<h2>Order Archive</h2>
+@TempData["FeedbackMsg"]
+<h3>Order lookup by ID</h3>
+<form asp-action="SingleOrderDetails" asp-controller="Order" method="post">
+    <input type="number" name="orderId" class="button1" value=@TempData["LastInput"] />
+    <input type="submit" name="Submit" class="button1" value="Submit" />
+</form>
+
+<h3>Full order history</h3>
+<form asp-action="AllOrderDetails" asp-controller="Order" method="post">
+    <input type="radio" name="sortingType" value="1" checked> Newest First<br />
+    <input type="radio" name="sortingType" value="2"> Oldest First<br />
+    <input type="radio" name="sortingType" value="3"> Price Ascending<br />
+    <input type="radio" name="sortingType" value="4"> Price Descending<br />
+    <input type="submit" name="Submit" class="button1" value="Submit" />
+</form>
+
+<h3>Filter by User</h3>
+<form asp-action="UserOrderDetails" asp-controller="Order" method="post">
+    Username:  <input type="text" name="Username" class="button1" /><br />
+    <input type="radio" name="sortingType" value="1" checked> Newest First<br />
+    <input type="radio" name="sortingType" value="2"> Oldest First<br />
+    <input type="radio" name="sortingType" value="3"> Price Ascending<br />
+    <input type="radio" name="sortingType" value="4"> Price Descending<br />
+    <input type="submit" name="Submit" class="button1" value="Submit" />
+</form>
+
+<h3>Filter by Location</h3>
+<form asp-action="LocationOrderDetails" asp-controller="Order" method="post">
+    Username:  <input type="text" name="locationName" class="button1" /><br />
+    <input type="radio" name="sortingType" value="1" checked> Newest First<br />
+    <input type="radio" name="sortingType" value="2"> Oldest First<br />
+    <input type="radio" name="sortingType" value="3"> Price Ascending<br />
+    <input type="radio" name="sortingType" value="4"> Price Descending<br />
+    <input type="submit" name="Submit" class="button1" value="Submit" />
+</form>

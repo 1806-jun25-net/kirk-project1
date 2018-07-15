@@ -1,0 +1,66 @@
+﻿@model IEnumerable<PizzaShop.WebApp.Models.User>
+
+@{
+    ViewData["Title"] = "SearchAllUsers";
+}
+
+<h2>SearchAllUsers</h2>
+
+<p>
+    <form asp-action="SearchAllUsers" asp-controller="User" method="post">
+        <input type="text" name="searchTerm" class="button1" value=@TempData["LastInput"] />
+        <input type="submit" name="Search" class="button1" value="Search" />
+    </form>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FavStore)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FavStore)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.Username })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

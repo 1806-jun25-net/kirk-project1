@@ -59,10 +59,16 @@ namespace PizzaShop.Library
             SauceType = item;
         }
 
-        public void changeSize(string s)
+        public void ChangeSize(string s)
         {
             //Do nothing if given size is not a valid size
             Size = s;
+        }
+
+        public decimal CalculatePrice(decimal baseP, decimal topP)
+        {
+            Price = (decimal)(baseP + topP * Toppings.Count);
+            return Price;
         }
 
     }

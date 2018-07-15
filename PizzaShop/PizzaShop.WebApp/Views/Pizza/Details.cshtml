@@ -1,0 +1,40 @@
+﻿@model PizzaShop.WebApp.Models.Pizza
+
+<div>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CrustType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CrustType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SauceType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SauceType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Toppings)
+        </dt>
+        <dd>
+            @foreach (var t in Model.Toppings)
+            {
+                @String.Concat(t, ", ")
+            }
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+    </dl>
+</div>

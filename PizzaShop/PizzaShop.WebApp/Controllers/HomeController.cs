@@ -25,24 +25,6 @@ namespace PizzaShop.WebApp.Controllers
             return View();
         }
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -74,18 +56,35 @@ namespace PizzaShop.WebApp.Controllers
             return View();
         }
 
-        public IActionResult StartOrder()
+        public IActionResult OrderStart()
         {
-            if (TempData["OrderBuilder"] == null)
+            if (TempData.Peek("OrderBuilder") == null)
             {
-
+                // Redirect to recommended or new order selection
+                return View(Models.Mapper.Map(RH.UserRepo.GetRecommendedOrder((string)TempData.Peek("CurrentUser"), RH)).ToList());
             }
-            return View();
+            else
+            {
+                // Resume existing order
+                return RedirectToAction(nameof(OrderBuilding));
+            }
+        }
+
+        public IActionResult OrderBuilding()
+        {
+            //Grab existing order builder
+            OrderBuilder ob = (OrderBuilder)TempData.Peek("OrderBuilder");
+            //recalculate total cost
+            ob.CalculateTotalPrice();
+            //return view to print all pizzas w/ options
+            return View(ob.order);
         }
 
         public IActionResult CreateNewUser()
         {
             return View(@"..\User\Create");
         }
+
+
     }
 }

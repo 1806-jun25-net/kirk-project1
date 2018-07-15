@@ -266,7 +266,7 @@ namespace PizzaShop.UI
         {
             string input = "";
             bool invalidInput = true;
-            List<Pizza> recommendedOrder = DH.UserRepo.GetRecommendedOrder(userID, DH.OrderRepo);
+            List<Pizza> recommendedOrder = DH.UserRepo.GetRecommendedOrder(userID, DH);
             Console.WriteLine("~~~New Order Creation~~~");
             Console.WriteLine("Check out this recommended order, just for you!");
             PrintPizzaList(recommendedOrder);
@@ -765,7 +765,7 @@ namespace PizzaShop.UI
                             case "2":  // oldest
                             case "3":  // cheapest
                             case "4":  // priciest
-                                sortedOrders = DH.UserRepo.GetSortedOrders(Int32.Parse(input), usernameInput, DH.OrderRepo).ToList();
+                                sortedOrders = DH.UserRepo.GetSortedOrders(input, usernameInput, DH.OrderRepo).ToList();
                                 break;
                             default:  //Invalid Input
                                 Console.WriteLine("Input invalid.  Please try again.");
@@ -832,7 +832,7 @@ namespace PizzaShop.UI
                         case "2":  // oldest
                         case "3":  // cheapest
                         case "4":  // priciest
-                            sortedOrders = DH.LocRepo.GetSortedOrders(Int32.Parse(input), loc.Name, DH.OrderRepo).ToList();
+                            sortedOrders = DH.LocRepo.GetSortedOrders(input, loc.Name, DH.OrderRepo).ToList();
                             break;
                         default:  //Invalid Input
                             Console.WriteLine("Input invalid.  Please try again.");
@@ -871,7 +871,7 @@ namespace PizzaShop.UI
                             case "2":  // oldest
                             case "3":  // cheapest
                             case "4":  // priciest
-                                sortedOrders = DH.OrderRepo.GetSortedOrders(Int32.Parse(input)).ToList();
+                                sortedOrders = DH.OrderRepo.GetSortedOrders(input).ToList();
                     break;
                     default:  //Invalid Input
                                 Console.WriteLine("Input invalid.  Please try again.");

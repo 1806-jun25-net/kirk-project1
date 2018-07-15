@@ -24,7 +24,7 @@ namespace PizzaShop.Library.Repositories
             return Mapper.Map(orders);
         }
 
-        public IEnumerable<Order> GetSortedOrders(int orderingType)
+        public IEnumerable<Order> GetSortedOrders(string orderingType)
         {
             //ordering Types:
             // 1= newst first
@@ -35,16 +35,16 @@ namespace PizzaShop.Library.Repositories
             List<Orders> sortedOrders = _db.Orders.Include(o => o.OrderPizzaJunction).ThenInclude(p => p.Pizza).ThenInclude(j => j.PizzaIngredientJunction).ThenInclude(k => k.Ingredient).AsNoTracking().ToList();
             switch (orderingType)
             {
-                case 1:
+                case "1":
                     sortedOrders = (sortedOrders.OrderByDescending(a => a.Timestamp)).ToList();
                     break;
-                case 2:
+                case "2":
                     sortedOrders = (sortedOrders.OrderBy(a => a.Timestamp)).ToList();
                     break;
-                case 3:
+                case "3":
                     sortedOrders = (sortedOrders.OrderBy(a => a.Price)).ToList();
                     break;
-                case 4:
+                case "4":
                     sortedOrders = (sortedOrders.OrderByDescending(a => a.Price)).ToList();
                     break;
                 default:
