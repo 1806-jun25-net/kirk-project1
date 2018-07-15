@@ -83,7 +83,7 @@ namespace PizzaShop.WebApp.Controllers
             return View();
         }
 
-        public IActionResult Create()
+        public IActionResult CreateNewUser()
         {
             return View(@"..\User\Create");
         }

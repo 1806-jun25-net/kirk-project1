@@ -33,6 +33,7 @@ namespace PizzaShop.WebApp.Models
         [Required]
         [Display(Name = "Phone Number")]
         [DataType(DataType.PhoneNumber)]
+        [StringLength(15, MinimumLength = 10)]
         public string Phone { get; set; }
 
         [Required]

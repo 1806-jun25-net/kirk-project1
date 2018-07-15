@@ -49,7 +49,7 @@ namespace PizzaShop.WebApp.Controllers
         }
 
         // POST: User/Create
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
@@ -71,7 +71,7 @@ namespace PizzaShop.WebApp.Controllers
             }
             return View();
  
-        }
+        }*/
 
         // POST: User/Create
         [HttpPost]
@@ -82,8 +82,10 @@ namespace PizzaShop.WebApp.Controllers
             {
                 RH.UserRepo.AddUser(Models.Mapper.Map(user));
                 RH.UserRepo.Save();
-                return RedirectToAction(nameof(Index));
+                TempData["FeedbackMsg"] = "User added";
+                return View(@"..\User\Create");
             }
+            TempData["FeedbackMsg"] = "Failed to add user";
             return View(user);
         }
 
