@@ -82,7 +82,7 @@ namespace PizzaShop.WebApp.Controllers
                 RH.UserRepo.AddUser(Models.Mapper.Map(user));
                 RH.UserRepo.Save();
                 TempData["FeedbackMsg"] = "User added";
-                return View(@"..\User\Create");
+                return View(@"..\Home\Index");
             }
             TempData["FeedbackMsg"] = "Failed to add user";
             return View(user);

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using PizzaShop.WebApp.Models;
+@using PizzaShop.Library;
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -34,6 +36,10 @@
                     <li><a asp-area="" asp-controller="Order" asp-action="Index">Order Archive</a></li>
                     <li><a asp-area="" asp-controller="Location" asp-action="Index">Location Info</a></li>
                     <li><a asp-area="" asp-controller="User" asp-action="Index">User Search</a></li>
+                    @if (TempData.Peek("obFlag") != null)
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="OrderBuilding">Cart(@TempData.Peek("pizzaCount"))</a></li>
+                    }
                 </ul>
             </div>
         </div>

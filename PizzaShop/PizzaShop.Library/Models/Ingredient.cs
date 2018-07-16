@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 
 namespace PizzaShop.Library
 {
+    [Serializable]
     public class Ingredient
     {
         public string Name { get; set; }

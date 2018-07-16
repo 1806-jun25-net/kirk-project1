@@ -80,8 +80,9 @@ namespace PizzaShop.Library.Repositories
         {
             foreach (Ingredient i in loc.Stock)
                 _db.LocationIngredientJunction.Find(loc.Name, i.Name).Quantity = i.Quantity;
-                //_db.Entry(_db.LocationIngredientJunction.Find(loc.Name, i.Name)).Entity.Quantity=i.Quantity;
-                //_db.Entry(_db.LocationIngredientJunction).State = _db.Entry.EntityState.Modified;
+            //_db.Entry(_db.LocationIngredientJunction.Find(loc.Name, i.Name)).Entity.Quantity=i.Quantity;
+            //_db.Entry(_db.LocationIngredientJunction).State = _db.Entry.EntityState.Modified;
+            int z = loc.Stock.Count - 1;
         }
 
         public void AddStock(Ingredient ing, string locName)

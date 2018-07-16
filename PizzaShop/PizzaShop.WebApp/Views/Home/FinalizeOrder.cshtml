@@ -1,0 +1,49 @@
+﻿@model PizzaShop.WebApp.Models.Order
+@{
+    ViewData["Title"] = "FinalizeOrder";
+}
+
+<h2>Order Confirmation</h2>
+
+<p>Your order has been placed!</p>
+
+
+<hr />
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.Id)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Id)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Timestamp)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Timestamp)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Store)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Store)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.UserID)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.UserID)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Price)
+    </dt>
+    <dd>
+        $@Html.DisplayFor(model => model.Price)
+    </dd>
+    @for (int i = 1; i <= Model.Pizzas.Count; i++)
+    {
+        <p>Pizza @i</p>
+        @Html.Partial(@"..\Pizza\Details", Model.Pizzas[i - 1])
+    }
+</dl>
+</div>

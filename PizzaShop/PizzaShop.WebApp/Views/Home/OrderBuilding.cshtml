@@ -1,27 +1,16 @@
 ﻿@model PizzaShop.WebApp.Models.Order
 
 @{
-    ViewData["Title"] = "SingleOrderDetails";
+    ViewData["Title"] = "OrderBuilding";
 }
 
-<h2>SingleOrderDetails</h2>
+<h2>Order Builder</h2>
 
 <div>
-    <h4>Order</h4>
+    @TempData["FeedbackMsg"]
+    <h4>Your current order:</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Timestamp)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Timestamp)
-        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Store)
         </dt>
@@ -40,13 +29,24 @@
         <dd>
             $@Html.DisplayFor(model => model.Price)
         </dd>
+    </dl>
+    @if (Model.Pizzas != null)
+    {
         @for (int i = 1; i <= Model.Pizzas.Count; i++)
         {
             <p>Pizza @i</p>
-            @Html.Partial(@"..\Pizza\Details", Model.Pizzas[i-1])
+            @Html.Partial(@"..\Pizza\Details", Model.Pizzas[i - 1])
         }
-    </dl>
-</div>
-<div>
-    <a asp-action="Index">Back to Order Archive</a>
-</div>
+    }
+    @if (Model.Pizzas == null)
+    {
+        <p>You have no pizzas in your order.</p>
+    }
+    </div>
+<form asp-action="FinalizeOrder">
+    <input type="submit" value="Place Order" class="btn btn-default" />
+</form>
+
+<form asp-action="CancelOrder">
+    <input type="submit" value="Cancel Order" class="btn btn-default" />
+</form>

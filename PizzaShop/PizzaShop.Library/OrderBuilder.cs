@@ -5,28 +5,35 @@ using System.Text;
 
 namespace PizzaShop.Library
 {
+    [Serializable]
     public class OrderBuilder
     {
-        public Order order;
-        public Pizza ActivePizza { get; set; } = null;
-        public const int maxPizzas = 12;
-        public const decimal maxOrderPrice = 500m;
-        public RepositoryHandler DH;
+        public Order CurOrder { get; set; }
+        public Pizza ActivePizza { get; set; }
+        public int MaxPizzas = 12;
+        public decimal MaxOrderPrice = 500m;
+        //public RepositoryHandler DH { get; set; }
 
-        public OrderBuilder(string user, string store, RepositoryHandler dh)
+        public OrderBuilder(string user, string store)
         {
-            order = new Order(user, store);
+            CurOrder = new Order(user, store);
             ActivePizza = null;
-            DH = dh;
         }
-        public OrderBuilder(string user, string store, RepositoryHandler dh, List<Pizza> pizzas)
+        public OrderBuilder(string user, string store, List<Pizza> pizzas)
         {
-            order = new Order(user, store, pizzas);
+            CurOrder = new Order(user, store, pizzas);
             ActivePizza = null;
-            DH = dh;
         }
 
-        public bool StartNewPizza(string size)
+        public OrderBuilder(Order o)
+        {
+            CurOrder = o;
+            ActivePizza = null;
+        }
+
+        public OrderBuilder() { }
+
+        public bool StartNewPizza(string size, RepositoryHandler DH)
         {
             if (!DH.SPRepo.ContainsSize(size))
                 return false;
@@ -37,10 +44,10 @@ namespace PizzaShop.Library
 
         public void DuplicatePizza(int i)
         {
-            if (i >= 0 && i < order.Pizzas.Count)
+            if (i >= 0 && i < CurOrder.Pizzas.Count)
             {
-                order.Price += order.Pizzas[i].Price;
-                order.Pizzas.Add(order.Pizzas[i]);
+                CurOrder.Price += CurOrder.Pizzas[i].Price;
+                CurOrder.Pizzas.Add(CurOrder.Pizzas[i]);
             }
         }
 
@@ -48,8 +55,8 @@ namespace PizzaShop.Library
         {
             if (p != null)
             {
-                order.Pizzas.Add(p);
-                order.Price += p.Price;
+                CurOrder.Pizzas.Add(p);
+                CurOrder.Price += p.Price;
             }
         }
 
@@ -63,11 +70,11 @@ namespace PizzaShop.Library
 
         public void SwitchActivePizza(int i)
         {
-            if (i >= 0 && i < order.Pizzas.Count && order.Pizzas[i] != null)
-                ActivePizza = order.Pizzas[i];
+            if (i >= 0 && i < CurOrder.Pizzas.Count && CurOrder.Pizzas[i] != null)
+                ActivePizza = CurOrder.Pizzas[i];
         }
 
-        public bool AddToppingToActivePizza(string topping)
+        public bool AddToppingToActivePizza(string topping, RepositoryHandler DH)
         {
             // if topping is not in valid list of toppings
             if ( !( DH.IngRepo.GetIngredients().Any( t => t.Name.Equals(topping) && t.Type.Equals("topping"))) )
@@ -80,7 +87,7 @@ namespace PizzaShop.Library
             return true;
         }
 
-        public bool RemoveToppingFromActivePizza(string topping)
+        public bool RemoveToppingFromActivePizza(string topping, RepositoryHandler DH)
         {
 
             if (ActivePizza.Toppings.Contains(topping))
@@ -92,7 +99,7 @@ namespace PizzaShop.Library
             return false;
         }
 
-        public bool ChangeSauceOnActivePizza(string sauce)
+        public bool ChangeSauceOnActivePizza(string sauce, RepositoryHandler DH)
         {
             //if sauce is not from valid list of toppings
             if (!(DH.IngRepo.GetIngredients().Any(t => t.Name.Equals(sauce) && t.Type.Equals("sauce"))))
@@ -101,7 +108,7 @@ namespace PizzaShop.Library
             return true;
         }
 
-        public bool ChangeCrustOnActivePizza(string crust)
+        public bool ChangeCrustOnActivePizza(string crust, RepositoryHandler DH)
         {
             // if topping is not in valid list of toppings
             if (!(DH.IngRepo.GetIngredients().Any(t => t.Name.Equals(crust) && t.Type.Equals("crust"))))
@@ -110,7 +117,7 @@ namespace PizzaShop.Library
             return true;
         }
 
-        public bool ChangeSizeOfActivePizza(string size)
+        public bool ChangeSizeOfActivePizza(string size, RepositoryHandler DH)
         {
             // if size is not in valid list of sizes
             if (!DH.SPRepo.ContainsSize(size))
@@ -124,53 +131,53 @@ namespace PizzaShop.Library
         {
             //TODO: check location is valid
             if (store != null)
-                order.Store = store;
+                CurOrder.Store = store;
             return false;
         }
 
         public List<Pizza> GetPizzas()
         {
-            return order.Pizzas;
+            return CurOrder.Pizzas;
         }
 
         public decimal CalculateTotalPrice()
         {
-            decimal total = order.Pizzas.Sum(p => p.Price);
-            order.Price = total;
+            decimal total = CurOrder.Pizzas.Sum(p => p.Price);
+            CurOrder.Price = total;
             return total;
         }
 
         public Boolean RemovePizza(int i)
         {
-            if (i >= 0 && i < order.Pizzas.Count)
+            if (i >= 0 && i < CurOrder.Pizzas.Count)
             {
-                order.Price -= order.Pizzas[i].Price;
-                order.Pizzas.Remove(order.Pizzas[i]);
+                CurOrder.Price -= CurOrder.Pizzas[i].Price;
+                CurOrder.Pizzas.Remove(CurOrder.Pizzas[i]);
                 return true;
             }
             return false;
         }
 
 
-        public string FinalizeOrder()
+        public string FinalizeOrder(RepositoryHandler DH)
         {
             //check everything is valid
             //return with reason if not valid
             string result;
             if (!IsOrderSmallEnough())
-                return $"Too many pizzas in this order.  Orders may only have {maxPizzas} pizzas maximum.";
+                return $"Too many pizzas in this order.  Orders may only have {MaxPizzas} pizzas maximum.";
             if (!IsOrderCheapEnough())
-                return $"Too expenseive.  Maximum order price total is ${maxOrderPrice}.";
+                return $"Too expenseive.  Maximum order price total is ${MaxOrderPrice}.";
             if (!IsOrderNotEmpty())
                 return "Order must have at least one pizza.";
-            if (!IsOrderTwoHoursLater())
+            if (!IsOrderTwoHoursLater(DH))
                 return "Order is being placed too soon after a recent order.  You may place one order with each location every two hours.";
-            if ((result = DoesLocationHaveAllIngredients()) != null)  
+            if ((result = DoesLocationHaveAllIngredients(DH)) != null)  
                 return $"Chosen location does not have the necessairy ingredients for all your pizzas.  It is short on {result}";
 
             //if valid generate timestamp& order ID
-            order.Timestamp = DateTime.Now;
-            order.Id = Math.Abs((int)order.Timestamp.Ticks);
+            CurOrder.Timestamp = DateTime.Now;
+            CurOrder.Id = Math.Abs((int)CurOrder.Timestamp.Ticks);
             /*
             //add order to order history
             DH.Orders.Add(order);
@@ -181,9 +188,9 @@ namespace PizzaShop.Library
             //add order to DB
             */
             //Update decremented inventory to DB
-            DH.LocRepo.UpdateLocationInventory(DH.LocRepo.GetLocationByName(order.Store));
+            DH.LocRepo.UpdateLocationInventory(DH.LocRepo.GetLocationByName(CurOrder.Store));
             DH.LocRepo.Save();
-            DH.OrderRepo.AddOrder(order);
+            DH.OrderRepo.AddOrder(CurOrder);
             DH.LocRepo.Save();
 
             return null;
@@ -191,32 +198,32 @@ namespace PizzaShop.Library
 
         public bool IsOrderSmallEnough()
         {
-            if (order.Pizzas.Count > maxPizzas)
+            if (CurOrder.Pizzas.Count > MaxPizzas)
                 return false;
             return true;
         }
 
         public bool IsOrderCheapEnough()
         {
-            if (order.Price > maxOrderPrice)
+            if (CurOrder.Price > MaxOrderPrice)
                 return false;
             return true;
         }
 
         public bool IsOrderNotEmpty()
         {
-            if (order.Pizzas.Count <= 0)
+            if (CurOrder.Pizzas.Count <= 0)
                 return false;
             return true;
         }
 
-        public bool IsOrderTwoHoursLater()
+        public bool IsOrderTwoHoursLater(RepositoryHandler DH)
         {
             //Both Users and Locations have an order history contianing order ids
             //Find intersection of User & location order histories from newest to oldest
             //if newest shared order <2 hrs reject, otherwise accept
-            List<int> userOrders = DH.UserRepo.GetUserByUsername(order.UserID).OrderHistory;
-            List<int> locationOrders = DH.LocRepo.GetLocations().First(l => l.Name.Equals(order.Store)).OrderHistory;
+            List<int> userOrders = DH.UserRepo.GetUserByUsername(CurOrder.UserID).OrderHistory;
+            List<int> locationOrders = DH.LocRepo.GetLocations().First(l => l.Name.Equals(CurOrder.Store)).OrderHistory;
             DateTime orderTime;
             //new orders are always added to the end of the OrderHistory list, so go through newest orders first
             for (int i = userOrders.Count-1; i >= 0; i--)
@@ -246,19 +253,19 @@ namespace PizzaShop.Library
             return true;
         }
 
-        public string DoesLocationHaveAllIngredients()
+        public string DoesLocationHaveAllIngredients(RepositoryHandler DH)
         {
             //1: generate -List- of all ingredient types w/ appropiate quantity based on scalar
-            List<Ingredient> allIngredients = BuildIngredientList();
-            Location loc = DH.LocRepo.GetLocations().First( l => l.Name.Equals(order.Store));
-            return DH.LocRepo.RemoveBulkStock(allIngredients, order.Store);
+            List<Ingredient> allIngredients = BuildIngredientList(DH);
+            Location loc = DH.LocRepo.GetLocations().First( l => l.Name.Equals(CurOrder.Store));
+            return DH.LocRepo.RemoveBulkStock(allIngredients, CurOrder.Store);
         }
 
-        public List<Ingredient> BuildIngredientList()
+        public List<Ingredient> BuildIngredientList(RepositoryHandler DH)
         {
             List<Ingredient> allIngredients = new List<Ingredient>();
             int amount;
-            foreach (var p in order.Pizzas)
+            foreach (var p in CurOrder.Pizzas)
             {
                 amount = DH.SPRepo.GetIngredientUsageScalar(p.Size);
                 AddToIngredientList(allIngredients, new Ingredient(p.CrustType, amount, "crust"));

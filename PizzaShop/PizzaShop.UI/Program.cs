@@ -281,11 +281,11 @@ namespace PizzaShop.UI
                 switch (input)
                 {
                     case "1":  //recommended order
-                        MenuBuildOrder(new OrderBuilder(userID, DH.UserRepo.GetUserByUsername(userID).FavStore, DH, recommendedOrder));
+                        MenuBuildOrder(new OrderBuilder(userID, DH.UserRepo.GetUserByUsername(userID).FavStore, recommendedOrder));
                         invalidInput = false;
                         break;
                     case "2":  //new empty order
-                        MenuBuildOrder(new OrderBuilder(userID, DH.UserRepo.GetUserByUsername(userID).FavStore, DH));
+                        MenuBuildOrder(new OrderBuilder(userID, DH.UserRepo.GetUserByUsername(userID).FavStore));
                         invalidInput = false;
                         break;
                     case "0": //Go back
@@ -310,10 +310,10 @@ namespace PizzaShop.UI
                 else
                 {
                     Console.WriteLine("Your current order:");
-                    Console.WriteLine($"Order Prpared for username: {ob.order.UserID}");
-                    Console.WriteLine($"Order location: {ob.order.Store}");
-                    PrintPizzaList(ob.order.Pizzas);
-                    Console.WriteLine($"---------------------\n   Total Price: ${ob.order.Price.ToString("F")}\n");
+                    Console.WriteLine($"Order Prpared for username: {ob.CurOrder.UserID}");
+                    Console.WriteLine($"Order location: {ob.CurOrder.Store}");
+                    PrintPizzaList(ob.CurOrder.Pizzas);
+                    Console.WriteLine($"---------------------\n   Total Price: ${ob.CurOrder.Price.ToString("F")}\n");
                 }
 
                 Console.WriteLine("Please enter the number for your selection");
@@ -382,7 +382,7 @@ namespace PizzaShop.UI
                     validInput = true;
             }
             while (!validInput);
-            ob.StartNewPizza(DH.SPRepo.GetAllSizingPricing().ToList()[Int32.Parse(input)-1].Size);
+            ob.StartNewPizza(DH.SPRepo.GetAllSizingPricing().ToList()[Int32.Parse(input)-1].Size, DH);
             //new pizza created, now allow for topping/sauce/crust changes
             MenuModifyPizza(ob);
             ob.AddActivePizza();
@@ -398,17 +398,17 @@ namespace PizzaShop.UI
             bool inputValid = false;
             do
             {
-                MenuHelperSelectPizza("duplicate", "pizza", ob.order.Pizzas);
+                MenuHelperSelectPizza("duplicate", "pizza", ob.CurOrder.Pizzas);
                 Console.Write("->");
                 input = Console.ReadLine();
                 inputValid = input.Count(c => !char.IsDigit(c)) == 0
                     && Int32.Parse(input) >= 1
-                    && Int32.Parse(input) <= ob.order.Pizzas.Count;
+                    && Int32.Parse(input) <= ob.CurOrder.Pizzas.Count;
                 if (!inputValid)
                     Console.WriteLine("That selection is invalid.  Enter only the number associated with the pizza you wish to duplicate. Please try again.");
             }
             while (!inputValid && !input.Equals("0"));
-            var targetPizza = ob.order.Pizzas[Int32.Parse(input) - 1];
+            var targetPizza = ob.CurOrder.Pizzas[Int32.Parse(input) - 1];
             var newPizza = new Pizza(targetPizza.Size);
             newPizza.CrustType = targetPizza.CrustType;
             newPizza.SauceType = targetPizza.SauceType;
@@ -424,12 +424,12 @@ namespace PizzaShop.UI
             bool inputValid = false;
             do
             {
-                MenuHelperSelectPizza("modify", "pizza", ob.order.Pizzas);
+                MenuHelperSelectPizza("modify", "pizza", ob.CurOrder.Pizzas);
                 Console.Write("->");
                 input = Console.ReadLine();
                 inputValid = input.Count(c => !char.IsDigit(c)) == 0
                     && Int32.Parse(input) >= 1
-                    && Int32.Parse(input) <= ob.order.Pizzas.Count;
+                    && Int32.Parse(input) <= ob.CurOrder.Pizzas.Count;
                 if (!inputValid)
                     Console.WriteLine("That selection is invalid.  Enter only the number associated with the pizza you wish to duplicate. Please try again.");
             }
@@ -448,12 +448,12 @@ namespace PizzaShop.UI
             bool inputValid = false;
             do
             {
-                MenuHelperSelectPizza("remove", "pizza", ob.order.Pizzas);
+                MenuHelperSelectPizza("remove", "pizza", ob.CurOrder.Pizzas);
                 Console.Write("->");
                 input = Console.ReadLine();
                 inputValid = input.Count(c => !char.IsDigit(c)) == 0
                     && Int32.Parse(input) >= 1
-                    && Int32.Parse(input) <= ob.order.Pizzas.Count;
+                    && Int32.Parse(input) <= ob.CurOrder.Pizzas.Count;
                 if (!inputValid)
                     Console.WriteLine("That selection is invalid.  Enter only the number associated with the pizza you wish to remove. Please try again.");
             }
@@ -539,7 +539,7 @@ namespace PizzaShop.UI
             {
                 MenuHelperSelectIngredient("add", "topping", DH.IngRepo.GetToppings());
                 input = Console.ReadLine();
-                result = ob.AddToppingToActivePizza(input);
+                result = ob.AddToppingToActivePizza(input, DH);
                 if (result)
                 {
                     Console.WriteLine($"The topping '{input}' has been added to your pizza.");
@@ -562,7 +562,7 @@ namespace PizzaShop.UI
             {
                 MenuHelperSelectIngredient("remove", "topping", ob.ActivePizza.Toppings);
                 input = Console.ReadLine();
-                result = ob.RemoveToppingFromActivePizza(input);
+                result = ob.RemoveToppingFromActivePizza(input, DH);
                 if (result)
                 {
                     Console.WriteLine($"The topping '{input}' has been removed from your pizza.");
@@ -585,7 +585,7 @@ namespace PizzaShop.UI
             {
                 MenuHelperSelectIngredient("change to", "crust", DH.IngRepo.GetCrusts());
                 input = Console.ReadLine();
-                result = ob.ChangeCrustOnActivePizza(input);
+                result = ob.ChangeCrustOnActivePizza(input, DH);
                 if (result)
                 {
                     Console.WriteLine($"The crust '{input}' has been set for your pizza.");
@@ -608,7 +608,7 @@ namespace PizzaShop.UI
             {
                 MenuHelperSelectIngredient("change to", "sauce", DH.IngRepo.GetSauces());
                 input = Console.ReadLine();
-                result = ob.ChangeSauceOnActivePizza(input);
+                result = ob.ChangeSauceOnActivePizza(input, DH);
                 if (result)
                 {
                     Console.WriteLine($"The sauce '{input}' has been set for your pizza.");
@@ -631,7 +631,7 @@ namespace PizzaShop.UI
             {
                 MenuHelperSelectIngredient("change to", "size", DH.SPRepo.GetSizes());
                 input = Console.ReadLine();
-                result = ob.ChangeSizeOfActivePizza(input);
+                result = ob.ChangeSizeOfActivePizza(input, DH);
                 if (result)
                 {
                     Console.WriteLine($"The size '{input}' has been set for your pizza.");
@@ -649,10 +649,10 @@ namespace PizzaShop.UI
         {
             string result;
             Console.WriteLine("Finalizing Order...");
-            result = ob.FinalizeOrder();
+            result = ob.FinalizeOrder(DH);
             if (result == null)
             {
-                Console.WriteLine($"Order successfully placed!  Your order's ID is: {ob.order.Id}");
+                Console.WriteLine($"Order successfully placed!  Your order's ID is: {ob.CurOrder.Id}");
                 return true;
             }
             else

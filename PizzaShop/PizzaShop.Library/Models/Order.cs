@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,14 @@ using System.Text;
 namespace PizzaShop.Library
 {
 
-
+    [Serializable]
     public class Order
     {
         public int Id { get; set; }  //Null on incomplete orders, Timestamp as ticks on completed order
         public DateTime Timestamp { get; set; }
         public string Store { get; set; }
         public string UserID { get; set; }
+        [JsonIgnore]
         private decimal _price;
         public decimal Price
         {
@@ -49,6 +51,8 @@ namespace PizzaShop.Library
         }
 
         public Order() { }
+
+
 
     }
 }

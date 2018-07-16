@@ -13,10 +13,10 @@
     @Html.Partial(@"..\Pizza\Details", Model[i - 1])
 }
 
-    <form asp-action="Logout">
+    <form asp-action="OrderBuildingNew">
         <input type="submit" value="Start With Empty Order" class="btn btn-default" />
     </form>
 
-    <form asp-action="Logout">
+    <form asp-action="OrderBuildingRecommended">
         <input type="submit" value="Start With Recommended Order" class="btn btn-default" />
     </form>
