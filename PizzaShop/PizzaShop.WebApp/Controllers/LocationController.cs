@@ -4,11 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PizzaShop.Library;
 
 namespace PizzaShop.WebApp.Controllers
 {
     public class LocationController : Controller
     {
+        public RepositoryHandler RH { get; }
+
+        public LocationController(RepositoryHandler rh)
+        {
+            RH = rh;
+        }
+
         // GET: Location
         public ActionResult Index()
         {
@@ -34,7 +42,7 @@ namespace PizzaShop.WebApp.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
+                
 
                 return RedirectToAction(nameof(Index));
             }

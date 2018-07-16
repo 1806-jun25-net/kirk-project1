@@ -37,7 +37,7 @@ namespace PizzaShop.WebApp.Models
         public string Phone { get; set; }
 
         [Required]
-        [Display(Name = "Preferred Location:")]
+        [Display(Name = "Preferred Location")]
         public string FavStore { get; set; }
         public IEnumerable<SelectListItem> locs { get; set; }
         //public List<int> OrderHistory { get; set; } = new List<int>();

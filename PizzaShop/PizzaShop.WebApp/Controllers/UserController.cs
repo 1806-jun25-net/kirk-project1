@@ -77,14 +77,26 @@ namespace PizzaShop.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Models.User user)
         {
-            if (ModelState.IsValid)
+            bool validData = true;
+            if (RH.UserRepo.UsersContainsUsername(user.Username))
+            {
+                TempData["FeedbackMsg"] = "Failed to add user- That username is already taken";
+                validData = false;
+            }
+            if (!RH.LocRepo.LocationsContainsName(user.FavStore))
+            {
+                TempData["FeedbackMsg"] = "Failed to add user- Location not recognized";
+                validData = false;
+            }
+            if (ModelState.IsValid && validData)
             {
                 RH.UserRepo.AddUser(Models.Mapper.Map(user));
                 RH.UserRepo.Save();
                 TempData["FeedbackMsg"] = "User added";
                 return View(@"..\Home\Index");
             }
-            TempData["FeedbackMsg"] = "Failed to add user";
+            else if (validData)
+                TempData["FeedbackMsg"] = "Failed to add user";
             return View(user);
         }
 

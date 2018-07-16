@@ -112,6 +112,9 @@ VALUES ('cheese', 'topping'), ('sausage', 'topping'), ('pepperoni', 'topping'), 
 INSERT INTO PizzaShop.Ingredients
 VALUES ('bacon', 'topping'), ('chicken', 'topping'), ('beef', 'topping')
 
+INSERT INTO PizzaShop.Ingredients
+VALUES ('ranch', 'sauce')
+
 SELECT * FROM PizzaShop.Ingredients Order By (Type)
 
 
@@ -155,3 +158,15 @@ DELETE FROM PizzaShop.PizzaIngredientJunction WHERE PizzaID = 1;
 
 UPDATE PizzaShop.Orders 
 SET Timestamp = '2018-07-11 01:05:59.060' WHERE ID=975577407;
+
+
+
+
+
+INSERT INTO PizzaShop.Ingredients
+VALUES ('cheese stuffed crust', 'crust')
+
+DELETE FROM PizzaShop.Ingredients WHERE Name = 'cheese stuffed crust';
+
+SELECT * FROM PizzaShop.Ingredients;
+SELECT * FROM PizzaShop.LocationIngredientJunction;
