@@ -17,7 +17,6 @@ namespace PizzaShop.Library
             Size = s;
             CrustType = "classic crust";
             SauceType = "classic sauce";
-            Toppings.Add("cheese");
         }
 
         public Pizza ()
@@ -26,7 +25,6 @@ namespace PizzaShop.Library
             Size = null;
             CrustType = "classic crust";
             SauceType = "classic sauce";
-            Toppings.Add("cheese");
             Price = 0;
         }
 

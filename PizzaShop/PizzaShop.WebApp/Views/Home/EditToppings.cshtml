@@ -1,0 +1,51 @@
+﻿@model PizzaShop.WebApp.Models.PizzaBuilder
+@{
+    ViewData["Title"] = "EditToppings";
+}
+
+<h2>Edit Toppings</h2>
+<p>Current Pizza:</p>
+@Html.Partial(@"..\Pizza\Details", Model.P)
+
+<p>Edit your toppings:</p>
+<form asp-action="EditToppings" method="post">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.P.Toppings)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Ingredients)
+            {
+                <tr>
+                    <td>
+                        @if (Model.P.Toppings.Contains(item.Name))
+                        {
+                            <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.Name)
+                        }
+                    </td>
+                    <td>
+                        
+                        <input type="radio" name="topping" value="@item.Name" />
+                        
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <input type="submit" value="Add Topping" class="btn btn-default" name="button"/>
+    <input type="submit" value="Remove Topping" class="btn btn-default" name="button"/>
+</form>
+<br />
+<div>
+    <a asp-action="OrderBuilding">Back to Order</a>
+</div>

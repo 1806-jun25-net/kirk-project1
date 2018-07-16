@@ -126,23 +126,37 @@ namespace PizzaShop.WebApp.Controllers
             TempData.Remove("CurrentLocation");
             return RedirectToAction(nameof(OrderBuilding));
         }
+        
+        public IActionResult AddNewPizza()
+        {
+            List<Models.Ingredient> ingredients = Models.Mapper.Map(RH.IngRepo.GetIngredients()).ToList();
+            List<string> sizes = RH.SPRepo.GetSizes().ToList();
+            OrderBuilder ob = ((OrderBuilder)TempData.Peek<Library.OrderBuilder>("OrderBuilder"));
+            ob.StartNewPizza(sizes.First(), RH);
+            TempData.Put("OrderBuilder", ob);
+            Models.Pizza currentP = Models.Mapper.Map(ob.ActivePizza);
+            PizzaBuilder pb = new PizzaBuilder { P = currentP, Ingredients = ingredients, Sizes = sizes };
+            return View(nameof(EditPizza), pb);
+        }
 
         public IActionResult PizzaModding(string button)
         {
             int pn = Int32.Parse(button.Substring(button.LastIndexOf(" ") + 1, button.Length - (button.LastIndexOf(" ") + 1)))-1;
             OrderBuilder ob = (OrderBuilder)TempData.Peek<Library.OrderBuilder>("OrderBuilder");
             Models.Pizza currentP = Models.Mapper.Map(ob.CurOrder.Pizzas[pn]);
-            List<Models.Ingredient> ingredients = Models.Mapper.Map(RH.IngRepo.GetIngredients()).ToList();
+            List<Models.Ingredient> ingredients;
             List<string> sizes = RH.SPRepo.GetSizes().ToList();
             PizzaBuilder pb;
             switch (button.Substring(0,6))
             {
                 case "Edit T":  //Edit Toppings
                     TempData["EditPizza"] = pn;
+                    ingredients = Models.Mapper.Map(RH.IngRepo.GetToppings()).ToList();
                     pb = new PizzaBuilder { P = currentP, Ingredients = ingredients, Sizes = sizes };
-                    return View(nameof(EditPizza), pb);
-                case "Edit O":  //Edit
+                    return View(nameof(EditToppings), pb);
+                case "Edit O":  //Edit Other
                     TempData["EditPizza"] = pn;
+                    ingredients = Models.Mapper.Map(RH.IngRepo.GetIngredients()).ToList();
                     pb = new PizzaBuilder { P = currentP, Ingredients = ingredients, Sizes=sizes };
                     return View(nameof(EditPizza), pb);
                 case "Duplic": //Duplicate
@@ -163,19 +177,46 @@ namespace PizzaShop.WebApp.Controllers
             return View(pb);
         }
 
+        public IActionResult EditToppings(string topping, string button)
+        {
+            int pn = (int)TempData.Peek("EditPizza");
+            OrderBuilder ob = (OrderBuilder)TempData.Peek<Library.OrderBuilder>("OrderBuilder");
+            Models.Pizza currentP = Models.Mapper.Map(ob.CurOrder.Pizzas[pn]);
+            List<Models.Ingredient> ingredients = Models.Mapper.Map(RH.IngRepo.GetToppings()).ToList();
+            List<string> sizes = RH.SPRepo.GetSizes().ToList();
+            ob.SwitchActivePizza(pn);
+            if (button.Contains("Add"))
+            {
+                ob.AddToppingToActivePizza(topping, RH);
+            }
+            else if (button.Contains("Remove"))
+            {
+                ob.RemoveToppingFromActivePizza(topping, RH);
+            }
+            ob.ActivePizza.CalculatePrice(RH.SPRepo.GetBasePrice(ob.ActivePizza.Size), RH.SPRepo.GetToppingPrice(ob.ActivePizza.Size));
+            ob.CalculateTotalPrice();
+            TempData.Put("OrderBuilder", ob);
+            PizzaBuilder pb = new PizzaBuilder { P = Models.Mapper.Map(ob.ActivePizza), Ingredients = ingredients, Sizes = sizes };
+            return View(pb);
+            //return View(nameof(OrderBuilding));
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddPizza(string Size, string CrustType,
       string SauceType, IEnumerable<bool> Toppings)
         {
             OrderBuilder ob = (OrderBuilder)TempData.Peek<Library.OrderBuilder>("OrderBuilder");
-            Library.Pizza p = new Library.Pizza { Size = Size, CrustType = CrustType, SauceType = SauceType };
             if (TempData.Peek("EditPizza") != null)
             {
-                p.Toppings = ob.CurOrder.Pizzas[(int)TempData.Peek("EditPizza")].Toppings;
+                ob.SwitchActivePizza((int)TempData.Peek("EditPizza"));
                 ob.RemovePizza((int)TempData["EditPizza"]);
             }
-            ob.AddPizza(p);
+            ob.ChangeCrustOnActivePizza(CrustType, RH);
+            ob.ChangeSauceOnActivePizza(SauceType, RH);
+            ob.ChangeSizeOfActivePizza(Size, RH);
+            ob.AddActivePizza();
             TempData.Put("OrderBuilder", ob);
             return RedirectToAction(nameof(OrderBuilding));
         }

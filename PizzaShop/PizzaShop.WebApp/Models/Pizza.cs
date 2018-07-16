@@ -32,7 +32,6 @@ namespace PizzaShop.WebApp.Models
             Size = null;
             CrustType = "classic crust";
             SauceType = "classic sauce";
-            Toppings.Add("cheese");
             Price = 0;
         }
     }
