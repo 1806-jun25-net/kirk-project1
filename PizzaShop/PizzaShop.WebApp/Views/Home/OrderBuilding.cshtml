@@ -55,16 +55,18 @@
         <p>You have no pizzas in your order.</p>
     }
 </div>
+<br />
 @if (Model.Pizzas.Count < 12)
 {
 <form asp-action="AddNewPizza">
     <input type="submit" value="Add New Pizza" class="btn btn-default" />
 </form>
 }
+<br />
 <form asp-action="FinalizeOrder">
     <input type="submit" value="Place Order" class="btn btn-default" />
 </form>
-
+<br />
 <form asp-action="CancelOrder">
     <input type="submit" value="Cancel Order" class="btn btn-default" />
 </form>

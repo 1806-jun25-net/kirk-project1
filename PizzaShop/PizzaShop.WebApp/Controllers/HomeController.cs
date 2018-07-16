@@ -212,6 +212,7 @@ namespace PizzaShop.WebApp.Controllers
             {
                 ob.SwitchActivePizza((int)TempData.Peek("EditPizza"));
                 ob.RemovePizza((int)TempData["EditPizza"]);
+                TempData.Remove("EditPizza");
             }
             ob.ChangeCrustOnActivePizza(CrustType, RH);
             ob.ChangeSauceOnActivePizza(SauceType, RH);
