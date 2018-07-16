@@ -1,0 +1,72 @@
+﻿@model PizzaShop.WebApp.Models.PizzaBuilder
+
+@{
+    ViewData["Title"] = "EditPizza";
+}
+
+<h2>EditPizza</h2>
+
+<h4>PizzaBuilder</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddPizza" method="post">
+            <div class="form-group">
+                <label asp-for="P.Size" class="control-label"></label>
+                <select name="Size">
+                    @foreach (var s in Model.Sizes)
+                    {
+                        @if (Model.P.Size.Equals(s))
+                        {
+                            <option asp-for="P.Size" value="@s" selected="selected" >@s</option>
+                        }
+                        else
+                        {
+                            <option asp-for="P.Size" value="@s">@s</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="P.CrustType" class="control-label"></label>
+                <select name="CrustType">
+                    @foreach (var s in Model.Ingredients.Where(ing => ing.Type.Equals("crust")))
+                    {
+                        @if (Model.P.CrustType.Equals(s.Name))
+                        {
+                            <option asp-for="P.CrustType" value="@s.Name" selected="selected" >@s.Name</option>
+                        }
+                        else
+                        {
+                            <option asp-for="P.CrustType" value="@s.Name">@s.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="P.SauceType" class="control-label"></label>
+                <select name="SauceType">
+                    @foreach (var s in Model.Ingredients.Where(ing => ing.Type.Equals("sauce")))
+                    {
+                        @if (Model.P.SauceType.Equals(s.Name))
+                        {
+                            <option asp-for="P.SauceType" value="@s.Name" selected="selected">@s.Name</option>
+                        }
+                        else
+                        {
+                            <option asp-for="P.SauceType" value="@s.Name">@s.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="OrderBuilding">Back to Order (Discard Changes)</a>
+</div>
+

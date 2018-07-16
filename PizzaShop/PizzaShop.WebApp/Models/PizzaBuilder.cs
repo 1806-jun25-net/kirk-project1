@@ -9,5 +9,6 @@ namespace PizzaShop.WebApp.Models
     {
         public Pizza P { get; set; }
         public List<Ingredient> Ingredients { get; set; }
+        public List<string> Sizes { get; set; }
     }
 }

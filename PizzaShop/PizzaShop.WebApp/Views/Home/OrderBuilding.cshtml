@@ -39,12 +39,13 @@
         {
             <p>Pizza @i</p>  
             <form asp-action="PizzaModding">
-                <input type="submit" value="Edit Pizza @i" class="btn btn-default" name="button"/>
+                <input type="submit" value="Edit Toppings Pizza @i" class="btn btn-default" name="button" />
+                <input type="submit" value="Edit Others Pizza @i" class="btn btn-default" name="button" />
                 @if (Model.Pizzas.Count < 12)
                 {
-                    <input type="submit" value="Duplicate Pizza @i" class="btn btn-default" name="button"/>
+                    <input type="submit" value="Duplicate Pizza @i" class="btn btn-default" name="button" />
                 }
-                <input type="submit" value="Delete Pizza @i" class="btn btn-default" name="button"/>
+                <input type="submit" value="Delete Pizza @i" class="btn btn-default" name="button" />
             </form>
             @Html.Partial(@"..\Pizza\Details", Model.Pizzas[i - 1])
         }

@@ -131,18 +131,25 @@ namespace PizzaShop.WebApp.Controllers
         {
             int pn = Int32.Parse(button.Substring(button.LastIndexOf(" ") + 1, button.Length - (button.LastIndexOf(" ") + 1)))-1;
             OrderBuilder ob = (OrderBuilder)TempData.Peek<Library.OrderBuilder>("OrderBuilder");
-            switch (button.Substring(0,2))
+            Models.Pizza currentP = Models.Mapper.Map(ob.CurOrder.Pizzas[pn]);
+            List<Models.Ingredient> ingredients = Models.Mapper.Map(RH.IngRepo.GetIngredients()).ToList();
+            List<string> sizes = RH.SPRepo.GetSizes().ToList();
+            PizzaBuilder pb;
+            switch (button.Substring(0,6))
             {
-                case "Ed":  //Edit
-                    Models.Pizza currentP = Models.Mapper.Map(ob.CurOrder.Pizzas[pn]);
-                    ob.RemovePizza(pn);
-                    //return View(nameof(EditPizza), currentP);
-                    break;
-                case "Du": //Duplicate
+                case "Edit T":  //Edit Toppings
+                    TempData["EditPizza"] = pn;
+                    pb = new PizzaBuilder { P = currentP, Ingredients = ingredients, Sizes = sizes };
+                    return View(nameof(EditPizza), pb);
+                case "Edit O":  //Edit
+                    TempData["EditPizza"] = pn;
+                    pb = new PizzaBuilder { P = currentP, Ingredients = ingredients, Sizes=sizes };
+                    return View(nameof(EditPizza), pb);
+                case "Duplic": //Duplicate
                     if (pn >= 0 && pn < ob.CurOrder.Pizzas.Count)
                         ob.DuplicatePizza(pn);
                     break;
-                case "De": //Delete
+                case "Delete": //Delete
                     if (pn >= 0 && pn < ob.CurOrder.Pizzas.Count)
                         ob.RemovePizza(pn);
                     break;
@@ -151,10 +158,24 @@ namespace PizzaShop.WebApp.Controllers
             return RedirectToAction(nameof(OrderBuilding));
         }
 
-        public IActionResult AddPizza(Models.Pizza p)
+        public IActionResult EditPizza(PizzaBuilder pb)
+        {
+            return View(pb);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddPizza(string Size, string CrustType,
+      string SauceType, IEnumerable<bool> Toppings)
         {
             OrderBuilder ob = (OrderBuilder)TempData.Peek<Library.OrderBuilder>("OrderBuilder");
-            ob.AddPizza(Models.Mapper.Map(p));
+            Library.Pizza p = new Library.Pizza { Size = Size, CrustType = CrustType, SauceType = SauceType };
+            if (TempData.Peek("EditPizza") != null)
+            {
+                p.Toppings = ob.CurOrder.Pizzas[(int)TempData.Peek("EditPizza")].Toppings;
+                ob.RemovePizza((int)TempData["EditPizza"]);
+            }
+            ob.AddPizza(p);
             TempData.Put("OrderBuilder", ob);
             return RedirectToAction(nameof(OrderBuilding));
         }
