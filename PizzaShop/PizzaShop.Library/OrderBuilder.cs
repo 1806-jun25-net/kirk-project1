@@ -170,7 +170,7 @@ namespace PizzaShop.Library
                 return $"Too expenseive.  Maximum order price total is ${MaxOrderPrice}.";
             if (!IsOrderNotEmpty())
                 return "Order must have at least one pizza.";
-            if (!IsOrderTwoHoursLater(DH))
+            if (!IsOrderTwoHoursLaterV2(DH))
                 return "Order is being placed too soon after a recent order.  You may place one order with each location every two hours.";
             if ((result = DoesLocationHaveAllIngredients(DH)) != null)  
                 return $"Chosen location does not have the necessairy ingredients for all your pizzas.  It is short on {result}";
@@ -250,6 +250,21 @@ namespace PizzaShop.Library
                 }
             }
             
+            return true;
+        }
+
+        public bool IsOrderTwoHoursLaterV2(RepositoryHandler DH)
+        {
+            List<Order> UnionOrders = DH.OrderRepo.GetOrders().Where(o => o.UserID.Equals(CurOrder.UserID) && o.Store.Equals(CurOrder.Store)).ToList();
+
+            foreach (var i in UnionOrders)
+            {
+                if (DateTime.Compare(DateTime.Now, i.Timestamp.AddHours(2)) < 0)
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
 
