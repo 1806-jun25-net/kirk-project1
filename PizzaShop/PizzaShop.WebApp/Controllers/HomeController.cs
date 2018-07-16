@@ -136,6 +136,7 @@ namespace PizzaShop.WebApp.Controllers
             TempData.Put("OrderBuilder", ob);
             Models.Pizza currentP = Models.Mapper.Map(ob.ActivePizza);
             PizzaBuilder pb = new PizzaBuilder { P = currentP, Ingredients = ingredients, Sizes = sizes };
+            TempData.Remove("EditPizza");
             return View(nameof(EditPizza), pb);
         }
 
