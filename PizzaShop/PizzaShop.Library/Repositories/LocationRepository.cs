@@ -82,7 +82,6 @@ namespace PizzaShop.Library.Repositories
                 _db.LocationIngredientJunction.Find(loc.Name, i.Name).Quantity = i.Quantity;
             //_db.Entry(_db.LocationIngredientJunction.Find(loc.Name, i.Name)).Entity.Quantity=i.Quantity;
             //_db.Entry(_db.LocationIngredientJunction).State = _db.Entry.EntityState.Modified;
-            int z = loc.Stock.Count - 1;
         }
 
         public void AddStock(Ingredient ing, string locName)
@@ -164,18 +163,38 @@ namespace PizzaShop.Library.Repositories
                 Stock.First(t => t.Name.Equals(item.Name)).Quantity -= item.Quantity;
             }
             //4th - check if quantity is now 0, remove if so
+            /*
             foreach (var item in list)
             {
                 if (Stock.First(t => t.Name.Equals(item.Name)).Quantity == 0)
                     Stock.Remove(Stock.First(t => t.Name.Equals(item.Name)));
             }
+            */
+            Save();
+            return null;
+        }
+
+        public string RemoveBulkStockv2(List<Ingredient> list, string locName)
+        {
+            List<LocationIngredientJunction> lij = _db.LocationIngredientJunction.Where(k => k.LocationId.Equals(locName)).ToList();
+            foreach ( Ingredient i in list)
+            {
+                if (!lij.Any(ing => ing.IngredientId.Equals(i.Name)))
+                    return i.Name;
+                if (lij.First(ing => ing.IngredientId.Equals(i.Name)).Quantity < i.Quantity)
+                    return i.Name;
+            }
+            foreach (Ingredient i in list)
+            {
+                lij.First(ing => ing.IngredientId.Equals(i.Name)).Quantity -= i.Quantity;
+            }
+            
+            Save();
             return null;
         }
 
 
-
-
-        public void Save()
+            public void Save()
         {
             _db.SaveChanges();
         }

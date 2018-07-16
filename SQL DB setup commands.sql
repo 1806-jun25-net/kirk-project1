@@ -125,8 +125,7 @@ INSERT INTO PizzaShop.LocationIngredientJunction
 VALUES ('Reston', 20, 'classic crust');
 
 INSERT INTO PizzaShop.LocationIngredientJunction
-VALUES ('Reston', 100, 'deep dish crust'), ('Reston', 100, 'garlic white sauce'), ('Reston', 100, 'bbq sauce'), ('Reston', 100, 'pepperoni');
-
+VALUES ('Herndon', 2, 'classic sauce');
 
 
 
@@ -137,7 +136,7 @@ UPDATE PizzaShop.LocationIngredientJunction
 SET Quantity = 1000 WHERE LocationID='Reston';
 
 
-SELECT * FROM PizzaShop.Orders;
+SELECT * FROM PizzaShop.Orders Order By Timestamp;
 
 SELECT * FROM PizzaShop.OrderPizzaJunction;
 

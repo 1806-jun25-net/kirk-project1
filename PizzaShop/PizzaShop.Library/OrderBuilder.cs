@@ -188,8 +188,8 @@ namespace PizzaShop.Library
             //add order to DB
             */
             //Update decremented inventory to DB
-            DH.LocRepo.UpdateLocationInventory(DH.LocRepo.GetLocationByName(CurOrder.Store));
-            DH.LocRepo.Save();
+            //DH.LocRepo.UpdateLocationInventory(DH.LocRepo.GetLocationByName(CurOrder.Store));
+            //DH.LocRepo.Save();
             DH.OrderRepo.AddOrder(CurOrder);
             DH.LocRepo.Save();
 
@@ -257,8 +257,7 @@ namespace PizzaShop.Library
         {
             //1: generate -List- of all ingredient types w/ appropiate quantity based on scalar
             List<Ingredient> allIngredients = BuildIngredientList(DH);
-            Location loc = DH.LocRepo.GetLocations().First( l => l.Name.Equals(CurOrder.Store));
-            return DH.LocRepo.RemoveBulkStock(allIngredients, CurOrder.Store);
+            return DH.LocRepo.RemoveBulkStockv2(allIngredients, CurOrder.Store);
         }
 
         public List<Ingredient> BuildIngredientList(RepositoryHandler DH)

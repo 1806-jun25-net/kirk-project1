@@ -30,11 +30,22 @@
             $@Html.DisplayFor(model => model.Price)
         </dd>
     </dl>
+    <form asp-action="ChangeLocationRedirect">
+        <input type="submit" value="Change Location" class="btn btn-default" />
+    </form>
     @if (Model.Pizzas != null)
     {
         @for (int i = 1; i <= Model.Pizzas.Count; i++)
         {
-            <p>Pizza @i</p>
+            <p>Pizza @i</p>  
+            <form asp-action="PizzaModding">
+                <input type="submit" value="Edit Pizza @i" class="btn btn-default" name="button"/>
+                @if (Model.Pizzas.Count < 12)
+                {
+                    <input type="submit" value="Duplicate Pizza @i" class="btn btn-default" name="button"/>
+                }
+                <input type="submit" value="Delete Pizza @i" class="btn btn-default" name="button"/>
+            </form>
             @Html.Partial(@"..\Pizza\Details", Model.Pizzas[i - 1])
         }
     }
@@ -42,7 +53,13 @@
     {
         <p>You have no pizzas in your order.</p>
     }
-    </div>
+</div>
+@if (Model.Pizzas.Count < 12)
+{
+<form asp-action="AddNewPizza">
+    <input type="submit" value="Add New Pizza" class="btn btn-default" />
+</form>
+}
 <form asp-action="FinalizeOrder">
     <input type="submit" value="Place Order" class="btn btn-default" />
 </form>

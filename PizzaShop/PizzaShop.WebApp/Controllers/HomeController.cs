@@ -110,6 +110,55 @@ namespace PizzaShop.WebApp.Controllers
             return RedirectToAction(nameof(OrderBuilding));
         }
 
+        public IActionResult ChangeLocationRedirect()
+        {
+            List<Models.Location> locs =  Models.Mapper.Map(RH.LocRepo.GetLocations()).ToList();
+            TempData["CurrentLocation"] = ((OrderBuilder)TempData.Peek<Library.OrderBuilder>("OrderBuilder")).CurOrder.Store;
+            return View(nameof(ChangeLocation), locs);
+        }
+
+        [HttpPost]
+        public IActionResult ChangeLocation(string newLoc)
+        {
+            OrderBuilder ob = ((OrderBuilder)TempData.Peek<Library.OrderBuilder>("OrderBuilder"));
+            ob.CurOrder.Store = newLoc;
+            TempData.Put("OrderBuilder", ob);
+            TempData.Remove("CurrentLocation");
+            return RedirectToAction(nameof(OrderBuilding));
+        }
+
+        public IActionResult PizzaModding(string button)
+        {
+            int pn = Int32.Parse(button.Substring(button.LastIndexOf(" ") + 1, button.Length - (button.LastIndexOf(" ") + 1)))-1;
+            OrderBuilder ob = (OrderBuilder)TempData.Peek<Library.OrderBuilder>("OrderBuilder");
+            switch (button.Substring(0,2))
+            {
+                case "Ed":  //Edit
+                    Models.Pizza currentP = Models.Mapper.Map(ob.CurOrder.Pizzas[pn]);
+                    ob.RemovePizza(pn);
+                    //return View(nameof(EditPizza), currentP);
+                    break;
+                case "Du": //Duplicate
+                    if (pn >= 0 && pn < ob.CurOrder.Pizzas.Count)
+                        ob.DuplicatePizza(pn);
+                    break;
+                case "De": //Delete
+                    if (pn >= 0 && pn < ob.CurOrder.Pizzas.Count)
+                        ob.RemovePizza(pn);
+                    break;
+            }
+            TempData.Put("OrderBuilder", ob);
+            return RedirectToAction(nameof(OrderBuilding));
+        }
+
+        public IActionResult AddPizza(Models.Pizza p)
+        {
+            OrderBuilder ob = (OrderBuilder)TempData.Peek<Library.OrderBuilder>("OrderBuilder");
+            ob.AddPizza(Models.Mapper.Map(p));
+            TempData.Put("OrderBuilder", ob);
+            return RedirectToAction(nameof(OrderBuilding));
+        }
+
         public IActionResult FinalizeOrder()
         {
             OrderBuilder ob = (OrderBuilder)TempData.Peek<Library.OrderBuilder>("OrderBuilder");

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<PizzaShop.WebApp.Models.Location>
+
+@{
+    ViewData["Title"] = "ChangeLocation";
+}
+
+<h2>ChangeLocation</h2>
+<form asp-action="ChangeLocation" method="post">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @if (TempData.Peek("CurrentLocation").Equals(item.Name))
+                        {
+                            <input type="radio" name="newLoc" value="@item.Name" checked/>
+                        }else{
+                            <input type="radio" name="newLoc" value="@item.Name" />
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <input type="submit" value="Select Location" class="btn btn-default" />
+</form>
