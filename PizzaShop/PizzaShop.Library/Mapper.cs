@@ -107,7 +107,7 @@ namespace PizzaShop.Library
             List<Ingredient> stock = new List<Ingredient>();
             if (lij == null)
             {
-                Console.WriteLine("lij null for some reason");
+                return stock;
             }
             foreach (var i in lij)
             {
