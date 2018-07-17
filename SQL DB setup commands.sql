@@ -82,6 +82,9 @@ CREATE TABLE PizzaShop.LocationIngredientJunction
 	IngredientID nvarchar(128) FOREIGN KEY REFERENCES PizzaShop.Ingredients(Name),
 	PRIMARY KEY (LocationID, IngredientID)
 )
+ALTER TABLE PizzaShop.LocationIngredientJunction
+add CONSTRAINT Quantity CHECK (Quantity >=0);
+
 DELETE FROM PizzaShop.Users;
 INSERT INTO PizzaShop.Users
 VALUES ('test', 'First', 'Last', 'a@a.com', '1234567890', 'Herndon'),
@@ -168,5 +171,5 @@ VALUES ('cheese stuffed crust', 'crust')
 
 DELETE FROM PizzaShop.Ingredients WHERE Name = 'cheese stuffed crust';
 
-SELECT * FROM PizzaShop.Ingredients;
+SELECT * FROM PizzaShop.Ingredients Order By Type;
 SELECT * FROM PizzaShop.LocationIngredientJunction;
