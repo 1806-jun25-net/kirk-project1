@@ -32,5 +32,9 @@ namespace PizzaShop.Library
             PizzaRepo = new PizzaRepository(db);
         }
 
+        public void DisposeOfDBContext()
+        {
+            db.Dispose();
+        }
     }
 }

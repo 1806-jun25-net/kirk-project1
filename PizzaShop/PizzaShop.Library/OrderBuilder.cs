@@ -12,7 +12,6 @@ namespace PizzaShop.Library
         public Pizza ActivePizza { get; set; }
         private readonly int MaxPizzas = 12;
         private readonly decimal MaxOrderPrice = 500m;
-        //public RepositoryHandler DH { get; set; }
 
         public OrderBuilder(string user, string store)
         {

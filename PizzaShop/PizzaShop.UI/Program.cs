@@ -41,7 +41,7 @@ namespace PizzaShop.UI
             MenuStart();
 
             //Close DB connection
-            DH.db.Dispose();
+            DH.DisposeOfDBContext();
 
         }
 
