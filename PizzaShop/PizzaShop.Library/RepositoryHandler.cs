@@ -17,7 +17,7 @@ namespace PizzaShop.Library
         public UserRepository UserRepo { get; set; }
         public SizingPricingRepository SPRepo { get; set; }
         public IngredientRepository IngRepo { get; set; }
-        public Project1DBContext db;
+        private readonly Project1DBContext db;
         public PizzaRepository PizzaRepo { get; set; }
 
         //if it's passed a DBContext, will read from db
