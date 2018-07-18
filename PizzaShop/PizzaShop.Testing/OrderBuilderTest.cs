@@ -16,11 +16,41 @@ namespace PizzaShop.Testing
          * Disabling all tests for now so deployment may work
          * 
          */
-         /*
+         //Helper method for prepping a RH for methods which require DB access
+         // ** to be used only for methods which read.  Will hold off on testing methods which write to DB
+
+
+        public RepositoryHandler SetupRH()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(@"\C:\Users\owner\AppData\Roaming\Microsoft\UserSecrets\c678c415-759f-4955-a348-f442bfd61faf\secrets.json", optional: true, reloadOnChange: true);
+
+            IConfigurationRoot configuration = builder.Build();
+
+            //Use to confirm .json is being read in properly
+            //Console.WriteLine(configuration.GetConnectionString("Project1DB"));
+
+            var optionsBuilder = new DbContextOptionsBuilder<Project1DBContext>();
+
+
+            //optionsBuilder.UseSqlServer(configuration.GetConnectionString("Project1DB"));
+            
+            //Per nick, use for local blank db generated just for testing
+            //optionsBuilder.UseInMemoryDatabase;
+
+
+
+            var options = optionsBuilder.Options;
+
+            return new RepositoryHandler(new Project1DBContext(optionsBuilder.Options));
+        }
+         /* Disabling code relying on DB
         //Testing of StartNewPizza()
         [Fact]
         public void StartNewPizzaShouldSetActivePizzaToANonNullPizza()
         {
+            RepositoryHandler RH = SetupRH();
             OrderBuilder ob = new OrderBuilder("user", "store");
 
             ob.StartNewPizza("large", RH);
@@ -32,15 +62,32 @@ namespace PizzaShop.Testing
         [InlineData("small")]
         [InlineData("medium")]
         [InlineData("large")]
+        public void StartNewPizzaShouldReturnFalseIfSizeDoesntExistInDB(string s)
+        {
+            RepositoryHandler RH = SetupRH();
+            OrderBuilder ob = new OrderBuilder("user", "store");
+
+            bool result = ob.StartNewPizza(s, RH);
+
+            Assert.True(!result);
+        }
+
+        [Theory]
+        [InlineData("small")]
+        [InlineData("medium")]
+        [InlineData("large")]
         public void StartNewPizzaShouldSetActivePizzaToAppropiateSize(string s)
         {
+            RepositoryHandler RH = SetupRH();
             OrderBuilder ob = new OrderBuilder("user", "store");
 
             ob.StartNewPizza(s, RH);
 
             Assert.Equal(s, ob.ActivePizza.Size);
         }
-        */
+        
+    */
+
         //Testing of DuplicatePizza
         [Fact]
         public void DuplicatePizzaShouldAddExactlyOneAdditionalPizzaToPizzas()
