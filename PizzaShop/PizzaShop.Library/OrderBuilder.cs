@@ -126,11 +126,13 @@ namespace PizzaShop.Library
             return true;
         }
 
-        public bool ChangeLocation(string store)
+        public bool ChangeLocation(string store, RepositoryHandler RH)
         {
-            //TODO: check location is valid
-            if (store != null)
+            if (store != null && RH.LocRepo.LocationsContainsName(store))
+            {
                 CurOrder.Store = store;
+                return true;
+            }
             return false;
         }
 
@@ -171,24 +173,12 @@ namespace PizzaShop.Library
                 return "Order must have at least one pizza.";
             if (!IsOrderTwoHoursLaterV2(DH))
                 return "Order is being placed too soon after a recent order.  You may place one order with each location every two hours.";
-            if ((result = DoesLocationHaveAllIngredients(DH)) != null)  
+            if ((result = DoesLocationHaveAllIngredients(DH)) != null)  // ****THIS CHECK MUST BE LAST, WILL REMOVE INVENTORY USED
                 return $"Chosen location does not have the necessairy ingredients for all your pizzas.  It is short on {result}";
 
             //if valid generate timestamp& order ID
             CurOrder.Timestamp = DateTime.Now;
             CurOrder.Id = Math.Abs((int)CurOrder.Timestamp.Ticks);
-            /*
-            //add order to order history
-            DH.Orders.Add(order);
-            //add orderID to user order history
-            DH.UserRepo.GetUserByUsername(order.UserID).OrderHistory.Add(order.Id);
-            //add orderID to location order history
-            DH.Locations.First(l => l.Name.Equals(order.Store)).OrderHistory.Add(order.Id);
-            //add order to DB
-            */
-            //Update decremented inventory to DB
-            //DH.LocRepo.UpdateLocationInventory(DH.LocRepo.GetLocationByName(CurOrder.Store));
-            //DH.LocRepo.Save();
             DH.OrderRepo.AddOrder(CurOrder);
             DH.LocRepo.Save();
 

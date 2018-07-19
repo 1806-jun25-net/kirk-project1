@@ -13,4 +13,8 @@
     <ProjectReference Include="..\PizzaShop.Data\PizzaShop.Data.csproj" />
   </ItemGroup>
 
+ <PropertyGroup>
+    <DebugType>Full</DebugType>
+  </PropertyGroup>
+
 </Project>

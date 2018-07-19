@@ -18,14 +18,10 @@ namespace PizzaShop.Library
         public Location(String name)
         {
             Name = name;
-            Stock = new List<Ingredient>();
-            OrderHistory = new List<int>();
         }
 
         public Location()
         {
-            Stock = new List<Ingredient>();
-            OrderHistory = new List<int>();
             Name = "";
         }
 

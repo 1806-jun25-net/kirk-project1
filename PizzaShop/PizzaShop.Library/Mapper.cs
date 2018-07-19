@@ -57,7 +57,7 @@ namespace PizzaShop.Library
         public static Data.Orders Map(Order otherOrder) => new Data.Orders
         {
             Id = otherOrder.Id,
-            Timestamp = (DateTime)otherOrder.Timestamp,
+            Timestamp = otherOrder.Timestamp,
             UserId = otherOrder.UserID,
             LocationId = otherOrder.Store,
             Price = otherOrder.Price
@@ -73,8 +73,7 @@ namespace PizzaShop.Library
         public static Data.Ingredients Map(Ingredient otherIng) => new Data.Ingredients
         {
             Name = otherIng.Name,
-            Type = otherIng.Type,
-            //??something added to the locationingredientjunction??
+            Type = otherIng.Type
         };
 
         public static Pizza Map(Data.Pizzas otherPizza) => new Pizza
@@ -85,12 +84,6 @@ namespace PizzaShop.Library
             CrustType = otherPizza.PizzaIngredientJunction.First( i => i.Ingredient.Type.Equals("crust")).Ingredient.Name,
             SauceType = otherPizza.PizzaIngredientJunction.First(i => i.Ingredient.Type.Equals("sauce")).Ingredient.Name,
             Toppings = otherPizza.PizzaIngredientJunction.Where(i => i.Ingredient.Type.Equals("topping")).Select(j => j.Ingredient.Name).ToHashSet()
-            //Eventually add other toppings, for now keep things standard
-            /*
-            CrustType = "classic crust",
-            SauceType = "classic sauce",
-            Toppings = { "cheese" }
-            */
         };
 
         public static Data.Pizzas Map(Pizza otherPizza) => new Data.Pizzas
@@ -111,16 +104,7 @@ namespace PizzaShop.Library
             }
             foreach (var i in lij)
             {
-                string t;
-                if (i.IngredientId.Contains("sauce"))
-                    t = "sauce";
-                else if (i.IngredientId.Contains("crust"))
-                    t = "crust";
-                else
-                    t = "topping";
-                //stock.Add(new Ingredient(i.IngredientId, (int)i.Quantity, "topping"));
-                stock.Add(new Ingredient(i.IngredientId, (int)i.Quantity, t));
-                //stock.Add(new Ingredient(i.IngredientId, (int)i.Quantity, i.Ingredient.Type));
+                stock.Add(new Ingredient(i.IngredientId, (int)i.Quantity, i.Ingredient.Type));
             }
             return stock;
         }

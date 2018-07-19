@@ -71,6 +71,7 @@ namespace PizzaShop.Library.Repositories
 
         public List<Pizza> GetRecommendedOrder(string user, RepositoryHandler RH)
         {
+            // TODO: fix this method since the order isn't changing to newest
             //Returns the most recent order, if one exists for that user
             //otherwise, use a basic small pizza
             List<int> oHistory= GetUserByUsername(user).OrderHistory;

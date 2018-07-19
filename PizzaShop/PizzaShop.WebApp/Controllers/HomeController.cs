@@ -121,7 +121,7 @@ namespace PizzaShop.WebApp.Controllers
         public IActionResult ChangeLocation(string newLoc)
         {
             OrderBuilder ob = ((OrderBuilder)TempData.Peek<Library.OrderBuilder>("OrderBuilder"));
-            ob.CurOrder.Store = newLoc;
+            ob.ChangeLocation(newLoc, RH);
             TempData.Put("OrderBuilder", ob);
             TempData.Remove("CurrentLocation");
             return RedirectToAction(nameof(OrderBuilding));

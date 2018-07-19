@@ -65,7 +65,7 @@ namespace PizzaShop.Library
 
         public decimal CalculatePrice(decimal baseP, decimal topP)
         {
-            Price = (decimal)(baseP + topP * Toppings.Count);
+            Price = (baseP + topP * Toppings.Count);
             return Price;
         }
 
