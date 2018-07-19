@@ -48,7 +48,7 @@ namespace PizzaShop.Library.Repositories
                     sortedOrders = (sortedOrders.OrderByDescending(a => a.Price)).ToList();
                     break;
                 default:
-                    throw new Exception("Sorting type not recognized.");
+                    throw new ArgumentOutOfRangeException("Sorting type not recognized.");
             }
             return Mapper.Map(sortedOrders);
         }

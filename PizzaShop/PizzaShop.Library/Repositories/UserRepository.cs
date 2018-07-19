@@ -18,7 +18,6 @@ namespace PizzaShop.Library.Repositories
 
         public IEnumerable<User> GetUsers()
         {
-            //List<Users> users = _db.Users.AsNoTracking().ToList();
             List<Users> users = _db.Users.AsNoTracking().Include(m => m.Orders).ToList();
             return Mapper.Map(users);
         }
@@ -64,7 +63,7 @@ namespace PizzaShop.Library.Repositories
                     sortedOrders = (sortedOrders.OrderByDescending(a => a.Price)).ToList();
                     break;
                 default:
-                    throw new Exception("Sorting type not recognized.");
+                    throw new ArgumentOutOfRangeException("Sorting type not recognized.");
             }
             return sortedOrders;
         }

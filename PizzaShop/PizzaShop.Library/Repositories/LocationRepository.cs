@@ -19,8 +19,6 @@ namespace PizzaShop.Library.Repositories
 
         public IEnumerable<Location> GetLocations()
         {
-            //List<Locations> locations = _db.Locations.AsNoTracking().ToList();
-            //List<Locations> locations = _db.Locations.AsNoTracking().Include(m => m.Orders).Include(s => s.LocationIngredientJunction).ToList();
             List<Locations> locations = _db.Locations.Include(m => m.Orders).Include(s => s.LocationIngredientJunction).ThenInclude(k => k.Ingredient).AsNoTracking().ToList();
             return Mapper.Map(locations);
         }
@@ -62,26 +60,15 @@ namespace PizzaShop.Library.Repositories
                     sortedOrders = (sortedOrders.OrderByDescending(a => a.Price)).ToList();
                     break;
                 default:
-                    throw new Exception("Sorting type not recognized.");
+                    throw new ArgumentOutOfRangeException("Sorting type not recognized.");
             }
             return sortedOrders;
         }
-
-        /*
-        public void UpdateLocation(Location loc)
-        {
-            // calling Update would mark every property as Modified.
-            // this way will only mark the changed properties as Modified.
-            _db.Entry(_db.Locations.Find(loc.Name)).CurrentValues.SetValues(Mapper.Map(loc));
-        }
-        */
 
         public void UpdateLocationInventory(Location loc)
         {
             foreach (Ingredient i in loc.Stock)
                 _db.LocationIngredientJunction.Find(loc.Name, i.Name).Quantity = i.Quantity;
-            //_db.Entry(_db.LocationIngredientJunction.Find(loc.Name, i.Name)).Entity.Quantity=i.Quantity;
-            //_db.Entry(_db.LocationIngredientJunction).State = _db.Entry.EntityState.Modified;
         }
 
         public void AddStock(Ingredient ing, string locName)
@@ -130,11 +117,9 @@ namespace PizzaShop.Library.Repositories
             //3rd - decrease quantity
             Stock.First(t => t.Name.Equals(ing.Name)).Quantity -= ing.Quantity;
 
-            //Disabling ingredient removal per Nick since it may cause conflict with DB
+            //No longer removing inventory once it hits 0
+            //just in case it could cause refferential integrity issues
 
-            //4th - check if quantity is now 0
-            //if (Stock.First(t => t.Name.Equals(ing.Name)).Quantity == 0)
-            //    Stock.Remove(Stock.First(t => t.Name.Equals(ing.Name)));
             return null;
         }
 
@@ -162,14 +147,10 @@ namespace PizzaShop.Library.Repositories
             {
                 Stock.First(t => t.Name.Equals(item.Name)).Quantity -= item.Quantity;
             }
-            //4th - check if quantity is now 0, remove if so
-            /*
-            foreach (var item in list)
-            {
-                if (Stock.First(t => t.Name.Equals(item.Name)).Quantity == 0)
-                    Stock.Remove(Stock.First(t => t.Name.Equals(item.Name)));
-            }
-            */
+
+            //No longer removing inventory once it hits 0
+            //just in case it could cause refferential integrity issues
+
             Save();
             return null;
         }

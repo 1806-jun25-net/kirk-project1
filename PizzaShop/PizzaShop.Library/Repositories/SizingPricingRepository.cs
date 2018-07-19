@@ -54,28 +54,28 @@ namespace PizzaShop.Library.Repositories
         public decimal GetBasePrice(string name)
         {
             if (!ContainsSize(name))
-                throw new Exception("Given size does not exist in DB");
+                throw new ArgumentOutOfRangeException("Given size does not exist in DB");
             return (decimal)_db.Ingredient.AsNoTracking().First(i => i.Size.Equals(name)).BasePrice;
         }
 
         public decimal GetToppingPrice(string name)
         {
             if (!ContainsSize(name))
-                throw new Exception("Given size does not exist in DB");
+                throw new ArgumentOutOfRangeException("Given size does not exist in DB");
             return (decimal)_db.Ingredient.AsNoTracking().First(i => i.Size.Equals(name)).ToppingPrice;
         }
 
         public int GetIngredientUsageScalar(string name)
         {
             if (!ContainsSize(name))
-                throw new Exception("Given size does not exist in DB");
+                throw new ArgumentOutOfRangeException("Given size does not exist in DB");
             return (int)_db.Ingredient.AsNoTracking().First(i => i.Size.Equals(name)).IngredientUsageScalar;
         }
 
         public void RemoveSize(string name)
         {
             if (!ContainsSize(name))
-                throw new Exception("Given size does not exist in DB");
+                throw new ArgumentOutOfRangeException("Given size does not exist in DB");
             _db.Remove(GetSizingPricingBySize(name));
         }
 
